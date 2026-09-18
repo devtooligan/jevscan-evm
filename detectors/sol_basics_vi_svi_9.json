@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_svi_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-9",
+  "source_hash": "4f4020007ac341dc",
+  "description": "Yul optimizer bug removing memory writes in multi-assembly-block functions (Solidity 0.8.13-0.8.14)",
+  "question": "The Solidity source file in `source` declares pragma solidity version 0.8.13 or 0.8.14 and contains a function with two or more separate inline assembly blocks that perform memory writes without referencing any Solidity variables, making it vulnerable to the Yul optimizer incorrectly eliminating those memory writes; this excludes files using a pragma outside 0.8.13-0.8.14, files with only a single inline assembly block per function, or blocks that reference Solidity variables directly.",
+  "criteria": [
+    "A function pragma-locked to 0.8.13 or 0.8.14 has two inline assembly blocks, each using mstore to write to the same memory location, with no Solidity variable referenced inside either block",
+    "A function contains three sequential assembly{...} blocks manipulating raw memory pointers via mstore/mload without touching any named Solidity variable, compiled under pragma 0.8.13",
+    "A helper function under pragma 0.8.14 has one assembly block that writes returndata to memory and a second separate assembly block that reads from that same memory offset, with no Solidity-level variable used in either block"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

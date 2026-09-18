@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-2",
+  "source_hash": "c7b20bfdd403affc",
+  "description": "Missing refund of unspent input tokens after failed/partial Uniswap swaps",
+  "question": "The source file in `source` implements a function that performs a Uniswap swap (e.g., exactInput/exactOutput or similar) on behalf of a user but, when the swap fails, is partially filled, or does not consume the entire input amount, fails to refund the leftover or unspent input tokens back to the user, causing user funds to be permanently stuck or lost in the contract, and this does not apply to swap functions that always fully consume input with no partial-fill possibility or that already transfer back any unused input tokens after the swap call.",
+  "criteria": [
+    "A swap function calls exactOutputSingle/exactOutput and keeps any leftover input tokens (amountInMaximum - amountIn actually used) in the contract without transferring them back to msg.sender",
+    "A function performs a swap via router.swap(...) and only checks amountOut but never returns or refunds unspent amountIn when the swap partially fills",
+    "A batch/order-fulfillment function loops over swaps and skips failed swaps silently without refunding the corresponding input tokens to the affected user",
+    "A wrapper function pulls tokens from the user with transferFrom before swapping, then on swap revert or partial execution does not transfer the unused balance back to the user"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

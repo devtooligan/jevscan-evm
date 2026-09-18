@@ -1,0 +1,15 @@
+{
+  "name": "uniswap_v4_hooks",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/uniswap-v4-hooks/SKILL.md",
+  "source_hash": "72d1dc882c46c440",
+  "description": "Missing PoolManager-only caller restriction on Uniswap V4 hook callbacks",
+  "question": "The source file in `source` implements Uniswap V4 hook callback functions (such as beforeSwap, afterSwap, beforeInitialize, afterInitialize, beforeAddLiquidity, afterAddLiquidity, beforeRemoveLiquidity, afterRemoveLiquidity, beforeDonate, afterDonate) or an IUnlockCallback's unlockCallback directly via IHooks rather than through a maintained BaseHook, and at least one such callback is externally callable without first verifying that msg.sender equals the configured PoolManager address, allowing an arbitrary caller to invoke privileged hook logic or decode/trust untrusted callback data outside the PoolManager's controlled flow.",
+  "criteria": [
+    "an external or public beforeSwap/afterSwap function performs pricing, fee, or accounting logic without checking msg.sender == poolManager",
+    "an external or public beforeInitialize/afterInitialize function validates or records pool parameters without restricting the caller to the PoolManager",
+    "an unlockCallback function decodes and acts on callback data before verifying the caller is the configured PoolManager",
+    "a beforeAddLiquidity/afterAddLiquidity or beforeRemoveLiquidity/afterRemoveLiquidity function mutates hook state or settles deltas without any onlyPoolManager-equivalent guard"
+  ],
+  "tags": []
+}

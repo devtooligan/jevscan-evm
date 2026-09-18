@@ -1,0 +1,1140 @@
+{
+  "aave_integration": [
+    "missing_auth_on_privileged_function",
+    "arbitrary_external_call"
+  ],
+  "access_control_patterns": [
+    "missing_auth_on_privileged_function"
+  ],
+  "assembly_patterns": [
+    "assembly_storage_memory_corruption"
+  ],
+  "beacon_proxy": [
+    "uninitialized_implementation"
+  ],
+  "cctp_bridging": [
+    "single_function_reentrancy",
+    "token_hook_reentrancy"
+  ],
+  "chainlink_oracles": [
+    "chainlink_validation_missing",
+    "l2_specific_assumptions"
+  ],
+  "compound_patterns": [
+    "missing_auth_on_privileged_function"
+  ],
+  "constructor_patterns": [
+    "uninitialized_implementation"
+  ],
+  "create2_patterns": [
+    "clone_and_factory_flaw"
+  ],
+  "cross_chain_security": [
+    "missing_domain_binding"
+  ],
+  "curve_integration": [
+    "manipulable_twap_or_custom_oracle",
+    "read_only_reentrancy"
+  ],
+  "delegate_call_risks": [
+    "delegatecall_to_untrusted"
+  ],
+  "denial_of_service": [
+    "unbounded_loop_gas_dos"
+  ],
+  "diamond_pattern": [
+    "missing_auth_on_privileged_function"
+  ],
+  "dutch_auction_patterns": [
+    "single_function_reentrancy"
+  ],
+  "economic_attack_vectors": [
+    "share_inflation_first_depositor",
+    "donation_or_balance_based_accounting"
+  ],
+  "eip712_signing": [
+    "missing_nonce_or_replay_protection",
+    "ecrecover_misuse",
+    "missing_domain_binding"
+  ],
+  "erc1155_patterns": [
+    "missing_input_validation"
+  ],
+  "erc20_patterns": [
+    "unchecked_return_value",
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "erc4626_patterns": [
+    "share_inflation_first_depositor"
+  ],
+  "erc721_patterns": [
+    "token_hook_reentrancy"
+  ],
+  "erc7702_patterns": [
+    "missing_auth_on_privileged_function"
+  ],
+  "error_handling": [
+    "external_protocol_assumption"
+  ],
+  "flash_loan_attacks": [
+    "spot_price_dependency",
+    "flash_loan_governance"
+  ],
+  "front_running_patterns": [
+    "missing_slippage_protection",
+    "missing_deadline"
+  ],
+  "governance_attacks": [
+    "flash_loan_governance"
+  ],
+  "integer_overflow": [
+    "unsafe_cast_or_overflow",
+    "precision_loss_division_before_multiplication"
+  ],
+  "liquidity_mining": [
+    "state_update_omission_or_double_count",
+    "reward_accounting_error"
+  ],
+  "minimal_proxy": [
+    "clone_and_factory_flaw",
+    "unprotected_initializer",
+    "frontrun_griefing_one_time_action"
+  ],
+  "oracle_manipulation": [
+    "spot_price_dependency"
+  ],
+  "proxy_patterns": [
+    "unprotected_upgrade"
+  ],
+  "reentrancy_patterns": [
+    "single_function_reentrancy",
+    "cross_function_reentrancy"
+  ],
+  "signature_vulnerabilities": [
+    "missing_nonce_or_replay_protection",
+    "missing_domain_binding",
+    "ecrecover_misuse"
+  ],
+  "sol_am_da_1": [
+    "donation_or_balance_based_accounting"
+  ],
+  "sol_am_dosa_1": [
+    "external_call_revert_dos",
+    "locked_funds_no_exit"
+  ],
+  "sol_am_dosa_2": [
+    "unbounded_loop_gas_dos",
+    "missing_input_validation"
+  ],
+  "sol_am_dosa_3": [
+    "external_call_revert_dos"
+  ],
+  "sol_am_dosa_4": [
+    "unbounded_loop_gas_dos"
+  ],
+  "sol_am_dosa_5": [
+    "precision_loss_division_before_multiplication",
+    "decimal_mismatch"
+  ],
+  "sol_am_fra_1": [
+    "frontrunnable_state_change",
+    "clone_and_factory_flaw"
+  ],
+  "sol_am_fra_2": [
+    "frontrunnable_state_change"
+  ],
+  "sol_am_fra_3": [
+    "frontrun_griefing_one_time_action",
+    "state_forcing_dos"
+  ],
+  "sol_am_fra_4": [
+    "incomplete_signed_payload"
+  ],
+  "sol_am_ga_1": [
+    "state_forcing_dos"
+  ],
+  "sol_am_ga_2": [
+    "external_call_revert_dos"
+  ],
+  "sol_am_ma_1": [
+    "timing_and_deadline_logic"
+  ],
+  "sol_am_ma_2": [
+    "insecure_randomness"
+  ],
+  "sol_am_ma_3": [
+    "missing_slippage_protection",
+    "frontrunnable_state_change"
+  ],
+  "sol_am_pma_1": [
+    "vault_share_price_as_oracle",
+    "spot_price_dependency"
+  ],
+  "sol_am_pma_2": [
+    "spot_price_dependency",
+    "manipulable_twap_or_custom_oracle"
+  ],
+  "sol_am_reentrancyattack_1": [
+    "read_only_reentrancy"
+  ],
+  "sol_am_reentrancyattack_2": [
+    "single_function_reentrancy",
+    "cross_function_reentrancy"
+  ],
+  "sol_am_replayattack_1": [
+    "missing_nonce_or_replay_protection"
+  ],
+  "sol_am_replayattack_2": [
+    "missing_domain_binding"
+  ],
+  "sol_am_sandwichattack_1": [
+    "missing_slippage_protection"
+  ],
+  "sol_am_sybilattack_1": [
+    "flash_loan_governance",
+    "instant_reward_or_snapshot_gaming"
+  ],
+  "sol_basics_ac_2": [
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_basics_ac_4": [
+    "role_management_flaw"
+  ],
+  "sol_basics_ac_5": [
+    "role_management_flaw",
+    "missing_input_validation"
+  ],
+  "sol_basics_ac_7": [
+    "tx_origin_authentication"
+  ],
+  "sol_basics_al_1": [
+    "invalid_state_transition"
+  ],
+  "sol_basics_al_10": [
+    "external_call_revert_dos"
+  ],
+  "sol_basics_al_11": [
+    "state_update_omission_or_double_count"
+  ],
+  "sol_basics_al_12": [
+    "rounding_direction_error"
+  ],
+  "sol_basics_al_13": [
+    "state_update_omission_or_double_count"
+  ],
+  "sol_basics_al_4": [
+    "state_update_omission_or_double_count"
+  ],
+  "sol_basics_al_5": [
+    "invalid_state_transition"
+  ],
+  "sol_basics_al_6": [
+    "precision_loss_division_before_multiplication"
+  ],
+  "sol_basics_al_7": [
+    "missing_input_validation"
+  ],
+  "sol_basics_al_8": [
+    "invalid_state_transition"
+  ],
+  "sol_basics_al_9": [
+    "unbounded_loop_gas_dos"
+  ],
+  "sol_basics_br_1": [
+    "clone_and_factory_flaw"
+  ],
+  "sol_basics_function_3": [
+    "frontrunnable_state_change"
+  ],
+  "sol_basics_function_8": [
+    "tx_origin_authentication",
+    "incorrect_auth_logic"
+  ],
+  "sol_basics_function_9": [
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_basics_inheritance_1": [
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_basics_inheritance_2": [
+    "invalid_state_transition"
+  ],
+  "sol_basics_inheritance_3": [
+    "external_call_revert_dos"
+  ],
+  "sol_basics_inheritance_4": [
+    "uninitialized_or_shadowed_state"
+  ],
+  "sol_basics_initialization_1": [
+    "uninitialized_or_shadowed_state"
+  ],
+  "sol_basics_initialization_2": [
+    "unprotected_initializer",
+    "uninitialized_implementation"
+  ],
+  "sol_basics_initialization_3": [
+    "unprotected_initializer"
+  ],
+  "sol_basics_map_1": [
+    "state_update_omission_or_double_count"
+  ],
+  "sol_basics_math_10": [
+    "timing_and_deadline_logic",
+    "missing_input_validation"
+  ],
+  "sol_basics_math_11": [
+    "assembly_storage_memory_corruption",
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_basics_math_12": [
+    "unsafe_cast_or_overflow",
+    "precision_loss_division_before_multiplication"
+  ],
+  "sol_basics_math_2": [
+    "precision_loss_division_before_multiplication"
+  ],
+  "sol_basics_math_3": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_basics_math_4": [
+    "precision_loss_division_before_multiplication"
+  ],
+  "sol_basics_math_5": [
+    "rounding_direction_error"
+  ],
+  "sol_basics_math_6": [
+    "missing_input_validation"
+  ],
+  "sol_basics_math_7": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_basics_math_8": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_basics_math_9": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_basics_payment_1": [
+    "external_call_revert_dos"
+  ],
+  "sol_basics_payment_2": [
+    "missing_input_validation"
+  ],
+  "sol_basics_payment_3": [
+    "donation_or_balance_based_accounting",
+    "state_forcing_dos"
+  ],
+  "sol_basics_payment_4": [
+    "missing_input_validation",
+    "rounding_direction_error"
+  ],
+  "sol_basics_payment_5": [
+    "external_call_revert_dos",
+    "unbounded_loop_gas_dos"
+  ],
+  "sol_basics_payment_6": [
+    "eth_transfer_and_receive_issues"
+  ],
+  "sol_basics_payment_7": [
+    "locked_funds_no_exit"
+  ],
+  "sol_basics_pu_1": [
+    "uninitialized_implementation"
+  ],
+  "sol_basics_pu_2": [
+    "unprotected_initializer"
+  ],
+  "sol_basics_pu_3": [
+    "uninitialized_implementation"
+  ],
+  "sol_basics_pu_4": [
+    "unprotected_upgrade"
+  ],
+  "sol_basics_pu_5": [
+    "uninitialized_implementation",
+    "unprotected_initializer"
+  ],
+  "sol_basics_pu_6": [
+    "selfdestruct_exposure",
+    "delegatecall_to_untrusted"
+  ],
+  "sol_basics_pu_7": [
+    "delegatecall_context_misuse"
+  ],
+  "sol_basics_pu_8": [
+    "uninitialized_implementation"
+  ],
+  "sol_basics_pu_9": [
+    "storage_layout_collision"
+  ],
+  "sol_basics_type_1": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_basics_vi_ovi_1": [
+    "external_call_revert_dos"
+  ],
+  "sol_basics_vi_ovi_10": [
+    "unverified_message_source",
+    "l2_specific_assumptions"
+  ],
+  "sol_basics_vi_ovi_11": [
+    "invalid_state_transition"
+  ],
+  "sol_basics_vi_ovi_12": [
+    "external_protocol_assumption"
+  ],
+  "sol_basics_vi_ovi_13": [
+    "external_protocol_assumption"
+  ],
+  "sol_basics_vi_ovi_16": [
+    "token_hook_reentrancy",
+    "state_update_omission_or_double_count"
+  ],
+  "sol_basics_vi_ovi_17": [
+    "uninitialized_implementation",
+    "unprotected_initializer"
+  ],
+  "sol_basics_vi_ovi_18": [
+    "role_management_flaw",
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_basics_vi_ovi_2": [
+    "missing_input_validation"
+  ],
+  "sol_basics_vi_ovi_3": [
+    "missing_nonce_or_replay_protection",
+    "ecrecover_misuse"
+  ],
+  "sol_basics_vi_ovi_4": [
+    "token_hook_reentrancy"
+  ],
+  "sol_basics_vi_ovi_5": [
+    "proof_or_root_validation_flaw"
+  ],
+  "sol_basics_vi_ovi_6": [
+    "frontrun_griefing_one_time_action"
+  ],
+  "sol_basics_vi_ovi_7": [
+    "delegatecall_context_misuse"
+  ],
+  "sol_basics_vi_ovi_8": [
+    "state_update_omission_or_double_count"
+  ],
+  "sol_basics_vi_ovi_9": [
+    "unbounded_loop_gas_dos"
+  ],
+  "sol_basics_vi_svi_10": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_11": [
+    "assembly_storage_memory_corruption",
+    "hash_collision_encoding"
+  ],
+  "sol_basics_vi_svi_12": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_13": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_basics_vi_svi_14": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_15": [
+    "assembly_storage_memory_corruption",
+    "hash_collision_encoding"
+  ],
+  "sol_basics_vi_svi_16": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_17": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_19": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_20": [
+    "hash_collision_encoding",
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_21": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_22": [
+    "missing_input_validation"
+  ],
+  "sol_basics_vi_svi_23": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_24": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_4": [
+    "hash_collision_encoding"
+  ],
+  "sol_basics_vi_svi_45": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_46": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_47": [
+    "uninitialized_or_shadowed_state"
+  ],
+  "sol_basics_vi_svi_48": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_6": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_7": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_8": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_basics_vi_svi_9": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_cr_6": [
+    "role_management_flaw"
+  ],
+  "sol_defi_as_1": [
+    "missing_slippage_protection"
+  ],
+  "sol_defi_as_10": [
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "sol_defi_as_11": [
+    "missing_slippage_protection"
+  ],
+  "sol_defi_as_12": [
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_defi_as_13": [
+    "spot_price_dependency",
+    "missing_slippage_protection"
+  ],
+  "sol_defi_as_14": [
+    "missing_slippage_protection"
+  ],
+  "sol_defi_as_2": [
+    "missing_deadline"
+  ],
+  "sol_defi_as_3": [
+    "invariant_violation_solvency"
+  ],
+  "sol_defi_as_5": [
+    "rounding_direction_error"
+  ],
+  "sol_defi_as_6": [
+    "arbitrary_external_call"
+  ],
+  "sol_defi_as_7": [
+    "missing_slippage_protection"
+  ],
+  "sol_defi_as_8": [
+    "decimal_mismatch",
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "sol_defi_as_9": [
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "sol_defi_flashloan_1": [
+    "instant_reward_or_snapshot_gaming",
+    "atomic_arbitrage_of_protocol_pricing"
+  ],
+  "sol_defi_flashloan_2": [
+    "share_inflation_first_depositor",
+    "vault_share_price_as_oracle",
+    "atomic_arbitrage_of_protocol_pricing"
+  ],
+  "sol_defi_general_1": [
+    "decimal_mismatch"
+  ],
+  "sol_defi_general_2": [
+    "locked_funds_no_exit"
+  ],
+  "sol_defi_general_3": [
+    "donation_or_balance_based_accounting"
+  ],
+  "sol_defi_general_4": [
+    "share_inflation_first_depositor"
+  ],
+  "sol_defi_general_5": [
+    "missing_input_validation",
+    "invariant_violation_solvency"
+  ],
+  "sol_defi_general_6": [
+    "approval_handling_flaw"
+  ],
+  "sol_defi_general_7": [
+    "precision_loss_division_before_multiplication",
+    "share_inflation_first_depositor"
+  ],
+  "sol_defi_general_8": [
+    "instant_reward_or_snapshot_gaming"
+  ],
+  "sol_defi_general_9": [
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "sol_defi_lending_10": [
+    "atomic_arbitrage_of_protocol_pricing",
+    "spot_price_dependency"
+  ],
+  "sol_defi_lending_11": [
+    "liquidation_logic_error",
+    "missing_slippage_protection"
+  ],
+  "sol_defi_lending_12": [
+    "invalid_state_transition",
+    "locked_funds_no_exit"
+  ],
+  "sol_defi_lending_2": [
+    "liquidation_logic_error"
+  ],
+  "sol_defi_lending_3": [
+    "self_or_identical_parameter_edge_case",
+    "liquidation_logic_error"
+  ],
+  "sol_defi_lending_4": [
+    "invalid_state_transition",
+    "liquidation_logic_error"
+  ],
+  "sol_defi_lending_6": [
+    "frontrunnable_state_change",
+    "liquidation_logic_error"
+  ],
+  "sol_defi_lending_7": [
+    "liquidation_logic_error"
+  ],
+  "sol_defi_lending_8": [
+    "debt_and_interest_accounting_error"
+  ],
+  "sol_defi_lending_9": [
+    "invalid_state_transition",
+    "liquidation_logic_error"
+  ],
+  "sol_defi_lsd_1": [
+    "frontrunnable_state_change",
+    "missing_input_validation"
+  ],
+  "sol_defi_lsd_2": [
+    "frontrunnable_state_change",
+    "vault_share_price_as_oracle"
+  ],
+  "sol_defi_lsd_3": [
+    "token_hook_reentrancy",
+    "single_function_reentrancy"
+  ],
+  "sol_defi_lsd_4": [
+    "vault_share_price_as_oracle",
+    "invalid_state_transition"
+  ],
+  "sol_defi_lsd_5": [
+    "invalid_state_transition"
+  ],
+  "sol_defi_lsd_6": [
+    "state_update_omission_or_double_count"
+  ],
+  "sol_defi_lsd_7": [
+    "unbounded_loop_gas_dos"
+  ],
+  "sol_defi_lsd_8": [
+    "chainlink_validation_missing"
+  ],
+  "sol_defi_lsd_9": [
+    "precision_loss_division_before_multiplication",
+    "rounding_direction_error"
+  ],
+  "sol_defi_oracle_1": [
+    "chainlink_validation_missing"
+  ],
+  "sol_defi_oracle_10": [
+    "frontrunnable_state_change"
+  ],
+  "sol_defi_oracle_12": [
+    "oracle_decimals_and_units"
+  ],
+  "sol_defi_oracle_13": [
+    "spot_price_dependency"
+  ],
+  "sol_defi_oracle_14": [
+    "chainlink_validation_missing"
+  ],
+  "sol_defi_oracle_2": [
+    "chainlink_validation_missing"
+  ],
+  "sol_defi_oracle_3": [
+    "chainlink_validation_missing"
+  ],
+  "sol_defi_oracle_4": [
+    "l2_specific_assumptions"
+  ],
+  "sol_defi_oracle_5": [
+    "manipulable_twap_or_custom_oracle"
+  ],
+  "sol_defi_oracle_7": [
+    "chainlink_validation_missing"
+  ],
+  "sol_defi_oracle_8": [
+    "oracle_decimals_and_units"
+  ],
+  "sol_defi_oracle_9": [
+    "chainlink_validation_missing"
+  ],
+  "sol_defi_staking_1": [
+    "arbitrary_from_or_on_behalf_of"
+  ],
+  "sol_defi_staking_2": [
+    "timing_and_deadline_logic"
+  ],
+  "sol_defi_staking_3": [
+    "reward_accounting_error"
+  ],
+  "sol_ec_1": [
+    "cross_function_reentrancy",
+    "read_only_reentrancy"
+  ],
+  "sol_ec_10": [
+    "delegatecall_to_untrusted"
+  ],
+  "sol_ec_11": [
+    "delegatecall_to_untrusted"
+  ],
+  "sol_ec_12": [
+    "unchecked_return_value"
+  ],
+  "sol_ec_13": [
+    "single_function_reentrancy",
+    "cross_function_reentrancy"
+  ],
+  "sol_ec_14": [
+    "incorrect_auth_logic",
+    "unverified_message_source"
+  ],
+  "sol_ec_2": [
+    "state_update_omission_or_double_count",
+    "missing_input_validation"
+  ],
+  "sol_ec_3": [
+    "delegatecall_to_untrusted"
+  ],
+  "sol_ec_5": [
+    "arbitrary_external_call"
+  ],
+  "sol_ec_6": [
+    "external_call_revert_dos"
+  ],
+  "sol_ec_7": [
+    "external_call_revert_dos"
+  ],
+  "sol_ec_8": [
+    "external_call_revert_dos",
+    "unbounded_loop_gas_dos"
+  ],
+  "sol_ec_9": [
+    "external_call_revert_dos"
+  ],
+  "sol_heuristics_10": [
+    "rounding_direction_error"
+  ],
+  "sol_heuristics_11": [
+    "uninitialized_or_shadowed_state"
+  ],
+  "sol_heuristics_12": [
+    "invalid_state_transition",
+    "missing_nonce_or_replay_protection"
+  ],
+  "sol_heuristics_13": [
+    "uninitialized_or_shadowed_state"
+  ],
+  "sol_heuristics_14": [
+    "eth_transfer_and_receive_issues",
+    "state_update_omission_or_double_count"
+  ],
+  "sol_heuristics_15": [
+    "uninitialized_or_shadowed_state"
+  ],
+  "sol_heuristics_16": [
+    "invalid_state_transition",
+    "state_update_omission_or_double_count"
+  ],
+  "sol_heuristics_17": [
+    "rounding_direction_error",
+    "fee_accounting_error"
+  ],
+  "sol_heuristics_2": [
+    "state_update_omission_or_double_count",
+    "uninitialized_or_shadowed_state"
+  ],
+  "sol_heuristics_3": [
+    "self_or_identical_parameter_edge_case"
+  ],
+  "sol_heuristics_4": [
+    "single_function_reentrancy"
+  ],
+  "sol_heuristics_5": [
+    "external_call_revert_dos"
+  ],
+  "sol_heuristics_7": [
+    "missing_input_validation",
+    "incorrect_formula"
+  ],
+  "sol_heuristics_8": [
+    "incorrect_auth_logic",
+    "invalid_state_transition"
+  ],
+  "sol_heuristics_9": [
+    "missing_input_validation",
+    "arbitrary_from_or_on_behalf_of"
+  ],
+  "sol_hmt_1": [
+    "frontrunnable_state_change",
+    "invalid_state_transition"
+  ],
+  "sol_hmt_2": [
+    "arbitrary_from_or_on_behalf_of"
+  ],
+  "sol_hmt_3": [
+    "missing_input_validation"
+  ],
+  "sol_hmt_4": [
+    "missing_nonce_or_replay_protection"
+  ],
+  "sol_hmt_5": [
+    "arbitrary_from_or_on_behalf_of"
+  ],
+  "sol_integrations_ac_1": [
+    "external_protocol_assumption"
+  ],
+  "sol_integrations_ac_2": [
+    "external_protocol_assumption",
+    "locked_funds_no_exit"
+  ],
+  "sol_integrations_ac_3": [
+    "external_protocol_assumption",
+    "external_call_revert_dos"
+  ],
+  "sol_integrations_ac_5": [
+    "invariant_violation_solvency",
+    "external_protocol_assumption"
+  ],
+  "sol_integrations_ac_6": [
+    "atomic_arbitrage_of_protocol_pricing",
+    "manipulable_twap_or_custom_oracle"
+  ],
+  "sol_integrations_ac_7": [
+    "reward_accounting_error"
+  ],
+  "sol_integrations_ac_8": [
+    "external_call_revert_dos"
+  ],
+  "sol_integrations_ac_9": [
+    "missing_input_validation",
+    "external_protocol_assumption"
+  ],
+  "sol_integrations_balancer_1": [
+    "fee_accounting_error",
+    "external_protocol_assumption"
+  ],
+  "sol_integrations_balancer_2": [
+    "manipulable_twap_or_custom_oracle"
+  ],
+  "sol_integrations_balancer_3": [
+    "vault_share_price_as_oracle"
+  ],
+  "sol_integrations_balancer_4": [
+    "read_only_reentrancy"
+  ],
+  "sol_integrations_chainlink_ccip_1": [
+    "unverified_message_source"
+  ],
+  "sol_integrations_chainlink_ccip_2": [
+    "unverified_message_source",
+    "missing_input_validation"
+  ],
+  "sol_integrations_chainlink_ccip_3": [
+    "missing_input_validation"
+  ],
+  "sol_integrations_chainlink_ccip_6": [
+    "unverified_message_source"
+  ],
+  "sol_integrations_chainlink_ccip_7": [
+    "missing_input_validation"
+  ],
+  "sol_integrations_chainlink_ccip_8": [
+    "failed_message_fund_lock"
+  ],
+  "sol_integrations_chainlink_vrf_1": [
+    "missing_input_validation",
+    "insecure_randomness"
+  ],
+  "sol_integrations_chainlink_vrf_3": [
+    "insecure_randomness"
+  ],
+  "sol_integrations_chainlink_vrf_4": [
+    "frontrunnable_state_change",
+    "insecure_randomness"
+  ],
+  "sol_integrations_gs_1": [
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_integrations_gs_2": [
+    "missing_nonce_or_replay_protection"
+  ],
+  "sol_integrations_layerzero_1": [
+    "arbitrary_from_or_on_behalf_of",
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_integrations_layerzero_2": [
+    "external_call_revert_dos",
+    "failed_message_fund_lock"
+  ],
+  "sol_integrations_layerzero_3": [
+    "failed_message_fund_lock"
+  ],
+  "sol_integrations_layerzero_4": [
+    "unverified_message_source",
+    "external_protocol_assumption"
+  ],
+  "sol_integrations_layerzero_5": [
+    "failed_message_fund_lock",
+    "locked_funds_no_exit"
+  ],
+  "sol_integrations_layerzero_6": [
+    "external_protocol_assumption"
+  ],
+  "sol_integrations_layerzero_7": [
+    "proof_or_root_validation_flaw"
+  ],
+  "sol_integrations_lsd_cbeth_1": [
+    "manipulable_twap_or_custom_oracle"
+  ],
+  "sol_integrations_lsd_cbeth_2": [
+    "vault_share_price_as_oracle"
+  ],
+  "sol_integrations_lsd_reth_1": [
+    "vault_share_price_as_oracle"
+  ],
+  "sol_integrations_lsd_reth_2": [
+    "vault_share_price_as_oracle"
+  ],
+  "sol_integrations_lsd_reth_3": [
+    "external_protocol_assumption",
+    "external_call_revert_dos"
+  ],
+  "sol_integrations_lsd_reth_5": [
+    "vault_share_price_as_oracle"
+  ],
+  "sol_integrations_lsd_sfrxeth_1": [
+    "vault_share_price_as_oracle"
+  ],
+  "sol_integrations_lsd_steth_1": [
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "sol_integrations_lsd_steth_2": [
+    "locked_funds_no_exit",
+    "invalid_state_transition"
+  ],
+  "sol_integrations_lsd_steth_3": [
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "sol_integrations_uniswap_1": [
+    "missing_slippage_protection",
+    "spot_price_dependency"
+  ],
+  "sol_integrations_uniswap_10": [
+    "missing_input_validation"
+  ],
+  "sol_integrations_uniswap_2": [
+    "locked_funds_no_exit"
+  ],
+  "sol_integrations_uniswap_3": [
+    "external_protocol_assumption"
+  ],
+  "sol_integrations_uniswap_4": [
+    "arbitrary_external_call",
+    "missing_input_validation"
+  ],
+  "sol_integrations_uniswap_5": [
+    "spot_price_dependency"
+  ],
+  "sol_integrations_uniswap_6": [
+    "missing_slippage_protection",
+    "missing_deadline"
+  ],
+  "sol_integrations_uniswap_7": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_integrations_uniswap_8": [
+    "missing_slippage_protection"
+  ],
+  "sol_integrations_uniswap_9": [
+    "spot_price_dependency",
+    "manipulable_twap_or_custom_oracle"
+  ],
+  "sol_ll_1": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_ll_2": [
+    "assembly_storage_memory_corruption"
+  ],
+  "sol_ll_3": [
+    "unchecked_return_value"
+  ],
+  "sol_ll_4": [
+    "unchecked_return_value"
+  ],
+  "sol_ll_5": [
+    "unsafe_cast_or_overflow"
+  ],
+  "sol_mccc_1": [
+    "l2_specific_assumptions"
+  ],
+  "sol_mccc_10": [
+    "l2_specific_assumptions"
+  ],
+  "sol_mccc_11": [
+    "l2_specific_assumptions",
+    "timing_and_deadline_logic"
+  ],
+  "sol_mccc_13": [
+    "state_update_omission_or_double_count"
+  ],
+  "sol_mccc_3": [
+    "l2_specific_assumptions"
+  ],
+  "sol_mccc_6": [
+    "decimal_mismatch"
+  ],
+  "sol_mccc_8": [
+    "unverified_message_source"
+  ],
+  "sol_mccc_9": [
+    "unverified_message_source"
+  ],
+  "sol_signature_1": [
+    "missing_nonce_or_replay_protection",
+    "missing_domain_binding"
+  ],
+  "sol_signature_2": [
+    "ecrecover_misuse"
+  ],
+  "sol_signature_3": [
+    "ecrecover_misuse"
+  ],
+  "sol_signature_4": [
+    "ecrecover_misuse",
+    "missing_auth_on_privileged_function"
+  ],
+  "sol_signature_5": [
+    "incomplete_signed_payload",
+    "missing_deadline"
+  ],
+  "sol_token_fe_1": [
+    "unchecked_return_value"
+  ],
+  "sol_token_fe_10": [
+    "external_protocol_assumption"
+  ],
+  "sol_token_fe_11": [
+    "missing_domain_binding"
+  ],
+  "sol_token_fe_12": [
+    "external_call_revert_dos"
+  ],
+  "sol_token_fe_13": [
+    "approval_handling_flaw"
+  ],
+  "sol_token_fe_14": [
+    "approval_handling_flaw"
+  ],
+  "sol_token_fe_16": [
+    "approval_handling_flaw"
+  ],
+  "sol_token_fe_3": [
+    "decimal_mismatch"
+  ],
+  "sol_token_fe_4": [
+    "external_protocol_assumption",
+    "locked_funds_no_exit"
+  ],
+  "sol_token_fe_5": [
+    "missing_input_validation"
+  ],
+  "sol_token_fe_6": [
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "sol_token_fe_7": [
+    "token_hook_reentrancy"
+  ],
+  "sol_token_fe_8": [
+    "external_protocol_assumption"
+  ],
+  "sol_token_fe_9": [
+    "flash_loan_governance",
+    "manipulable_twap_or_custom_oracle"
+  ],
+  "sol_token_nfe1_1": [
+    "locked_funds_no_exit"
+  ],
+  "sol_token_nfe1_2": [
+    "token_hook_reentrancy"
+  ],
+  "sol_token_nfe1_3": [
+    "token_hook_reentrancy"
+  ],
+  "sol_token_nfe1_4": [
+    "arbitrary_from_or_on_behalf_of"
+  ],
+  "sol_token_nfe1_5": [
+    "external_protocol_assumption"
+  ],
+  "sol_token_nfe1_6": [
+    "external_protocol_assumption"
+  ],
+  "sol_token_nfe1_7": [
+    "locked_funds_no_exit"
+  ],
+  "sol_token_nfe1_8": [
+    "frontrun_griefing_one_time_action"
+  ],
+  "solidity_patterns": [
+    "single_function_reentrancy"
+  ],
+  "solidity_security": [
+    "single_function_reentrancy",
+    "cross_function_reentrancy"
+  ],
+  "staking_reward_patterns": [
+    "reward_accounting_error",
+    "state_update_omission_or_double_count"
+  ],
+  "storage_layout": [
+    "storage_layout_collision"
+  ],
+  "time_manipulation": [
+    "timing_and_deadline_logic",
+    "insecure_randomness"
+  ],
+  "token_bonding_curves": [
+    "missing_slippage_protection"
+  ],
+  "token_integration_safety": [
+    "unchecked_return_value",
+    "fee_on_transfer_or_rebasing_token"
+  ],
+  "uniswap_v4_hooks": [
+    "missing_auth_on_privileged_function"
+  ],
+  "upgrade_safety": [
+    "unprotected_initializer",
+    "uninitialized_implementation"
+  ],
+  "usdc_integration": [
+    "decimal_mismatch"
+  ],
+  "yield_vault_patterns": [
+    "share_inflation_first_depositor"
+  ]
+}

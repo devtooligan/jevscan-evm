@@ -1,0 +1,20 @@
+{
+  "name": "sol_heuristics_17",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-17",
+  "source_hash": "4d1829950a138f7d",
+  "description": "Rounding/fee inconsistency exploitable by splitting a financial operation into many small calls",
+  "question": "The source file in `source` implements a function performing a financial computation (e.g., deposit, mint, withdraw, fee or interest calculation) that involves integer division or per-call rounding/truncation, such that invoking it repeatedly with smaller amounts yields a materially different, more favorable-to-caller cumulative state than invoking it once with the aggregate amount, and this rounding-driven discrepancy is neither bounded, documented as intentional/negligible dust, nor guarded against (e.g., no minimum-amount check or rounding-direction safeguard), excluding cases where the difference is provably negligible or explicitly accepted as safe by design.",
+  "criteria": [
+    "deposit() computes shares = amount * totalShares / totalAssets separately per call with truncation, letting a user accumulate more shares by splitting one large deposit into many small deposits",
+    "calculateFee() computes fee = amount * feeBps / 10000 using integer division per call, so splitting a transfer into many small transfers rounds the fee down to zero each time and avoids the fee owed on the aggregate amount",
+    "withdraw() rounds down the deducted balance per call, so repeated small withdrawals leave a larger uncollected remainder than a single withdrawal of the same aggregate amount",
+    "interest accrual function computes interest = principal * rate / PRECISION per call and resets/truncates state between calls, causing repeated small accrual calls to produce less total interest than one call over the combined period",
+    "swap() or mint() applies a rounding-in-favor-of-user step independently on each call, allowing an attacker to repeatedly call with minimal amounts to extract more output tokens than a single call with the summed input would yield"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

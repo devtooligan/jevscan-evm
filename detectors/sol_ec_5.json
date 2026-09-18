@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-5",
+  "source_hash": "6514a9b1159f419b",
+  "description": "Arbitrary/untrusted external call target not restricted to a whitelist",
+  "question": "The source file in `source` defines a function that performs a low-level external call, delegatecall, or invokes an arbitrary target/contract address supplied via user or caller-controlled input, without validating that address against a whitelist, allowlist, or hardcoded set of trusted addresses, allowing an attacker to redirect the call to a malicious contract and steal funds or hijack execution; this excludes calls to addresses that are fixed constants, immutable values set only by a trusted admin at deployment, or already validated against an on-chain allowlist/registry before the call.",
+  "criteria": [
+    "A bridge/facet function takes a 'callTo' or 'target' parameter from calldata and executes call(target, data) without checking target against any allowlist",
+    "A swap/router function accepts an arbitrary 'dex' or 'pool' address argument and forwards call{value: amount}(dex, data) without verifying dex is a trusted registered exchange",
+    "A function reads a destination or relayer address from user input and issues a delegatecall to it without comparing it to a stored list of approved addresses",
+    "A cross-chain messaging function forwards execution to an address parameter supplied in the payload without hardcoding or checking it against a trusted gateway/adapter address"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

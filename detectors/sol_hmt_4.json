@@ -1,0 +1,19 @@
+{
+  "name": "sol_hmt_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-HMT-4",
+  "source_hash": "bc697d93222af644",
+  "description": "Merkle proof claim allows duplicate/reused proofs enabling double-spending",
+  "question": "The source file in `source` implements a Merkle-proof based claim, redemption, or whitelist function that verifies a leaf/proof against a Merkle root and then transfers value or grants access, but does not record which leaf, index, or proof has already been consumed (e.g., no bitmap or mapping marking claimed indices, or no check of such a record before paying out), so the same proof or leaf can be submitted repeatedly to double-claim funds or bypass the whitelist limit, excluding implementations that track and check claimed indices/leaves before allowing redemption.",
+  "criteria": [
+    "claim(index, amount, proof) verifies the Merkle proof and transfers tokens without ever setting or checking a claimedBitMap/mapping for that index",
+    "verify(leaf, proof) returns true and the caller immediately mints/pays out, with no persistent record of used leaves preventing the same leaf from succeeding again",
+    "leaf = keccak256(abi.encodePacked(account, amount)) is used without any index or nonce, so the same account/amount pair can be replayed indefinitely once verified once",
+    "redeem() checks proof validity but stores the used-leaf flag after the external transfer, allowing reentrancy to redeem the same proof multiple times before the flag is set"
+  ],
+  "tags": [
+    [
+      "Hash / Merkle Tree"
+    ]
+  ]
+}

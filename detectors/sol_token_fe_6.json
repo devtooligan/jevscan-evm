@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-6",
+  "source_hash": "db1669534519dd0c",
+  "description": "Fee-on-transfer token accounting mismatch from assuming transferred amount equals received amount",
+  "question": "The source file in `source` credits internal accounting (e.g., balances, shares, or deposit amounts) using the nominal amount passed to transfer/transferFrom of an arbitrary or externally-configurable ERC20 token, without measuring the actual token balance received before and after the transfer, so that a fee-on-transfer token would cause the protocol to record more tokens than it actually received, excluding cases where the token is fixed, trusted, and known not to charge transfer fees, or where the code already reconciles credited amounts using pre/post balance checks.",
+  "criteria": [
+    "deposit() calls token.transferFrom(msg.sender, address(this), amount) and then sets userBalance[msg.sender] += amount without checking actual tokens received",
+    "A vault mints shares based on the input 'amount' parameter of a transferFrom call rather than the measured increase in its own token balance",
+    "A staking function increments totalStaked by the passed amount immediately after calling transferFrom, with no balanceOf comparison before and after",
+    "A swap/router function assumes the output of transfer equals the requested amount and forwards or accounts that requested amount downstream without verifying the recipient's actual balance change"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

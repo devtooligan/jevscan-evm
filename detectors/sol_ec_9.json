@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-9",
+  "source_hash": "c96bf5f6dafa152c",
+  "description": "Unbounded external call return data causing gas griefing/DoS (return bomb)",
+  "question": "The source file in `source` makes an external call to an untrusted or arbitrary-address contract and then copies, decodes, or otherwise processes the full returned data without limiting or checking the size of returndata first, allowing a malicious callee to return a huge payload that exhausts gas or causes the caller to run out of gas/revert, and this does not apply to calls to fixed, trusted, or protocol-controlled contracts, nor to calls that already bound gas and validate returndatasize before copying.",
+  "criteria": [
+    "Performs a low-level call/staticcall/delegatecall to a user- or externally-supplied address and then copies the entire returndata into memory (e.g. via assembly returndatacopy or by assigning the raw bytes result) without any length check",
+    "Calls abi.decode directly on the raw return bytes of an external call to an arbitrary/untrusted address, feeding attacker-controlled oversized data straight into the decoder",
+    "Forwards or relays return data from an external call to another contract or event without capping its length, enabling a callee to return an arbitrarily large payload",
+    "Iterates over or ABI-decodes an array/struct returned from an untrusted external call without bounding the number of elements processed, allowing gas exhaustion from an oversized response"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

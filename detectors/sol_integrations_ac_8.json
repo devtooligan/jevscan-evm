@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_ac_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-8",
+  "source_hash": "14f50489f699bcc2",
+  "description": "Unhandled AAVE isolation-mode debt-ceiling revert causing denial-of-service on borrow-integration logic",
+  "question": "The source file in `source` integrates with AAVE by calling borrow or supply functions on an isolated asset without checking or handling the isolation-mode debt ceiling, so that once a user's isolated debt reaches the maximum, subsequent borrow calls revert unhandled and permanently block that user's or the protocol's intended actions (e.g., liquidation, further borrowing, or position management), rather than gracefully catching, checking eMode/ceiling status beforehand, or falling back to an alternative path.",
+  "criteria": [
+    "A function calls AAVE's borrow() for an isolated-mode asset without first checking getReserveData or isolationModeTotalDebt against the debt ceiling",
+    "Borrow or supply calls to AAVE isolated assets are made without a try/catch or success check, causing the whole transaction (including unrelated logic) to revert when the ceiling is hit",
+    "Liquidation or position-adjustment logic assumes borrow() always succeeds on an isolated asset and has no fallback when the debt ceiling blocks further borrowing",
+    "User-facing deposit/borrow flow lacks any pre-check of remaining isolation-mode debt capacity before submitting the AAVE call, leaving users stuck mid-transaction"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_ac_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-6",
+  "source_hash": "99316ff7142f9f65",
+  "description": "Aave flash loan fee inflates pool liquidity index, allowing index manipulation via repeated flash loans",
+  "question": "The source file in `source` integrates with Aave (e.g., calls flashLoan, flashLoanSimple, or reads Aave reserve liquidity index/normalized income) and uses the Aave pool's liquidity index or scaled balances as a price or accounting reference without accounting for the fact that repeated flash loans within a single block can inflate that index, allowing an attacker to manipulate the index value that the integration relies on; this does not apply to code that only interacts with Aave for simple deposit/withdraw without reading or relying on the liquidity index for pricing or accounting decisions.",
+  "criteria": [
+    "A function computes a share price or exchange rate directly from Aave's getReserveNormalizedIncome() or liquidityIndex within the same block as a flash loan call, without any time-weighting or averaging",
+    "A vault or strategy contract uses the current Aave scaled balance / liquidity index ratio as the sole basis for minting or redeeming shares, letting an attacker inflate the index via self-issued flash loans before redeeming",
+    "Reward or interest calculations read Aave's reserve index in real time and use it to settle user balances without checking for anomalous single-block jumps caused by flash loan fees"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

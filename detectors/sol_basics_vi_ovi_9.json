@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-9",
+  "source_hash": "6d022ff3f0c3c56c",
+  "description": "Denial-of-service in OpenZeppelin ERC165Checker/ERC165CheckerUpgradeable due to unbounded staticcall return data",
+  "question": "The source file in `source` imports or calls OpenZeppelin's ERC165Checker or ERC165CheckerUpgradeable library (versions >=2.3.0 and <4.7.2) to query supportsInterface/supportsERC165InterfaceUnchecked on an untrusted or user-supplied contract address without limiting gas or return-data size, allowing that contract to cause excessive resource consumption and a denial of service, and this does not apply if the library version used is patched (>=4.7.2 or <2.3.0) or if the target contract address is always trusted/fixed rather than attacker-controlled.",
+  "criteria": [
+    "Imports OpenZeppelin's ERC165Checker.sol (version >=2.3.0 <4.7.2) and calls supportsInterface() on an arbitrary, caller-supplied contract address",
+    "Calls ERC165CheckerUpgradeable's supportsInterface() or getSupportedInterfaces() passing a user-provided contract address directly into the vulnerable library function",
+    "Directly calls the vulnerable supportsERC165InterfaceUnchecked() function on an untrusted external contract, forwarding a staticcall whose return data length is not capped",
+    "Loops over a list of interface IDs calling ERC165Checker functions against a user-controlled contract address, enabling a malicious contract to return oversized data and exhaust gas"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

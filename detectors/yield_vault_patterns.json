@@ -1,0 +1,16 @@
+{
+  "name": "yield_vault_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/yield-vault-patterns/SKILL.md",
+  "source_hash": "99714869e50e78e8",
+  "description": "ERC-4626 vault share/asset conversion vulnerable to first-depositor share-price inflation attack",
+  "question": "The source file in `source` defines an ERC-4626-style vault contract with deposit/mint/withdraw/redeem functions that compute shares or assets using totalSupply and totalAssets (e.g. shares = assets * totalSupply / totalAssets), but does not add any virtual/offset shares or assets (no decimalsOffset, no VIRTUAL_SHARES/VIRTUAL_ASSETS constant) and enforces no minimum initial deposit, allowing an attacker to deposit first, donate assets directly to the vault to inflate totalAssets, and cause later depositors' shares to round down to zero, stealing their deposited assets.",
+  "criteria": [
+    "convertToShares/convertToAssets or deposit/mint/withdraw/redeem compute ratios as assets * totalSupply() / totalAssets() or equivalent without any added virtual/offset constant",
+    "no _decimalsOffset(), no VIRTUAL_SHARES, no VIRTUAL_ASSETS, or other inflation-attack mitigation present",
+    "no minimum initial deposit / minimum shares check on the first deposit",
+    "totalAssets() reads a mutable balance (e.g. asset.balanceOf(address(this))) that can be inflated by direct token transfer from any external account",
+    "shares > 0 check (if present) only guards against zero output but does not prevent rounding-to-zero for subsequent depositors after donation"
+  ],
+  "tags": []
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_ac_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-1",
+  "source_hash": "98ce65d4553bca6b",
+  "description": "Assumes cToken has underlying() without special-casing cETH, causing integration failure",
+  "question": "The source file in `source` integrates with a Compound cToken by calling or assuming the existence of an `underlying()` function to determine the underlying asset, without special-casing or checking for the cETH market (which has no `underlying()` function), causing reverts or incorrect behavior when the protocol interacts with cETH. This excludes code that only integrates with cTokens other than cETH, or that explicitly checks for cETH and handles ETH as the underlying asset separately.",
+  "criteria": [
+    "Calls `cToken.underlying()` directly to fetch the underlying asset address for use in transfers or approvals, with no branch handling the case where the cToken is cETH",
+    "Iterates over a list of supported cTokens calling `underlying()` on each to build a mapping, assuming every cToken exposes this function and would revert or misbehave for cETH",
+    "Computes collateral value or performs liquidation logic by calling `underlying()` on an arbitrary cToken parameter without verifying it is not the cETH market first"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

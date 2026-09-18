@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-13",
+  "source_hash": "c1b3fe7fb059a4e9",
+  "description": "Unhandled revert in OpenZeppelin ERC165Checker.supportsInterface breaking assumed non-reverting interface check",
+  "question": "The source file in `source` calls OpenZeppelin's ERC165Checker.supportsInterface, supportsAllInterfaces, or getSupportedInterfaces (from an OpenZeppelin version >=4.0.0 and <4.7.1) on a target address that is not fully trusted or controlled by the caller, then branches on the returned boolean or bitmap to take a non-reverting fallback action when the interface is unsupported, without wrapping the call in try/catch or otherwise guarding against the call itself reverting when the target returns malformed EIP-165 data (a value other than 0 or 1).",
+  "criteria": [
+    "Calls ERC165Checker.supportsInterface(target, interfaceId) directly and treats a false return as the only possible failure, taking a fallback code path with no try/catch around the call",
+    "Calls ERC165Checker.supportsAllInterfaces(target, interfaceIds) and switches to an alternate handling branch when it returns false, with no try/catch protecting against the call reverting on malformed EIP-165 responses",
+    "Calls ERC165Checker.getSupportedInterfaces(target, interfaceIds) and iterates over the returned bool array to decide per-interface handling, with no try/catch even though the underlying call can revert on non-boolean return data",
+    "Invokes a wrapper function that internally calls ERC165Checker._supportsERC165Interface on an externally supplied or arbitrary target address and uses the result to decide contract logic, without catching a potential revert from the low-level call"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

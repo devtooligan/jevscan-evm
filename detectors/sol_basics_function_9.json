@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_function_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Function-9",
+  "source_hash": "537e13e4c5e6c70e",
+  "description": "Missing access control on sensitive state-changing function",
+  "question": "The source file in `source` defines a function that changes contract state or performs a sensitive operation (e.g., minting, burning, transferring funds, changing thresholds, or acting on behalf of another user) without any access-control check (such as an onlyOwner/onlyAdmin modifier or a caller-identity/authorization check), allowing an arbitrary or unauthorized caller to invoke it and cause unintended state changes or loss of funds; this excludes functions intentionally open to any caller by design (e.g., public view functions, permissionless deposits) and functions that already enforce a modifier or explicit require-based caller check.",
+  "criteria": [
+    "A mint or burn function transfers or creates tokens based on caller-supplied parameters with no modifier or require statement restricting who can call it",
+    "A function that changes a critical protocol parameter (e.g., approval threshold, rebalancer address, fee rate) can be called by any external address with no ownership or role check",
+    "A function that initiates a loan, withdrawal, or transfer on behalf of another user's collateral/funds does not verify that msg.sender is the owner or an approved delegate",
+    "A privileged administrative function (e.g., pause, upgrade, set config) is declared public/external and lacks any onlyOwner/onlyAdmin modifier or equivalent authorization check"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Function"
+    ]
+  ]
+}

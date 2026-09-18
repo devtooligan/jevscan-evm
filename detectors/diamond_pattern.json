@@ -1,0 +1,16 @@
+{
+  "name": "diamond_pattern",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/diamond-pattern/SKILL.md",
+  "source_hash": "43d0a626e2c4092d",
+  "description": "Missing access control on EIP-2535 diamondCut function enabling arbitrary facet takeover",
+  "question": "The source file in `source` implements an EIP-2535 Diamond pattern contract containing a `diamondCut` (or equivalent facet-add/replace/remove) function that modifies the selector-to-facet mapping, and this function has no owner/admin access-control check (e.g. no onlyOwner modifier, no LibDiamond.enforceIsContractOwner() call, no msg.sender comparison to a stored owner), so any caller can add, replace, or remove facets and thereby hijack the diamond's logic and storage.",
+  "criteria": [
+    "A function named diamondCut (or performing FacetCutAction Add/Replace/Remove on a selector-to-facet mapping) is defined as external/public",
+    "The function body lacks any owner/admin check such as onlyOwner, msg.sender == owner, or a call like LibDiamond.enforceIsContractOwner()",
+    "No modifier restricting callers is applied to the diamondCut function or the internal library function it calls",
+    "The function directly writes attacker-controlled facetAddress/selectors into DiamondStorage without permission checks",
+    "No require/revert statement verifying caller identity precedes the storage mutation of facet mappings"
+  ],
+  "tags": []
+}

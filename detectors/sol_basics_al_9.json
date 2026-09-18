@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_al_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-9",
+  "source_hash": "a4ad953cc5c38e9e",
+  "description": "Unbounded array/loop iteration causing out-of-gas denial of service",
+  "question": "The source file in `source` contains a function that iterates over an array or mapping whose length can grow without a fixed upper bound (e.g., via user-triggered pushes or registrations), performing per-element storage reads, writes, or external calls inside the loop, with no cap on the number of iterations or on the array's size, so that once the array grows large enough the function can exceed the block gas limit and revert, permanently denying service to callers or blocking protocol operations; this does not apply to loops over arrays with a fixed, small, or admin-controlled bounded size, or where a maximum iteration count or pagination mechanism is enforced.",
+  "criteria": [
+    "A function loops over a dynamic array whose elements are appended by arbitrary users (e.g., ticket purchases, deposits, registrations) with no maximum size check on the array before or during the loop",
+    "A withdrawal, distribution, or reward function iterates over all entries of a mapping/array to process payouts or refunds without limiting the number of entries processed per call",
+    "A loop performs an external call or storage write per array element with no early-exit, batching, or pagination logic, allowing the total gas cost to scale linearly with unbounded user-controlled input",
+    "The array being iterated is populated by a public/external function that anyone can call repeatedly with no rate limit or cap, allowing an attacker to grow the array until it becomes unprocessable"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

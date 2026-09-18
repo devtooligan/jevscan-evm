@@ -1,0 +1,17 @@
+{
+  "name": "minimal_proxy",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/minimal-proxy/SKILL.md",
+  "source_hash": "0c3c16f08b506d8b",
+  "description": "Front-runnable or unprotected initializer on EIP-1167 minimal-proxy clones allowing ownership hijack",
+  "question": "The source file in `source` implements an EIP-1167 minimal-proxy clone factory (e.g., via OpenZeppelin Clones.clone/cloneDeterministic) paired with an implementation contract exposing an initialize() function, where initialize() lacks any caller/access-control check tying it to the factory or deployer, and/or the clone's address can be predicted and initialize() is not guaranteed to be called atomically in the same transaction as clone creation, letting an attacker front-run initialization to seize ownership or configure the clone maliciously.",
+  "criteria": [
+    "Uses Clones.clone() or cloneDeterministic() to deploy a proxy instance",
+    "Separate/public initialize() function callable by anyone with no onlyFactory or msg.sender check",
+    "Implementation constructor missing _disableInitializers(), allowing direct initialization of the implementation itself",
+    "predictDeterministicAddress()/CREATE2 salt exposed or computable before the clone is actually deployed and initialized",
+    "initialize() sets owner, admin, or other privileged state without verifying the caller is the intended deployer",
+    "Clone creation and initialize() call are not combined atomically in a single transaction/function"
+  ],
+  "tags": []
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_18",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-18",
+  "source_hash": "41a4333587b9fb41",
+  "description": "Vulnerable OpenZeppelin TimelockController version allows executor to self-escalate and reset delay to 0",
+  "question": "The source file in `source` uses OpenZeppelin's TimelockController contract with a version >=4.0.0-beta.0 and <4.3.1, or <3.4.2, and does not restrict or patch the executor role's ability to call updateDelay or self-administer, such that an executor (including an 'open' unrestricted executor role) can reset the timelock delay to 0 and escalate privileges to gain immediate unrestricted control over assets held by the timelock.",
+  "criteria": [
+    "Inherits from or deploys OpenZeppelin TimelockController version 4.0.0-beta.0 through 4.3.0 without any patch or override restricting executor self-administration",
+    "Inherits from or deploys OpenZeppelin TimelockController version below 3.4.2 without any patch or override restricting executor self-administration",
+    "Configures the executor role as open (address(0)) allowing any address to act as executor on a vulnerable TimelockController version, enabling delay reset to 0 and privilege escalation",
+    "Grants the executor role broadly without restricting calls to updateDelay or self-granting of TIMELOCK_ADMIN_ROLE on a vulnerable TimelockController version"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_fra_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-FrA-3",
+  "source_hash": "6e5f09a73c5c51d8",
+  "description": "Griefing/DoS via dust-amount front-running that breaks exact-match state checks",
+  "question": "The source file in `source` contains a publicly callable function whose logic relies on strict equality or exact state matching (e.g., amount == threshold, balance == 0, first-depositor flag) that any unprivileged user can alter by submitting a transaction with a negligible/dust amount before a legitimate user's transaction, causing that legitimate transaction to revert or fail, and the function does not enforce a minimum-amount check, tolerance range, or restrict this state-mutating action to trusted/admin callers.",
+  "criteria": [
+    "A staking or deposit function reverts unless msg.value or amount exactly equals a required value, letting an attacker front-run with a dust-sized deposit that changes shared state so the victim's exact-match call reverts",
+    "A function checks balance == 0 or totalStaked == 0 to gate initialization or first-time logic, and any user can front-run with a tiny deposit to flip that condition before the legitimate caller's transaction executes",
+    "A 'claim first slot' or 'first depositor becomes owner/operator' pattern allows an attacker to call the function with a minimal amount to occupy that slot ahead of the intended legitimate user, causing the legitimate call to revert",
+    "A withdrawal or settlement function compares a stored index or counter with strict equality against a value that can be incremented by anyone sending a negligible transaction, breaking the victim's subsequent exact-match transaction"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Front-running Attack"
+    ]
+  ]
+}

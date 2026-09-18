@@ -1,0 +1,19 @@
+{
+  "name": "sol_mccc_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-8",
+  "source_hash": "daa616fa9dc5d94d",
+  "description": "Missing access control validation on cross-chain message receiving functions",
+  "question": "The source file in `source` defines a function that processes incoming cross-chain messages (e.g., an lzReceive, ccipReceive, or similar callback) but fails to verify that the caller is the trusted messaging endpoint/router and/or fails to validate the origin chain ID and source sender address before executing the message's payload, allowing an attacker to spoof or inject arbitrary cross-chain messages; this excludes functions that already verify the caller is the trusted endpoint/relayer and validate source chain and sender address, and excludes admin-only configuration functions restricted via onlyOwner or similar.",
+  "criteria": [
+    "An lzReceive/_nonblockingLzReceive function executes the decoded payload without checking msg.sender equals the configured LayerZero endpoint address",
+    "A ccipReceive function processes the message without validating the sourceChainSelector or sender address against an allow-list",
+    "A generic receiveMessage function trusts an arbitrary 'srcAddress' parameter passed in the call instead of checking it against a stored trusted remote address mapping",
+    "A cross-chain handler decodes and executes function calls from message data without restricting which contract addresses or selectors are permitted to be invoked"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

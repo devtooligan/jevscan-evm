@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_layerzero_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LayerZero-7",
+  "source_hash": "4045cfdd54e24747",
+  "description": "Insufficient LayerZero block confirmations enabling reorg-based message forgery",
+  "question": "The source file in `source` configures a LayerZero endpoint, relayer, or oracle by setting the required block confirmations parameter to 0 or to a hardcoded trivial value (e.g. 1) without any chain-specific justification, allowing cross-chain messages to be relayed or accepted before the source chain block has reached finality, so a chain reorg could let an attacker forge, duplicate, or reverse a relayed message.",
+  "criteria": [
+    "setConfig or a LayerZero UlnConfig struct sets confirmations to 0 for a chain, meaning messages can be relayed without waiting for any block finality",
+    "A constant or default value like CONFIRMATIONS = 1 is hardcoded and applied uniformly to all destination chains regardless of their known reorg depth",
+    "The contract deploys or initializes a LayerZero endpoint/relay configuration where the confirmations field is left unset (defaulting to zero) before enabling message sending"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LayerZero"
+    ]
+  ]
+}

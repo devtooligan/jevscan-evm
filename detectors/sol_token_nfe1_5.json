@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_nfe1_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-5",
+  "source_hash": "fc73a1418746061c",
+  "description": "Incorrect or missing supportsInterface implementation in ERC721/1155 contracts",
+  "question": "The source file in `source` defines an ERC721 or ERC1155 (or extension such as ERC2981) token contract whose supportsInterface function fails to return true for the interface ID of one of its actually implemented standards, or overrides supportsInterface without calling or ORing in the parent implementation's result, or hardcodes checks that omit a supported interfaceId, causing other contracts to incorrectly detect the token's supported features, and this is not merely an unimplemented optional extension that the contract does not actually support.",
+  "criteria": [
+    "supportsInterface overridden to check only ERC721's interfaceId and returns false for ERC2981 even though the contract implements royaltyInfo per EIP-2981",
+    "supportsInterface implemented with hardcoded bytes4 comparisons that omit the ERC1155 interfaceId while the contract implements ERC1155's transfer and balance functions",
+    "supportsInterface override completely replaces the base contract logic and never calls super.supportsInterface, so previously supported interfaces like IERC165 or IERC721 now return false",
+    "supportsInterface returns true unconditionally for any interfaceId argument regardless of whether the interface is actually implemented"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

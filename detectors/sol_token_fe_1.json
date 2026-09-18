@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-1",
+  "source_hash": "4c43871e61086894",
+  "description": "Unsafe ERC20 transfer calls without return-value checks or SafeERC20 wrapper",
+  "question": "The source file in `source` calls an ERC20 token's transfer, transferFrom, or approve function directly (not via OpenZeppelin's SafeERC20 safeTransfer/safeTransferFrom/safeApprove) and does not check or require the boolean return value, so a non-standard-compliant token that returns false instead of reverting, or returns no value at all, could silently fail while the contract logic continues assuming success, leading to loss of funds or accounting mismatches. This excludes calls already wrapped with SafeERC20, calls that explicitly check/require the returned boolean, and interactions with a hardcoded trusted token known to strictly follow the EIP-20 standard.",
+  "criteria": [
+    "token.transfer(to, amount) is called directly on an IERC20 interface with the boolean result ignored and no require/check afterward",
+    "token.transferFrom(from, to, amount) is called without wrapping in SafeERC20 and without validating the returned bool",
+    "IERC20(token).approve(spender, amount) is invoked raw with no return-value check, allowing silent failure on non-compliant tokens",
+    "A custom transfer helper calls low-level token.call and only checks call success without decoding/validating the ERC20 return data"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

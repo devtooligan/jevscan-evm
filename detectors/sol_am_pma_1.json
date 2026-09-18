@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_pma_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-PMA-1",
+  "source_hash": "b5b7f4838dbabf41",
+  "description": "Price derived from spot token balance ratio, manipulable via flash loans/donations",
+  "question": "The source file in `source` computes an asset or share price directly from the current ratio of token balances (or reserves) held by a contract, such as balanceOf(token)/totalSupply or reserveA/reserveB, without using a manipulation-resistant oracle (e.g., Chainlink, TWAP), so an attacker can flash-loan or donate tokens to skew the balance ratio and manipulate the computed price within a single transaction; this excludes prices sourced from Chainlink or other external oracle feeds, and excludes designs that already use time-weighted average prices or checkpointed/cumulative reserves resistant to single-block manipulation.",
+  "criteria": [
+    "A function computes price or exchange rate as balanceOf(tokenA) divided by balanceOf(tokenB) read live from storage",
+    "A vault's share price or pricePerShare is computed as totalAssets() balance divided by totalSupply() without time-weighting",
+    "A swap or liquidation function calls getReserves() or reserve0/reserve1 directly and uses the ratio as the price without a TWAP",
+    "Price calculation reads slot0 sqrtPriceX96 from a pool directly for critical pricing logic instead of a TWAP oracle"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Price Manipulation Attack"
+    ]
+  ]
+}

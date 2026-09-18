@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_payment_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Payment-3",
+  "source_hash": "94682a1ed314bbc5",
+  "description": "Unhandled force-fed ETH (via selfdestruct/coinbase/pre-funding) breaking balance-based invariants",
+  "question": "The source file in `source` contains logic that treats the contract's own ETH balance (e.g. address(this).balance) as an accurate, attacker-uncontrollable value in a critical invariant, equality check, cap check, or payout calculation, without accounting for ETH that can be force-fed via selfdestruct, coinbase mining rewards, or pre-funding a deterministic address, so that force-fed ether can break the invariant, cause denial of service, or corrupt payout logic; this excludes code that never uses address(this).balance in security-relevant logic or only displays it informationally, and code that already tracks accounting via an internal ledger independent of actual ETH balance.",
+  "criteria": [
+    "assert(address(this).balance == totalDeposits) or a similarly strict equality check between tracked deposits and the actual contract ETH balance",
+    "A payout function divides address(this).balance among participants assuming it exactly equals the sum of legitimate deposits",
+    "require(address(this).balance <= cap) or similar cap check that reverts/bricks the contract once forced ether pushes the balance above the threshold",
+    "A crowdfunding or goal-tracking function compares address(this).balance directly to a funding goal to decide success, allowing forced ether to prematurely trigger goal completion"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Payment"
+    ]
+  ]
+}

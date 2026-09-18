@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-3",
+  "source_hash": "cc9b61e3e952a2bd",
+  "description": "Incorrect handling of differing ERC20 token decimals in calculations",
+  "question": "The source file in `source` performs arithmetic, price, or exchange-rate calculations across multiple ERC20 tokens (or between a token and a fixed-point constant) using hardcoded or assumed decimal values (e.g. 18) instead of querying each token's actual decimals(), causing incorrect scaling, rounding, or value comparisons when tokens have differing decimal precisions, and this is not limited to cases where all involved tokens are already verified or guaranteed to share the same decimals.",
+  "criteria": [
+    "A function computes exchange amounts between two tokens using amountA * amountB / 1e18 without calling decimals() on either token",
+    "A price oracle conversion multiplies a raw token amount by a price value assuming both use 18 decimals, without normalizing based on each token's actual decimals()",
+    "A vault or pool contract divides deposited token amounts by a hardcoded 10**18 scaling factor regardless of the underlying token's real decimals",
+    "A comparison or threshold check treats amounts of two different ERC20 tokens as directly comparable without adjusting for their differing decimals()"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

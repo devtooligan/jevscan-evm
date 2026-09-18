@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_24",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-24",
+  "source_hash": "b48d428de1f88120",
+  "description": "Yul optimizer bug removing loop variable assignments when using continue/break in Solidity 0.6.0",
+  "question": "The source file in `source` declares pragma solidity 0.6.0 and contains inline assembly with a for loop that declares a variable inside the loop body, assigns to it, and uses continue or break to exit or skip iterations, such that the Yul optimizer could strip the assignment and leave the variable holding a stale or default value, excluding files that do not use inline assembly for loops with continue/break or that target a different Solidity version.",
+  "criteria": [
+    "An assembly block with pragma solidity 0.6.0 contains a for loop declaring a local variable inside the loop, assigning it a new value, then using `continue` before the assignment is used elsewhere",
+    "An assembly for loop declares a variable, assigns it, and uses `break` to exit early after the assignment, relying on the optimizer to preserve that assignment's effect",
+    "A Yul for loop inside inline assembly reassigns a variable declared within the loop body and the loop body conditionally executes `continue`, skipping later code that depends on the reassigned value",
+    "An assembly block with a for loop uses `break` after modifying a loop-scoped variable that is later read outside the loop, without disabling the Yul optimizer or upgrading past the affected compiler version"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

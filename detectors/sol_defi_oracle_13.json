@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-13",
+  "source_hash": "3db40bd7f14921e0",
+  "description": "Oracle price manipulation via AMM spot price used as price feed",
+  "question": "The source file in `source` computes an asset price or valuation directly from an AMM pool's current reserves or spot price (e.g., balances ratio, getReserves, or a single slot0/instantaneous price) and uses that value in a financial calculation such as collateral valuation, swap pricing, minting, or liquidation, without using a time-weighted average price, external oracle, or manipulation-resistant mechanism, making it exploitable via flashloan-driven reserve manipulation within a single transaction, excluding cases that already use TWAP, Chainlink, or other external oracles, or that add manipulation checks like spot-vs-TWAP deviation bounds.",
+  "criteria": [
+    "A function computes price as reserve0/reserve1 (or similar ratio) from getReserves() and uses it directly to value collateral or determine swap output",
+    "A liquidation or borrowing function reads a DEX pool's spot price in the same transaction to compute collateral value without any TWAP or delay",
+    "A vault or lending contract prices an LP token or asset using instantaneous balances of a pool contract fetched via balanceOf, without averaging over time",
+    "A function calls slot0() or a single-block spot price from a concentrated liquidity pool and uses it as the sole price input for minting or redeeming shares"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

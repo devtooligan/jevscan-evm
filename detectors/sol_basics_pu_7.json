@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-7",
+  "source_hash": "a4ffd610fdeb6b68",
+  "description": "Immutable variables misused in upgradeable proxy implementation contracts",
+  "question": "The source file in `source` defines a proxy-based/upgradeable implementation contract (e.g., using an initializer pattern instead of a constructor for state) that declares one or more `immutable` variables assigned in its constructor, where these values are intended to be configurable per proxy instance or to remain identical across implementation upgrades, yet the file contains no mechanism to validate or keep them consistent, so a new implementation deployed with different constructor arguments, or multiple proxies sharing one implementation, can end up with mismatched immutable values that break logic relying on them. This excludes immutables that are universal constants safe to hardcode identically everywhere, and excludes non-proxy, non-upgradeable contracts.",
+  "criteria": [
+    "An implementation contract meant to sit behind a proxy assigns configuration values (e.g., a fee recipient, decimals, or token address) to `immutable` variables inside its constructor instead of storing them in upgradeable storage.",
+    "Critical logic (access control checks, fee math, reward calculations) reads an `immutable` variable whose value was fixed at implementation deployment, with no re-check or reconciliation after the proxy is upgraded to a new implementation.",
+    "A single implementation contract with `immutable` variables is intended to be shared by multiple proxy instances requiring different values, but the constructor bakes in one fixed value for all proxies pointing to it.",
+    "The constructor sets an `immutable` variable using a value (e.g., `address(this)` or a deploy-time parameter) that will differ between the old and new implementation contracts after an upgrade, without any upgrade-time validation that the new value matches the old one."
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

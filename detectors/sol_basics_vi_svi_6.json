@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_svi_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-6",
+  "source_hash": "810178165dd959ec",
+  "description": "Solidity storage-write removal bug from conditional assembly return/stop in v0.8.13-0.8.16",
+  "question": "The source file in `source` is written for a Solidity compiler version between 0.8.13 and 0.8.16 (inclusive) and contains a function that performs a storage write followed by a conditionally executed inline assembly block using return(...) or stop() to terminate execution early, such that the compiler could incorrectly optimize away the prior storage write due to the known storage-write-removal-before-conditional-termination bug, excluding code compiled with versions outside 0.8.13-0.8.16 or assembly blocks that unconditionally terminate at the very end of the function with no intervening control flow.",
+  "criteria": [
+    "A function writes to a state variable and later contains an if-block whose body is an assembly block calling return(0,0) to exit early, with the pragma set to 0.8.13-0.8.16",
+    "A function updates storage then, inside a conditional branch, uses inline assembly with stop() to halt execution, compiled under solidity 0.8.14 or 0.8.15",
+    "A loop writes to a mapping or array slot each iteration and conditionally breaks out via an assembly return(...) statement depending on a runtime condition, under an affected compiler version"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

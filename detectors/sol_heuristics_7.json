@@ -1,0 +1,20 @@
+{
+  "name": "sol_heuristics_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-7",
+  "source_hash": "98ea00d00583656e",
+  "description": "Off-by-one error in comparison, loop bound, or array indexing logic",
+  "question": "The source file in `source` contains a comparison operator, loop boundary, or index calculation involving array/list length that is off by one (e.g., using `<=` where `<` is required, or vice versa, or starting/ending an iteration one position too early or late), causing an out-of-bounds access, skipped element, or incorrect boundary condition with a security or correctness impact, excluding cases where the boundary is intentional and correct for the documented semantics.",
+  "criteria": [
+    "A loop iterates with `for (i = 0; i <= array.length; i++)` and indexes `array[i]`, causing an out-of-bounds read on the last iteration",
+    "A loop meant to process all elements starts at index 1 instead of 0, silently skipping the first element (e.g., `for (i = 1; i < list.length; i++)`)",
+    "A balance or allowance check uses `amount <= balance` where the intended safe condition is `amount < balance`, allowing draining beyond the intended limit",
+    "An index variable is set to `list.length` instead of `list.length - 1` when accessing the last element, causing an out-of-bounds access",
+    "A vesting/deadline comparison uses `block.timestamp <= endTime` instead of `block.timestamp < endTime`, allowing an action one unit past the intended cutoff"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

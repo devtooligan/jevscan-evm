@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-6",
+  "source_hash": "0f4207389e81fbc1",
+  "description": "Unprotected selfdestruct or arbitrary delegatecall in upgradeable implementation contract",
+  "question": "The source file in `source` defines a proxy-upgradeable implementation contract that contains a `selfdestruct` call or a `delegatecall` to a caller-supplied or otherwise untrusted address reachable by unprivileged users, allowing the implementation to be destroyed or its storage/logic hijacked, thereby bricking or corrupting all proxies pointing to it, excluding cases where such calls are absent, are restricted solely to a trusted owner/admin via access control as an intentional documented kill-switch, or target fixed, hardcoded trusted addresses.",
+  "criteria": [
+    "A public or external function calls `selfdestruct(address)` with no access-control modifier restricting the caller",
+    "A function performs `address(target).delegatecall(data)` where `target` or `data` is taken directly from function arguments without validation",
+    "An implementation contract exposes a callback or fallback that forwards arbitrary user-supplied calldata via `delegatecall` to an address read from a user-controlled mapping or storage slot",
+    "A library or logic contract meant to be used via `delegatecall` from a proxy itself contains a `selfdestruct` instruction reachable by any external caller"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

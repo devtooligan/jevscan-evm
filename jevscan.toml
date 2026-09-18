@@ -1,0 +1,53 @@
+# jevscan settings: every key, with its default. To change settings, pass your own TOML file with `--config`;
+# it is laid over this one and needs only the keys it changes (unknown keys and wrong types are errors).
+# Relative paths resolve against the jevscan directory.
+
+[files]
+scope = ""                           # subdirectory of the repo to scan; "" scans the whole repo
+extensions = [".sol"]                # file extensions to consider, for example [".sol", ".vy"]
+skip_dirs = ["lib", "node_modules"]  # directories (relative to the repo root) whose files are never considered
+include_globs = []                   # scan files matching these globs (relative to the scope) whatever their class
+# Exact files to scan, relative to the repo root: files only, no directories or globs. When set, it is the whole
+# scan list: scope, extensions, skip_dirs, include_globs, and the Jev file classification are bypassed. For a
+# contest, paste its scope list:
+#   paths = ["src/Coin.sol", "src/Factory.sol", "src/Lender.sol"]
+paths = []
+
+[classes]
+scan = ["source"]                    # which of the classes below are scanned
+
+# Jev puts each candidate file in one of these classes, reading its path and first 60 lines. The keys are
+# the class names; the values are the descriptions it chooses between. A config that sets this table
+# replaces it whole.
+[classes.descriptions]
+source = "deployable contract or library logic"
+interface = "only interface/abstract declarations, no function bodies"
+test = "test contract or test helper"
+script = "deployment or ops script"
+mock = "mock or fixture for tests"
+
+[levels]
+broad = true                         # any_bug and critical_bug; needed for the verdict and run.repo_level
+category = true                      # the 14 taxonomy categories (sources/taxonomy.json)
+subcategory = false                  # off by default: in testing these were noisy and added nothing over the categories
+detector = true                      # the detector library, from the sources below
+
+[sources]
+solodit = true                       # Cyfrin audit-checklist items
+evm-cortex = true                    # EVM Cortex skill patterns
+
+[thresholds]
+taxonomy = 0.5                       # hit threshold for broad, category, and subcategory questions
+detectors = 0.5                      # hit threshold for detectors
+locate = 0.5                         # locate every question whose file-level p is at least this
+strong_hits = 0.7                    # HEATMAP.md lists a function among its strongest hits at this p or more
+
+[run]
+locate = true                        # re-ask located questions per function, then pick a line (Solidity only)
+repo_level = true                    # ask broad and category questions about the whole scope, when it fits one request
+concurrency = 8                      # Jev requests in flight at once
+
+[paths]
+detectors_dir = "detectors"          # detector JSON files
+cache_dir = "cache"                  # Jev answer cache
+out_dir = "out"                      # outputs go to <out_dir>/<repo name> unless --out is given

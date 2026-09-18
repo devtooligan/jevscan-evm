@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_inheritance_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Inheritance-4",
+  "source_hash": "0ddd87a57ca03c92",
+  "description": "Incorrect multiple-inheritance order causing wrong function resolution or state initialization order",
+  "question": "The source file in `source` defines a contract using multiple inheritance (contract X is A, B, ...) where the parent contracts are listed out of base-to-derived order (i.e., not from most base-like to most derived), causing incorrect overridden function/variable resolution via C3 linearization or an unintended constructor/state initialization order, leading to unexpected runtime behavior; this excludes contracts with only single inheritance or contracts whose inheritance list is already correctly ordered from most base-like to most derived.",
+  "criteria": [
+    "contract X is B, A {} where B itself inherits from A, listing the more-derived contract B before its base A in the inheritance list",
+    "contract X is A, B where both A and B declare the same function name, and the listed order causes B's (rather than the intended A's) implementation to be the one inherited",
+    "a contract's parents are listed with a subclass before its own base class, contradicting the base-to-derived convention required for correct linearization",
+    "state variables from multiple parents are initialized in an order that depends on the (incorrectly reversed) inheritance list, causing a variable to be set before a dependency it relies on is initialized"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Inheritance"
+    ]
+  ]
+}

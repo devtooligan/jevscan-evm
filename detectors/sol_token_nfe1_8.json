@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_nfe1_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-8",
+  "source_hash": "71527ddd8105c68b",
+  "description": "CryptoPunks deposit flow vulnerable to front-running theft due to missing offer validation",
+  "question": "The source file in `source` implements a deposit or wrapping function for the CryptoPunks contract that relies on the user calling offerPunkForSaleToAddress and the contract later calling buyPunk or a punk transfer, without validating that the punk's current sale offer still targets this contract with the expected price of zero, and without atomically checking punk ownership before crediting the depositor, allowing an attacker to front-run or hijack the offer and steal the punk. This excludes flows using standard ERC721 safeTransferFrom/transferFrom, or flows that explicitly re-verify the punk's offer terms and ownership immediately before completing the transfer.",
+  "criteria": [
+    "A deposit() function calls offerPunkForSaleToAddress externally by the user then later calls buyPunk() in a separate transaction without re-checking the offer's minSalePriceInWei or onlySellToAddress fields before executing the purchase",
+    "A wrapPunk() or similar function credits the caller with ownership of a CryptoPunk based solely on the offer existing, without confirming punkIndexToAddress still resolves to the depositor after the offer was made",
+    "The gateway contract calls punks.buyPunk(punkIndex) with a hardcoded or unchecked price without first reading and validating the punk's currently offered price and target address from the CryptoPunks market contract",
+    "A function assumes an offerPunkForSaleToAddress call cannot be altered or canceled between the user's transaction and the contract's subsequent buyPunk call, with no check that the offer parameters remain unchanged"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

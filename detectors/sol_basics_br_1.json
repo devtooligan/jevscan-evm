@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_br_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-BR-1",
+  "source_hash": "04957d9222635fab",
+  "description": "Factory contract deployment using CREATE opcode is vulnerable to block reorg attacks",
+  "question": "The source file in `source` implements a factory pattern that deploys new contracts (e.g., vaults, wallets, or clones) using the plain CREATE opcode (via `new Contract(...)` without salt, or low-level `create`), where the deployed contract address depends only on the factory's nonce, so that a blockchain reorganization could cause the contract to be deployed at the same address to a different owner or with different parameters, enabling theft of funds sent to or interactions performed against the predicted address. This excludes factories that use CREATE2 with a user- or deployment-specific salt, and excludes contracts that do not deploy other contracts at all.",
+  "criteria": [
+    "A factory contract's createVault()/createWallet() function deploys a new contract instance using `new Contract(...)` relying on CREATE opcode semantics, with the resulting address depending only on the factory's nonce",
+    "A function performs a low-level `create(...)` opcode call to deploy a contract, without any salt-based address derivation",
+    "Users are instructed off-chain to send funds or approvals to a predicted factory-deployed contract address before it is actually deployed, relying on CREATE-based nonce-dependent addressing",
+    "A cloning/proxy factory pattern uses CREATE to deploy minimal proxies rather than CREATE2, making the deployed address vulnerable to reassignment after a chain reorg"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Block Reorganization"
+    ]
+  ]
+}

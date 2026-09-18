@@ -1,0 +1,19 @@
+{
+  "name": "sol_defi_oracle_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-9",
+  "source_hash": "8df78af75b7e70e3",
+  "description": "Hard-coded, non-updatable price feed/oracle address preventing replacement of deprecated or inaccurate feeds",
+  "question": "The source file in `source` defines a contract that reads prices from an oracle/price-feed contract whose address is hard-coded as a constant or immutable literal (or assigned inline at declaration) directly used in price-fetching calls, with no setter, admin-controlled update function, or constructor parameter allowing the price feed address to be changed if it becomes deprecated, compromised, or inaccurate, excluding cases where the address is passed into the constructor, set via an owner-only updateOracle/setPriceFeed function, or otherwise configurable after deployment.",
+  "criteria": [
+    "A state variable like `address constant PRICE_FEED = 0x...;` or `AggregatorV3Interface priceFeed = AggregatorV3Interface(0x...)` is declared with a literal address and used directly in a function that calls latestRoundData() or similar",
+    "The oracle address is hard-coded as an immutable set only once inline (not via constructor parameter) and used throughout the contract for price lookups, with no function to reassign it",
+    "A price-fetching function calls a fixed, literal contract address to retrieve prices and there is no owner/admin function anywhere in the file to update that address"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

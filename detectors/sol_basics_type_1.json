@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_type_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Type-1",
+  "source_hash": "9d7628bc5197cc7e",
+  "description": "Unchecked forced type casting causing silent overflow/underflow truncation",
+  "question": "The source file in `source` performs an explicit forced type cast (e.g., casting a larger integer type such as uint256 to a smaller type like uint128, uint96, uint64, or int128) on a value that can exceed the target type's range, without any preceding check, require, or SafeCast-style validation ensuring the value fits within the target type's limits, so the cast can silently truncate or wrap the value and cause incorrect accounting, token theft, or broken invariants; this excludes casts on values already provably bounded within the target range, casts between equally-sized types, or casts using checked/SafeCast libraries that revert on overflow.",
+  "criteria": [
+    "A function casts a uint256 amount directly to uint128 or uint96 using `uint128(amount)` without checking amount <= type(uint128).max first",
+    "A balance or timestamp value is downcast from uint256 to a smaller uint type via explicit cast with no range validation before storing it in a struct",
+    "An int256 value is cast to int128 via `int128(value)` without verifying it lies within int128's min/max bounds",
+    "A token amount received from an external call is truncated by casting to a smaller integer type before being used in balance accounting, with no overflow check"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Type"
+    ]
+  ]
+}

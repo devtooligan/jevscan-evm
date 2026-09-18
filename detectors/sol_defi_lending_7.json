@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-7",
+  "source_hash": "cdd334f3850d8541",
+  "description": "Liquidation incentive scales purely with position size, leaving small positions unprofitable to liquidate",
+  "question": "The source file in `source` implements a liquidation function that computes the liquidator's reward as a fixed percentage or proportional fraction of the position's collateral/debt size, with no minimum incentive floor or gas-cost-covering bonus, so that positions below a certain size yield a liquidation reward smaller than the cost of liquidating them, causing small unhealthy positions to be economically unprofitable to liquidate and accumulate as bad debt, excluding designs that apply a fixed minimum bonus, flat liquidation fee, or otherwise guarantee liquidators a profitable payout regardless of position size.",
+  "criteria": [
+    "liquidate() pays the liquidator collateral*bonusRate with no minimum floor amount added, so tiny positions yield near-zero reward",
+    "calculateLiquidationIncentive() returns debtRepaid * liquidationBonusBps / 10000 without any base/flat bonus term",
+    "the liquidation reward formula scales strictly linearly with position size and has no clamping to a minimum reward value",
+    "small positions can be left unliquidated indefinitely because the code provides no mechanism (subsidy, minimum bounty, batching) to make their liquidation profitable"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

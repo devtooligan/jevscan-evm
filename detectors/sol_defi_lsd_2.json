@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lsd_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-2",
+  "source_hash": "cc771288cc67391e",
+  "description": "Sandwich attack on liquid staking exchange-rate update draining ETH via instant deposit/withdraw",
+  "question": "The source file in `source` implements a liquid staking exchange-rate repricing update together with an instant deposit and instant withdrawal mechanism priced off that exchange rate, allowing a user to deposit a large amount of ETH immediately before the repricing transaction and withdraw immediately after at the increased rate, without a withdrawal queue, time delay, or private/flashbots-protected repricing transaction to prevent this front-run/back-run sandwich from extracting protocol ETH risk-free.",
+  "criteria": [
+    "A deposit() function mints shares at the current exchange rate and immediately allows the same block's withdraw()/redeem() to be called without any lock-up or queue delay",
+    "A repricing/rebase function updates the exchange rate variable based on accrued staking rewards and is a plain public/external transaction visible in the mempool with no MEV protection",
+    "withdraw() or redeem() computes ETH payout using the live exchange rate immediately after a reward update, with no minimum holding period or epoch-based accounting to prevent same-block deposit-then-withdraw",
+    "The contract allows unbounded instant ETH withdrawals tied directly to the just-updated exchange rate with no queue, cooldown, or batching mechanism separating deposits from the repricing event"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

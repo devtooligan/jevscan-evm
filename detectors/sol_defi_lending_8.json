@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-8",
+  "source_hash": "720d5cd67472ea28",
+  "description": "LTV/health-factor calculation omits accrued interest, causing incorrect credit/liquidation assessment",
+  "question": "The source file in `source` computes a loan's Loan-to-Value ratio or health factor using only the principal (or a stale debt snapshot) while excluding currently accrued but unrealized interest, causing the calculated LTV to understate the true debt owed and leading to incorrect borrowing limits or premature/delayed liquidations, and this does not apply if the code explicitly fetches or computes up-to-date accrued interest (e.g., via an interest accrual/index update call) before performing the LTV or liquidation comparison.",
+  "criteria": [
+    "calculateLTV() divides collateralValue by principal debt only, never adding accrued interest to the debt figure",
+    "isLiquidatable() or health factor check compares collateral to debt.principal without calling accrueInterest() or reading updated borrowIndex first",
+    "getUserDebt() returns a stored debt amount from the last update timestamp without applying the interest rate over elapsed time before it is used in LTV math",
+    "Liquidation threshold comparison uses cached/outdated debt snapshot taken before interest accrual for the current block"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

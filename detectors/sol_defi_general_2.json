@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-2",
+  "source_hash": "c36112e33ac2095e",
+  "description": "Unclaimable or unaccounted extra rewards accruing on deposited/staked user assets",
+  "question": "The source file in `source` deposits or stakes user assets into an external protocol, vault, or yield-bearing token that can accrue additional rewards beyond the core yield, yet defines no function, hook, or accounting mechanism to track, claim, or distribute these extra rewards to depositors, causing them to become permanently stuck or effectively seized by the deployer, and this does not apply to contracts that already expose a harvest/claim/skim function or explicitly document and disable external reward accrual.",
+  "criteria": [
+    "deposit()/stake() transfers user tokens into an external staking contract, vault, or rebasing/interest-bearing token known to emit extra reward tokens or yield, with no harvest(), claim(), or skim() function anywhere in the contract",
+    "The contract holds LP tokens, staking-derivative tokens, or rebasing tokens on behalf of users but never calls or exposes the external protocol's reward-claiming function, leaving accrued rewards inaccessible",
+    "Reward tokens sent directly to the contract by an external protocol (e.g., airdrops, liquidity mining incentives) are never included in withdrawal or accounting logic, so they cannot be withdrawn by users or the protocol",
+    "An admin-only sweep/rescue function withdraws arbitrary ERC20 balances from the contract, including accrued reward tokens belonging to depositors, with no user claim path for those rewards"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

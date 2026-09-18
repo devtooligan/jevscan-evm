@@ -1,0 +1,19 @@
+{
+  "name": "sol_basics_al_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-4",
+  "source_hash": "7476c585f6c6a125",
+  "description": "Using delete on an array element to remove an item, leaving a stale/zero placeholder instead of shrinking the array",
+  "question": "The source file in `source` removes an item from an array by calling delete on that array's element (e.g. `delete arr[i]`) to eliminate it, without swapping the last element into that index and popping/decrementing the array length or otherwise removing the gap, so the array retains a stale zero-valued or default-valued placeholder entry at that index and its length is unchanged, leading to incorrect iteration, counting, or lookups over that array.",
+  "criteria": [
+    "A function removes a user or item from an array via `delete arr[i]` and returns without reordering elements or calling pop(), leaving array length unchanged and a zero-valued gap at index i",
+    "A function sets `arr[index] = 0` or `arr[index] = address(0)` to 'remove' an entry from a tracking array but never reduces the array's length or fills the gap with the last element",
+    "Loop-based removal deletes an element in place (e.g. `delete list[found]`) instead of copying the last element into `found` and calling `list.pop()`, so subsequent code iterating over `list` still processes the deleted slot"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

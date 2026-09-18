@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_ac_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AC-5",
+  "source_hash": "280e63a35e202ca3",
+  "description": "Single-step privilege/ownership transfer without new-owner confirmation, risking loss or takeover of admin control",
+  "question": "The source file in `source` implements a function that transfers an administrative or privileged role (owner, admin, etc.) by directly overwriting the privileged address in one step from the current privileged caller, without requiring the new address to accept or confirm the role and without validating that the new address is non-zero or otherwise valid, such that a mistaken or malicious transfer can permanently brick or hijack privileged control, excluding designs that implement a two-step pending/accept pattern or that revoke/renounce privileges intentionally with proper zero-address handling.",
+  "criteria": [
+    "transferOwnership(newOwner) sets owner = newOwner directly with no zero-address check and no pendingOwner/acceptOwnership step",
+    "setAdmin(address newAdmin) callable by current admin that immediately overwrites admin storage variable with newAdmin without any confirmation step",
+    "changeRole(address newRole) function that reassigns a critical role variable in a single call without validating newRole != address(0) or requiring newRole to call an accept function",
+    "grantOwnership updates the privileged mapping/variable directly from msg.sender's call, with no intermediate pending state or acceptance by the new privileged address"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Access Control"
+    ]
+  ]
+}

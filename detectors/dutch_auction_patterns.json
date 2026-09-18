@@ -1,0 +1,17 @@
+{
+  "name": "dutch_auction_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/dutch-auction-patterns/SKILL.md",
+  "source_hash": "7219d7ed218aa505",
+  "description": "Reentrancy via unguarded ETH refund in Dutch/batch auction buy function",
+  "question": "The source file in `source` implements a Dutch auction (or similar time-decaying-price token sale) contract with a payable buy/purchase function that calculates an excess ETH refund and sends it to msg.sender via a low-level call or transfer, and this function lacks any reentrancy guard (no nonReentrant modifier or mutex) while updating critical state such as tokensSold, purchased amounts, or balances after that external call, allowing an attacker to reenter during the refund and purchase tokens multiple times or drain funds before state is finalized.",
+  "criteria": [
+    "payable buy()/purchase() function computes refund = msg.value - cost",
+    "refund sent via address.call{value: refund}(\"\") or .transfer()/.send() to msg.sender",
+    "function has no nonReentrant modifier and no manual reentrancy lock",
+    "state variables like tokensSold or purchased[msg.sender] are updated after the external ETH transfer",
+    "no checks-effects-interactions ordering protecting against reentrant calls",
+    "token transfer or accounting logic can be invoked again before the first call completes"
+  ],
+  "tags": []
+}

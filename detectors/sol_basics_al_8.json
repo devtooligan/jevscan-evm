@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_al_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-8",
+  "source_hash": "c49fc58be6173b00",
+  "description": "Off-by-one boundary errors in the first or last loop iteration",
+  "question": "The source file in `source` contains a loop over an array or collection whose first or last iteration is handled with an incorrect or inconsistent boundary condition (e.g., wrong start index, wrong end bound, or a special-cased first/last element treated differently from the rest), causing an element to be skipped, double-processed, or accessed out of bounds, with a resulting incorrect calculation, missed state update, or out-of-bounds read/write, excluding loops whose bounds are correct and behave consistently across all iterations.",
+  "criteria": [
+    "a for-loop starts at index 1 instead of 0, causing the first array element to be skipped in a balance, reward, or sum computation",
+    "a loop's condition uses `i <= array.length` instead of `i < array.length`, causing an out-of-bounds access on the last iteration",
+    "a loop computes its end bound as length-1 when it should be length (or vice versa), causing the last element to be skipped or double-counted",
+    "the last iteration of a loop is handled by separate special-case code that applies different logic than the rest of the loop, producing an inconsistent result for that element",
+    "a loop that removes or shifts array elements updates the length or index incorrectly on the final iteration, skipping the last element during processing"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_mccc_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-10",
+  "source_hash": "b276f0ea8eb4edc7",
+  "description": "Ethereum-specific opcode/address-derivation assumptions break zkSync Era compatibility",
+  "question": "The source file in `source` contains code that relies on Ethereum-mainnet-specific EVM behavior\u2014such as computing CREATE2 addresses with the standard formula keccak256(0xff ++ deployer ++ salt ++ keccak256(initcode)), using extcodesize/extcodehash to distinguish EOAs from contracts, depending on SELFDESTRUCT semantics, or assuming exact opcode gas costs\u2014without any zkSync Era-specific adjustment or fallback, causing incorrect address prediction, EOA detection, gas accounting, or destruction behavior when deployed on zkSync Era, excluding contracts explicitly documented as Ethereum-mainnet-only deployments.",
+  "criteria": [
+    "A function inline computes a CREATE2 deployment address using keccak256(0xff ++ deployer ++ salt ++ keccak256(initcode)) and uses that address for critical logic without any zkSync-specific branch",
+    "Code checks extcodesize(account) == 0 or account.code.length == 0 to determine whether an address is an EOA before allowing/blocking an action",
+    "Code calls selfdestruct(...) expecting immediate contract removal and ETH transfer as the sole cleanup/refund mechanism",
+    "Code uses raw PUSH0 opcodes or hardcodes Ethereum mainnet gas cost constants (e.g., fixed gas stipends for calls) that are assumed identical across chains"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

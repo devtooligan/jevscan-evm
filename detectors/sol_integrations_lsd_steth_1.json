@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_steth_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-stETH-1",
+  "source_hash": "16fd2a012035d426",
+  "description": "Integration mishandles rebasing stETH balances, causing accounting errors from unaccounted balance changes.",
+  "question": "The source file in `source` integrates directly with stETH by storing or comparing raw stETH balances or fixed share amounts (e.g., caching a user's stETH balance, computing deposit/withdraw amounts, or tracking pool reserves) without accounting for stETH's rebasing behavior (balances changing over time via `sharesOf`/`getPooledEthByShares` conversions), and does not instead rely on wstETH or Lido's share-based accounting, so stored balances silently desynchronize from actual stETH balances leading to accounting or solvency errors; this excludes code that already uses wstETH or converts amounts via shares before storing/comparing them.",
+  "criteria": [
+    "A vault records `stETHBalance = stETH.balanceOf(address(this))` at deposit time and reuses that cached value later for payout calculations instead of re-querying or converting via shares",
+    "A contract computes user shares as `amount / totalSupply` using raw stETH balanceOf values without using `getSharesByPooledEth`, causing share dilution errors after rebase",
+    "A lending protocol tracks collateral value using a stored stETH balance snapshot rather than querying live balance or share-based value, so rebase-driven balance increases/decreases are never reflected",
+    "A contract transfers a fixed stETH amount computed earlier in the transaction without re-checking `balanceOf` after a rebase event occurring within the same block sequence"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "stETH"
+    ]
+  ]
+}

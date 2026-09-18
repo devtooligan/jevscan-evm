@@ -1,0 +1,21 @@
+{
+  "name": "sol_am_ga_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-GA-1",
+  "source_hash": "58eed254206b8012",
+  "description": "Griefing attack: external state changeable by anyone blocks critical user actions like withdrawal/repayment",
+  "question": "The source file in `source` defines an external function performing a critical user action (such as withdrawal, repayment, or claiming) whose success depends on a shared on-chain state variable that any unrelated third party can modify (e.g. via a public function, donation, or front-run), allowing an attacker to repeatedly alter that state to cause the legitimate user's transaction to revert or fail, excluding cases where only the state owner or a trusted admin can change the relied-upon state, or where the dependency is already mitigated by access control, rate-limiting, or state isolation per user.",
+  "criteria": [
+    "withdraw() checks a global exchangeRate or totalShares value that anyone can shift by depositing a tiny amount, causing legitimate withdrawals to revert",
+    "repay() requires msg.sender's debt to exactly match a global interest index that another user can bump via a public accrue() call, breaking repayment",
+    "claimReward() computes rewards from a shared pool counter that any external account can decrement to zero right before the claim, causing it to revert or return nothing",
+    "a function requires a per-user state array to remain below a max length, but any other address can push entries into that same array to push the user's action past the limit",
+    "mint() relies on a public whitelist counter that a griefer can fill up by minting negligible amounts, blocking a legitimate user's subsequent mint call"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Griefing Attack"
+    ]
+  ]
+}

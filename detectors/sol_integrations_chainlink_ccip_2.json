@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_chainlink_ccip_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-2",
+  "source_hash": "e678a1ea92e7971e",
+  "description": "Missing destination chain allowlist check before Chainlink CCIP ccipSend call",
+  "question": "The source file in `source` defines a sender contract that calls the CCIP router's `ccipSend` (or an internal wrapper around it) using a caller- or user-supplied `destinationChainSelector` without first validating that value against an allowlist or mapping of explicitly supported/approved destination chain selectors, allowing messages and tokens to be sent to unintended, unsupported, or malicious destination chains; this does not apply if the destination chain selector is hardcoded to a fixed constant or is checked against an allowlist/mapping before the call.",
+  "criteria": [
+    "A function accepts a `destinationChainSelector` parameter and passes it directly into `ccipSend` without checking it against any allowlist or supported-chains mapping",
+    "The contract sends CCIP messages using a chain selector read from external input or storage that can be set arbitrarily, with no validation of the value before building or sending the message",
+    "A wrapper function around `router.ccipSend` forwards the destination chain selector argument straight to the router call without any conditional check like `if(!allowlistedChains[destinationChainSelector]) revert`"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "CCIP"
+    ]
+  ]
+}

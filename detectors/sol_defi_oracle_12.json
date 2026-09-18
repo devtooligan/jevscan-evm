@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-12",
+  "source_hash": "72fba74486108fa5",
+  "description": "Using a mismatched price feed (e.g., ETH feed for stETH) that ignores depeg risk",
+  "question": "The source file in `source` retrieves a price feed intended for one asset (such as ETH or BTC) and uses that price directly to value a different, merely correlated or pegged asset (such as stETH or WBTC) in accounting, collateral valuation, or liquidation logic, without any adjustment, exchange-rate lookup, or check for deviation between the two assets, so a depeg between them is silently ignored; this excludes cases where the code fetches a feed explicitly designed for the wrapped/derivative asset itself or applies a verified conversion rate between the two assets.",
+  "criteria": [
+    "getCollateralValue() multiplies stETH balance by the ETH/USD Chainlink price feed answer directly as if stETH == ETH",
+    "WBTC positions are valued using latestAnswer() from a BTC/USD price feed without querying any WBTC-specific feed or peg-verification mechanism",
+    "A lending market prices a liquid-staking derivative token using the price of its underlying asset's oracle with no reference to the derivative's actual market price or redemption rate",
+    "Liquidation threshold calculations assume a wrapped asset's price is always equal to the native asset's oracle price, with no fallback or sanity check if the wrapped token depegs"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

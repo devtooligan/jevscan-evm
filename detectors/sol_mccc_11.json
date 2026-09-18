@@ -1,0 +1,19 @@
+{
+  "name": "sol_mccc_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-11",
+  "source_hash": "ba1850be9a65aa4c",
+  "description": "Unsafe assumption of constant block time/production rate in cross-chain logic",
+  "question": "The source file in `source` computes time-based logic (e.g., deadlines, unlock periods, reward rates, or vesting) by multiplying block.number differences by a fixed assumed block time or interval, instead of using block.timestamp or an oracle, so that on chains with inconsistent or variable block production the computed duration is wrong; this excludes code that only uses block.timestamp directly or that documents the fixed-block-time chain as the sole deployment target with no cross-chain intent.",
+  "criteria": [
+    "A function computes elapsedTime or duration as (block.number - startBlock) * AVERAGE_BLOCK_TIME to determine deadlines or unlocks",
+    "Reward or interest accrual rate is calculated per block assuming a fixed number of blocks per day/year without adjusting for actual timestamps",
+    "A cross-chain or multi-chain module estimates matching finality/time windows using block counts calibrated to one chain's known block interval",
+    "Vesting or staking logic converts a fixed block count into a real-world time duration using a hardcoded blocks-per-second constant"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

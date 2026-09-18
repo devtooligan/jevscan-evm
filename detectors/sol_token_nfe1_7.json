@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_nfe1_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-7",
+  "source_hash": "11b1d2bad19cabbe",
+  "description": "Locked/pooled NFTs lack a mechanism to let original owners claim token-specific airdrops",
+  "question": "The source file in `source` implements a contract that custodies NFTs on behalf of users (e.g., a vault, pair, wrapper, or staking pool) and allows depositing, wrapping, or swapping specific NFT token IDs without tracking which depositor is entitled to each ID's external airdrops or benefits, or permits swapping/wrapping arbitrary token IDs of the same collection without restriction, or exposes no claim function forwarding airdropped assets to the rightful token owner, so that an attacker or unrelated user can wrap, unwrap, or swap into holding a token ID and steal airdrops or benefits tied to that specific NFT, excluding designs where NFTs never leave the owner's wallet or where a claim function correctly restricts airdrop withdrawal to the verified original depositor of that exact token ID.",
+  "criteria": [
+    "wrap(tokenId) or deposit(tokenId) accepts NFTs into a shared pool/vault without recording which depositor owned which specific tokenId, so airdrops tied to that id become claimable by anyone",
+    "swap(tokenIdIn, tokenIdOut) or a similar function lets any caller exchange one token ID in the pool for another of the same collection without fee or ownership-history checks, enabling theft of that id's pending airdrop",
+    "unwrap(tokenId) allows withdrawing any token ID held by the pool regardless of who deposited it, letting an attacker withdraw a token ID whose airdrop they never earned",
+    "the contract holds NFTs long-term (e.g., in an AMM pair or locker) but provides no claimAirdrop() or forwardBenefit() function, so airdrops sent to the contract for specific held token IDs are permanently unclaimable by the original owner"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

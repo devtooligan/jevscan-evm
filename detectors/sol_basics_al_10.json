@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_al_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-10",
+  "source_hash": "4d05c1e31070a58c",
+  "description": "Denial-of-service via unbounded loop with external calls that can revert entire operation",
+  "question": "The source file in `source` contains a loop that performs an external call (such as sending ETH or invoking another contract) or iterates over a user-controlled/unbounded list, where a single iteration's failure or revert (e.g., one recipient rejecting ETH) causes the entire loop and enclosing transaction to revert, with no per-iteration try/catch, pull-payment pattern, or failure isolation, allowing any participant to permanently block the operation for all others; this excludes loops bounded to fixed, trusted, or small admin-controlled sets, or loops that already isolate failures per iteration.",
+  "criteria": [
+    "A payout function loops over an array of recipients calling recipient.transfer(amount) or recipient.call{value:amount}('') inside the loop without catching failures, so one reverting recipient blocks all subsequent transfers",
+    "A withdrawal-distribution loop iterates over a dynamically growing user-supplied array and calls an external contract's function inside the loop with no try/catch, allowing a malicious callee to always revert and DoS the batch",
+    "A claim-processing loop calls an external token's transfer() for each user in an unbounded list without wrapping the call in a low-level call with success check, causing the whole batch to revert if any single transfer fails",
+    "A refund loop sends ETH to each address in storage array orders[] via a plain call without success handling per iteration, so a single blacklisted or reverting address halts refunds for everyone"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

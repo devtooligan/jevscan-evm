@@ -1,0 +1,17 @@
+{
+  "name": "time_manipulation",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/time-manipulation/SKILL.md",
+  "source_hash": "9f61235429afeef1",
+  "description": "Exploitable reliance on block.timestamp for exact-equality checks, randomness, or short-window logic",
+  "question": "The source file in `source` contains Solidity contract code that uses `block.timestamp` (or `now`) in a security-relevant way, and either (a) compares it with exact equality (`==`) to a deadline/target time, (b) uses it as a source of randomness or entropy, or (c) enforces a cooldown/lock window short enough (e.g. under ~15-30 seconds, or comparable to block time) that a validator's timestamp manipulation could bypass the intended restriction or unfairly shift financial outcomes such as auction price or vesting cliff.",
+  "criteria": [
+    "`if (block.timestamp == ...)` or similar exact-equality comparison on a timestamp deadline",
+    "`block.timestamp` (or `now`) used to seed or compute a random value, e.g. `keccak256(abi.encodePacked(block.timestamp, ...))` for randomness",
+    "A short cooldown/rate-limit check comparing `block.timestamp - lastAction[msg.sender] < COOLDOWN` where COOLDOWN is a small constant (seconds to low minutes)",
+    "Cliff-style vesting or unlock that pays out a full amount immediately once `block.timestamp >= cliff` with no linear scaling, exploitable via timestamp shifting",
+    "Epoch-based reward/price calculation keyed directly off `block.timestamp / EPOCH_DURATION` without boundary buffers, enabling straddling manipulation",
+    "Dutch-auction or other decreasing-price logic computed directly from `block.timestamp` elapsed time without bounding validator drift impact"
+  ],
+  "tags": []
+}

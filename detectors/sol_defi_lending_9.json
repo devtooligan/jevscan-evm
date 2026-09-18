@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-9",
+  "source_hash": "8f090500647db4dc",
+  "description": "Liquidation enabled while repayment is disabled, denying borrowers a chance to repay before liquidation",
+  "question": "The source file in `source` defines separate pause/enable flags or modifiers for liquidation and for repayment functions, and allows the liquidation function to execute while the repayment function is disabled, with no logic forcing both to be toggled together, meaning a borrower can be liquidated without any opportunity to repay their debt first; this excludes protocols where a single shared flag or check guarantees liquidation and repayment are always enabled or disabled together.",
+  "criteria": [
+    "A liquidate() function checks only a liquidationsPaused (or similarly named) flag and executes even when a separate repaymentsPaused flag is true, blocking repay() but not liquidate()",
+    "Two independent modifiers, e.g. whenLiquidationNotPaused and whenRepayNotPaused, guard liquidate() and repay() respectively with no shared state ensuring they change together",
+    "An admin function setRepayEnabled(bool) exists separately from setLiquidationEnabled(bool) with no requirement or invariant linking their values",
+    "Repay function reverts due to isRepayActive == false while liquidate function has no dependency on isRepayActive and proceeds normally"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

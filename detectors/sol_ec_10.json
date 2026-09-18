@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-10",
+  "source_hash": "a132480fcd2e6189",
+  "description": "Unsafe delegatecall to a non-library contract altering caller's storage state",
+  "question": "The source file in `source` performs a delegatecall (or low-level `.delegatecall(...)`) to a target contract that is not a trusted, audited library designed for delegatecall use, allowing the callee's code to arbitrarily read or modify the calling contract's storage state without validation of the target's code or storage layout compatibility, and this delegatecall target is not restricted to a fixed, vetted library address or protected by owner-only access control with clear documentation that state changes are intentional and safe.",
+  "criteria": [
+    "A function forwards user-supplied or externally-controllable call data via delegatecall(target, data) where target is passed as a parameter without validating it against an allowlist of known library addresses",
+    "A proxy or dispatcher pattern uses delegatecall to an implementation address that can be changed by any account without restriction, letting an attacker point it to a malicious contract that overwrites storage slots",
+    "Code performs delegatecall to a contract whose storage layout is not verified to match the caller's, risking unintended overwrite of critical state variables such as owner or balances",
+    "A multicall/plugin style function loops over caller-supplied addresses and calls delegatecall on each without checking that each address is a fixed, audited library contract"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

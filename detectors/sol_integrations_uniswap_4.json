@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-4",
+  "source_hash": "25e6f1838ccb6f27",
+  "description": "Missing whitelist/factory verification allows interaction with untrusted or malicious Uniswap pools",
+  "question": "The source file in `source` interacts with a Uniswap (or Uniswap-like) pool contract, such as for swaps, price reads, or liquidity operations, without verifying that the pool address is whitelisted or was created by the legitimate/trusted factory address, allowing an attacker to supply or trigger interaction with a fake or malicious pool contract, excluding cases where the pool address is hardcoded as an immutable constant, is validated via factory.getPool()/factory.createPair() derivation, or is passed only by a trusted admin-controlled setter.",
+  "criteria": [
+    "A function accepts a pool or pair address as a caller-supplied parameter and directly calls swap(), mint(), burn(), or similar on it without checking it against the factory or a whitelist",
+    "Code reads price or reserve data (e.g., getReserves(), slot0()) from a pool address obtained from user input or an external call with no factory-derived validation",
+    "A router or vault function loops over an array of pool addresses provided by the caller and executes token transfers or swaps against each without verifying provenance",
+    "Code computes a pool address off-chain-style via input parameters (token0, token1, fee) but never cross-checks the resulting address against factory.getPool() before interacting with it"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

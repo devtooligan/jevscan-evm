@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-4",
+  "source_hash": "38d3aaade4e771cc",
+  "description": "ERC20 token with blacklist/whitelist address checks that can break protocol integrations",
+  "question": "The source file in `source` implements an ERC20-style token whose transfer or transferFrom logic includes a blacklist, whitelist, or other address-based permission check (beyond the standard zero-address check) that can cause transfers to revert or be blocked for arbitrary addresses, including protocol contracts, potentially freezing funds or breaking core protocol functionality that relies on unrestricted token movement; this excludes tokens that only reject transfers to the zero address or to the token contract itself, and excludes cases where the check is documented as an admin-only compliance feature that the audited protocol explicitly accounts for and is not exploitable to disrupt protocol operations.",
+  "criteria": [
+    "transfer() or transferFrom() reverts when isBlacklisted[msg.sender] or isBlacklisted[to] is true, halting transfers to or from flagged addresses",
+    "a mapping like whitelisted[address] must be true before transfer() will succeed, blocking transfers to any non-whitelisted address including protocol contracts",
+    "an owner-controlled function can add any address, including a protocol's core contracts, to a blacklist that is checked inside _beforeTokenTransfer and causes reverts",
+    "a compliance or oracle callback inside the transfer hook can arbitrarily return false for specific addresses, silently blocking token movement without reverting"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

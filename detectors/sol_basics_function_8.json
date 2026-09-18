@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_function_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Function-8",
+  "source_hash": "27a7d724792efc4d",
+  "description": "Unreliable EOA-only or contract-only caller checks (tx.origin, isContract, code.length)",
+  "question": "The source file in `source` contains a function or modifier that restricts callers to only externally-owned accounts or only contracts using an unreliable check such as tx.origin == msg.sender, address(msg.sender).code.length == 0, extcodesize(msg.sender) == 0, or Address.isContract(msg.sender), without accounting for edge cases like calls made during contract construction, account abstraction, or future EOF/tx.origin semantics changes, so the intended caller-type restriction can be bypassed or incorrectly enforced, excluding checks that are purely informational and not used for access control or security-critical branching.",
+  "criteria": [
+    "A modifier or require statement uses require(msg.sender == tx.origin) to block contract callers from calling a sensitive function",
+    "A function checks address(msg.sender).code.length == 0 or extcodesize(msg.sender) == 0 to determine the caller is an EOA before allowing privileged logic",
+    "A function calls Address.isContract(msg.sender) or similar and treats a false result as proof the caller is an EOA, gating fund transfers or state changes on this",
+    "A modifier restricts callers to contracts only by checking code.length > 0, without handling calls originating from a contract's constructor where code.length is zero"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Function"
+    ]
+  ]
+}

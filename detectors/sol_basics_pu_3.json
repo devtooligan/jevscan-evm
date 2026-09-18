@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-3",
+  "source_hash": "9421f6e88a33a8c5",
+  "description": "Upgradeable contract inherits non-upgradeable parent instead of its Upgradeable variant, breaking initialization",
+  "question": "The source file in `source` defines an upgradeable contract (using an initializer function instead of a constructor, or inheriting from Initializable/OpenZeppelin Upgradeable contracts) that inherits from and calls the constructor-based initializer of a non-upgradeable parent contract (e.g. Pausable, Ownable, ERC20 instead of PausableUpgradeable, OwnableUpgradeable, ERC20Upgradeable), rather than calling that parent's own __Init function, causing the parent's state to be set in the implementation's constructor context or never properly initialized in proxy storage. This excludes contracts that consistently use only Upgradeable parent contracts and call their respective __init functions inside the initializer.",
+  "criteria": [
+    "An upgradeable contract with an initialize() function inherits from Ownable and relies on Ownable's constructor to set the owner instead of calling __Ownable_init()",
+    "A contract using Initializable inherits Pausable (not PausableUpgradeable) and never calls a proper Pausable init function inside initialize()",
+    "A proxy-pattern contract's initializer calls ERC20's constructor-style setup instead of ERC20Upgradeable's __ERC20_init()",
+    "An upgradeable contract mixes OpenZeppelin's SafeERC20 with a non-upgradeable ReentrancyGuard whose lock state is set in a constructor rather than __ReentrancyGuard_init()"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

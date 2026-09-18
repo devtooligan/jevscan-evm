@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-8",
+  "source_hash": "a1bc50b9f9179e98",
+  "description": "Honeypot attack via Solmate SafeTransferLib's lack of contract-existence check for ERC20 transfers",
+  "question": "The source file in `source` calls Solmate's SafeTransferLib functions (safeTransfer/safeTransferFrom/safeApprove) to move ERC20 tokens without first verifying that the token address contains contract code (e.g., via extcodesize or code.length check), so a call to a non-contract or malicious token address can silently return success and enable a honeypot attack; this excludes code that uses OpenZeppelin's SafeERC20 library or that explicitly checks contract existence before the transfer.",
+  "criteria": [
+    "Calls SafeTransferLib.safeTransfer(token, to, amount) directly on a user-supplied or configurable token address with no prior check that token.code.length > 0",
+    "Calls SafeTransferLib.safeTransferFrom(token, from, to, amount) without any extcodesize or contract-existence validation on token before the call",
+    "Calls SafeTransferLib.safeApprove(token, spender, amount) on an externally provided token address with no verification that the address is a deployed contract",
+    "Wraps low-level call-based transfer logic imported from Solmate's ERC20 helpers and relies solely on the call's boolean success without checking that the target has code"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

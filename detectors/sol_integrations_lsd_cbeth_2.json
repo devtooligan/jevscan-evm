@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_cbeth_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-cbETH-2",
+  "source_hash": "093f09d5037c1484",
+  "description": "Assumes cbETH/ETH exchange rate only increases, mishandling rate decreases in accounting",
+  "question": "The source file in `source` integrates the cbETH/ETH exchange rate into value or collateral calculations (e.g., converting cbETH balances to ETH value) but assumes the rate is monotonically non-decreasing or hardcodes/caches it without any logic to detect, bound, or safely handle a decrease in the cbETH/ETH rate, so that a rate drop causes incorrect valuation, insolvency, or unhandled underflow/overflow in downstream calculations, excluding code that already fetches a live rate each time and correctly recomputes values whenever the rate falls.",
+  "criteria": [
+    "Converts cbETH to ETH using a rate variable that is only ever updated upward, with no code path handling a lower rate",
+    "Caches the cbETH/ETH rate at deposit time and reuses it for withdrawal/liquidation math without re-checking if the rate has since decreased",
+    "Computes collateral value as cbETH balance * storedRate without any check that storedRate could be less than a previous stored value, causing stale overvaluation",
+    "Performs subtraction or division assuming rate >= previousRate, which can underflow or revert if the rate decreases"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "cbETH"
+    ]
+  ]
+}

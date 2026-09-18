@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_gs_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-GS-1",
+  "source_hash": "4c5964881919bd0c",
+  "description": "Gnosis Safe module executes transactions without invoking the configured Guard's hooks",
+  "question": "The source file in `source` implements a Gnosis Safe module that triggers transaction execution on the Safe (e.g. via execTransactionFromModule or similar) without calling the Guard's checkTransaction() before execution and/or checkAfterExecution() after execution, allowing the module to bypass security checks enforced by the Guard. This excludes modules that correctly retrieve the Guard address and invoke both hooks around execution, and excludes code paths where no Guard is configured on the Safe by design and this is explicitly acknowledged as acceptable.",
+  "criteria": [
+    "A module function calls safe.execTransactionFromModule(...) directly without first fetching the Guard address and calling guard.checkTransaction(...)",
+    "A module executes a batched or custom transaction flow but never calls guard.checkAfterExecution() after the transaction completes",
+    "A module reads the Guard storage slot but only calls checkTransaction() while skipping checkAfterExecution() entirely",
+    "A module wraps Safe execution logic and hardcodes a bypass so Guard hooks are conditionally skipped for certain callers"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Gnosis Safe"
+    ]
+  ]
+}

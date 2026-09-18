@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lsd_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-4",
+  "source_hash": "7b59bc0f71ae586d",
+  "description": "Arbitrary/unchecked exchange rate used when processing queued LSD withdrawals",
+  "question": "The source file in `source` implements queued withdrawal processing for a liquid staking derivative and computes or accepts the exchange rate used to settle a queued withdrawal via a caller-supplied parameter, an admin-set variable, or a different calculation path than the one used when the withdrawal was queued, rather than deriving it from the same canonical on-chain exchange-rate source used at queuing time, allowing the settlement value paid to withdrawers to be manipulated or rugged; this excludes designs where the processing function recomputes the exchange rate identically to withdrawal creation using the same trusted on-chain state/oracle with no externally influenceable override.",
+  "criteria": [
+    "processWithdrawals(uint256 exchangeRate) accepts an exchange rate parameter from the caller and uses it directly to compute the withdrawer's payout",
+    "finalizeWithdrawal() reads a mutable admin-settable storage variable like manualExchangeRate for payout calculation instead of recalculating it from vault assets/shares",
+    "completeQueuedWithdrawal() calls a different rate-computation function (e.g. getRateFast()) than the one used in requestWithdrawal() (getRateCanonical()), producing inconsistent valuations",
+    "the withdrawal settlement logic multiplies shares by a rate value passed in calldata without validating it against the vault's actual totalAssets/totalSupply ratio"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

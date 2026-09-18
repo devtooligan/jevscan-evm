@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_dosa_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-DOSA-1",
+  "source_hash": "351e9364b4d8b21c",
+  "description": "Push-based fund distribution causing denial-of-service if a recipient reverts or blocks the transfer",
+  "question": "The source file in `source` implements a function that iterates over multiple recipients and directly pushes ETH or tokens to each one (e.g., via call/transfer/send inside a loop) as part of distributing funds, withdrawals, or refunds, without allowing recipients to pull their own funds individually, such that a single recipient's failing or maliciously reverting receive/fallback logic can block or permanently halt the distribution for all other recipients, excluding cases where the function already isolates each transfer with try/catch or records failures without reverting the whole loop, and excluding single-recipient withdrawal functions where only the caller's own funds are transferred.",
+  "criteria": [
+    "A distributeRewards() or batchWithdraw() function loops through an array of user addresses and calls payable(user).transfer(amount) or call{value: amount} for each, reverting the entire loop if any single transfer fails",
+    "A refund mechanism sends ETH directly to multiple bidders/participants in a for loop using .send() or .call(), with no fallback path for a blocked recipient",
+    "A payout function pushes ERC20 tokens or ETH to a list of stored addresses during finalize()/closeAuction(), where one recipient's contract can revert on receipt and stop all subsequent payouts",
+    "A contract owner or admin-controlled function force-sends funds to users in bulk without a per-user pull-based withdraw() alternative, allowing a single griefing address to indefinitely block the whole batch"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Denial-Of-Service(DOS) Attack"
+    ]
+  ]
+}

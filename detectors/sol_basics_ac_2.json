@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_ac_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AC-2",
+  "source_hash": "e29d372dc32ce2be",
+  "description": "Missing access control on sensitive privileged functions",
+  "question": "The source file in `source` defines a function that performs a sensitive, privileged action (such as changing ownership, withdrawing or transferring funds, minting tokens, upgrading contract logic, or modifying critical configuration) without any caller-restriction check (e.g. onlyOwner, role-based modifier, or explicit require on msg.sender), allowing any external caller to invoke it and alter state or drain assets, excluding functions that are intentionally public/permissionless by design (e.g. deposit, public view functions) or that already enforce an owner/role/allowlist check.",
+  "criteria": [
+    "withdraw(address to, uint256 amount) transfers contract ETH or tokens to an arbitrary address with no onlyOwner or role check",
+    "setOwner(address newOwner) or transferOwnership overwrites the owner variable with no check that msg.sender is the current owner",
+    "mint(address to, uint256 amount) creates new tokens callable by any external address with no access restriction",
+    "upgradeTo(address newImplementation) changes the contract's implementation address without verifying msg.sender is an authorized admin",
+    "setFeeRecipient or setConfig updates critical protocol parameters with no modifier or require restricting the caller"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Access Control"
+    ]
+  ]
+}

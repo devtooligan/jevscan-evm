@@ -1,0 +1,16 @@
+{
+  "name": "curve_integration",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/curve-integration/SKILL.md",
+  "source_hash": "2a0ce5a3d0112f76",
+  "description": "Curve get_virtual_price() used as unprotected price oracle, exposing read-only reentrancy manipulation.",
+  "question": "The source file in `source` defines a contract that calls a Curve pool's get_virtual_price() (or otherwise derives LP token price from Curve pool balances) and uses that result to compute a collateral value, asset price, or exchange rate for lending, borrowing, liquidation, or minting logic, without any reentrancy guard (e.g., nonReentrant) protecting the calling function and without cross-checking against a dedicated manipulation-resistant oracle such as Chainlink, allowing an attacker to manipulate the reported virtual price via a reentrant call during pool operations (e.g., mid remove_liquidity) to distort valuations and extract value.",
+  "criteria": [
+    "Calls pool.get_virtual_price() or reads pool balances/coin ratios to derive an LP or asset price",
+    "That derived price is used directly in collateral valuation, borrow limit, mint amount, or liquidation calculation",
+    "The function performing this valuation lacks a reentrancy guard modifier",
+    "No fallback or cross-check against Chainlink or a separate Curve-provided oracle contract",
+    "Valuation logic is reachable via external call while a Curve pool operation (add_liquidity/remove_liquidity/exchange) could be mid-execution"
+  ],
+  "tags": []
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-11",
+  "source_hash": "f74f067a4594004a",
+  "description": "Unrestricted delegatecall to untrusted/user-controlled contract address",
+  "question": "The source file in `source` contains a function that performs a delegatecall to a contract address that is user-supplied, externally controlled, or otherwise not restricted to a fixed, trusted, audited allowlist, without validating or hardcoding the target, thereby allowing an attacker to alter the caller's storage, ownership, or execution logic; this excludes delegatecalls restricted to trusted, immutable, or admin-only verified target addresses.",
+  "criteria": [
+    "A function accepts an address or contract parameter from msg.sender or external input and performs target.delegatecall(data) without checking that target is in a fixed trusted list",
+    "A proxy or vault contract executes a delegatecall to an address stored in a mutable state variable that can be updated by non-privileged or insufficiently restricted logic",
+    "A generic 'execute' or 'call' function forwards arbitrary bytes and target address via delegatecall based on caller-supplied parameters with no whitelist or ownership check",
+    "Delegatecall target is derived from data returned by an external untrusted contract call, then used directly without validation"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

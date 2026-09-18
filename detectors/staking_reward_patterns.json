@@ -1,0 +1,16 @@
+{
+  "name": "staking_reward_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/staking-reward-patterns/SKILL.md",
+  "source_hash": "4a9b61d7e2c4c3ee",
+  "description": "Missing reward-checkpoint update in Synthetix-style staking contracts causing reward accounting corruption",
+  "question": "The source file in `source` implements a Synthetix-style staking/reward contract (using rewardPerToken, userRewardPerTokenPaid, and an earned() function) and contains at least one state-changing function (stake, withdraw, or claim/getReward) that mutates balanceOf or totalSupply without first updating rewardPerTokenStored, lastUpdateTime, and the caller's userRewardPerTokenPaid/rewards, allowing reward-per-token snapshots to go stale and letting users under- or over-claim rewards relative to their true staked share.",
+  "criteria": [
+    "stake() or withdraw() changes balanceOf/totalSupply but is not wrapped in or preceded by an updateReward-equivalent modifier/call",
+    "claim()/getReward() reads rewards[account] or recomputes earned() without first refreshing rewardPerTokenStored and userRewardPerTokenPaid[account]",
+    "rewardPerToken() is used to compute earned() in a function where lastUpdateTime/rewardPerTokenStored were not refreshed beforehand",
+    "a new function is added alongside stake/withdraw/claim that mutates staked balances but omits the reward-checkpoint update present on the other functions",
+    "userRewardPerTokenPaid[account] is set to a stale or zero value instead of the freshly computed rewardPerTokenStored before balance changes"
+  ],
+  "tags": []
+}

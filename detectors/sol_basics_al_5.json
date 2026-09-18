@@ -1,0 +1,19 @@
+{
+  "name": "sol_basics_al_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-5",
+  "source_hash": "a3b43de4168feddb",
+  "description": "Stale array index used after array elements are removed/reordered, causing wrong-element access",
+  "question": "The source file in `source` defines a function that accepts an array index as a parameter and uses it to read, modify, or remove an element from an array, while some function in the same file can remove or reorder elements of that same array (e.g., via swap-and-pop or shifting), and the index-accepting function does not re-validate that the supplied index still corresponds to the intended element, so a previously valid index can silently reference a different element after a removal.",
+  "criteria": [
+    "removeItem(uint index) deletes array[index] by swapping the last element into its place and popping, while another function withdraw(uint index) or claim(uint index) later uses a caller-supplied or previously cached index to access array[index] without checking it still matches the intended entry",
+    "A function transferFromList(uint idx) reads users[idx] to authorize an action, while a separate function removeUser(uint idx) shifts all subsequent elements left to fill the gap, invalidating previously issued indexes without any revalidation",
+    "A function stores an index returned from find(address) in storage and later uses that stored index to access the array in setStatus(uint idx), while elsewhere elements can be deleted causing reordering, with no check that array[idx] still corresponds to the original entry"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

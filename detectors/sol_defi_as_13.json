@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-13",
+  "source_hash": "e267444a0ea80705",
+  "description": "On-chain slippage/minimum-output calculation manipulable via price oracle or reserves",
+  "question": "The source file in `source` implements a swap or liquidity function that computes its own minimum-acceptable output or slippage bound internally from current on-chain reserves, spot price, or oracle values (e.g., expectedOut derived from getReserves/price feed minus a fixed percent) rather than accepting a caller-supplied minAmountOut/maxSlippage parameter calculated off-chain, so an attacker can manipulate the on-chain price/reserves in the same transaction to widen or narrow the computed bound and extract value; this excludes functions that accept an explicit user- or off-chain-supplied minOut/maxIn parameter and simply validate against it.",
+  "criteria": [
+    "swap() computes minOut = getAmountOut(reserveIn, reserveOut, amountIn) * (100 - slippageBps) / 100 using live pool reserves instead of a caller-supplied minOut parameter",
+    "addLiquidity() derives the acceptable price range from the pair's current spot price fetched on-chain immediately before the check, with no user-supplied minPrice/maxPrice",
+    "function calculates expectedAmount from oracle.getPrice() and reverts if actualAmount deviates more than a hardcoded percent, with no external minAmountOut argument",
+    "removeLiquidity() computes minTokenOut internally from totalSupply and reserves ratio at call time rather than accepting a caller-provided minimum"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

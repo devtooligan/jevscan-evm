@@ -1,0 +1,19 @@
+{
+  "name": "sol_ll_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-LL-1",
+  "source_hash": "c643b43028ab4549",
+  "description": "Missing validation of input bit-size before using value in low-level assembly/encoding",
+  "question": "The source file in `source` uses low-level operations (e.g., inline assembly, abi.encodePacked, bitwise packing, or type casting) on an input value without first validating or masking that the value fits within the expected type's bit-size, allowing overflowed/dirty high-order bits to corrupt adjacent packed data or write to unintended memory/storage locations, and this does not apply to values already constrained by the compiler's own type-safe arithmetic or explicit range checks/masking prior to use.",
+  "criteria": [
+    "A function packs a uint256 parameter into a smaller-width slot (e.g., uint32) inside assembly or via bit-shifting without checking or masking that the value fits in that width before shifting/storing it",
+    "abi.encodePacked or manual byte concatenation writes a caller-supplied value into a fixed-size field without validating its length or truncating it, risking overlap with adjacent packed fields",
+    "Inline assembly reads a function parameter and uses it directly as a memory offset, length, or slot index without bounding it to the expected type size, enabling out-of-bounds memory access",
+    "A cast from a larger type to a smaller type (e.g., uint256 to uint96) is performed via assembly truncation without a prior require() check that the value does not exceed the smaller type's max"
+  ],
+  "tags": [
+    [
+      "Low Level"
+    ]
+  ]
+}

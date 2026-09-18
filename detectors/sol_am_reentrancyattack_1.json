@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_reentrancyattack_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-ReentrancyAttack-1",
+  "source_hash": "f2217de14accc916",
+  "description": "Read-only reentrancy via unguarded view functions returning stale state",
+  "question": "The source file in `source` defines a state-changing function that performs an external call (e.g., ETH transfer, token transfer, or callback) before updating relevant balance/reserve state variables, and also defines a view/getter function that computes its return value from those same variables, with no reentrancy guard shared between the state-changing function and the view function, such that during the external call the view function can be invoked and return stale/inconsistent values reflecting pre-update state, potentially misleading other contracts relying on that value; this excludes cases where the view function is protected by the same reentrancy lock as the state-changing function, where no external call precedes the relevant state update, or where the view function's result does not depend on state affected by the external interaction.",
+  "criteria": [
+    "A withdraw() or exit() function calls an external contract (e.g., token.transfer or call{value:}) before decrementing balances or updating totalSupply/reserves",
+    "A getPrice(), getExchangeRate(), or totalAssets() view function computes its result directly from balances/reserves that are updated only after an external call elsewhere in the contract",
+    "A callback-triggering function (e.g., ERC777/ERC721 hooks, flashloan callback) invokes external code prior to updating pool/vault accounting that a getter subsequently reads",
+    "A liquidity-pool swap or mint/burn function transfers tokens out before updating reserve variables used by a public getReserves()-style function"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Reentrancy Attack"
+    ]
+  ]
+}

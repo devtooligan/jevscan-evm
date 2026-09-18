@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_balancer_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Balancer-2",
+  "source_hash": "e4522862699fb330",
+  "description": "Reliance on stale Balancer TWAP oracle price without freshness checks",
+  "question": "The source file in `source` retrieves an asset price via Balancer's `getTimeWeightedAverage` (or equivalent Balancer pool oracle) and uses that value directly for critical financial logic such as collateral valuation, liquidation, or swap pricing, without any check on the timestamp or staleness of the last pool update, and without any fallback or cross-check against another price feed, so a Balancer pool with infrequent trades can yield a stale price that misrepresents true asset value; this excludes code that only reads the Balancer oracle for informational/non-critical purposes or that validates recency against another independent oracle before use.",
+  "criteria": [
+    "A function calls balancerPool.getTimeWeightedAverage(...) and directly assigns the returned value as the asset price used to compute collateral ratio or liquidation threshold",
+    "A swap or valuation function consumes the Balancer TWAP price with no comparison to a block timestamp bound or minimum update frequency requirement",
+    "Price feed logic exclusively sources from Balancer's oracle with no secondary Chainlink or other oracle fallback for cross-validation",
+    "getTimeWeightedAverage result is used to determine mint/redeem amounts without checking when the pool's last swap occurred"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Balancer"
+    ]
+  ]
+}

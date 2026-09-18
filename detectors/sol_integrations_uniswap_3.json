@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-3",
+  "source_hash": "f3f88744a4b545b8",
+  "description": "Hardcoded assumption of Uniswap token0/token1 order instead of verifying dynamically per pool",
+  "question": "The source file in `source` interacts with a Uniswap-style AMM pool by hardcoding or assuming a fixed order of token0 and token1 (e.g., always treating a specific token as token0) instead of querying the pool's actual token0()/token1() ordering, causing swap amounts, price calculations, or liquidity math to be computed with tokens swapped when deployed on a chain where the pool's token ordering differs, and this does not apply to code that always calls token0()/token1() on the pool or factory to determine ordering before use.",
+  "criteria": [
+    "A function computes swap input/output amounts using a hardcoded assumption that tokenA is token0 and tokenB is token1 without calling pool.token0()",
+    "Price or reserve calculations multiply/divide reserve0 and reserve1 assuming a fixed token order rather than checking which token is token0 via the pool contract",
+    "Liquidity addition logic passes amounts in a hardcoded token0/token1 order without first querying the pool to confirm actual ordering",
+    "Code caches or hardcodes token0/token1 addresses from one chain's deployment and reuses them across deployments on other chains without re-verification"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_balancer_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Balancer-3",
+  "source_hash": "ae268aefab0266db",
+  "description": "Using totalSupply instead of virtualSupply for Balancer Boosted Pool Phantom BPT accounting",
+  "question": "The source file in `source` integrates with a Balancer Boosted Pool (Phantom BPT) and calls the pool's totalSupply() to determine the circulating BPT supply used in price, exchange rate, or share calculations, instead of calling getVirtualSupply() (or equivalent virtual/actual supply function) that excludes the BPT tokens minted to and held by the pool itself, causing supply and derived valuations to be inflated. This does not apply to pools that are not Balancer Boosted/Phantom BPT pools, or where the code already calls a virtual supply function or otherwise subtracts the pool's own held BPT balance before using the supply value.",
+  "criteria": [
+    "Calls balancerPool.totalSupply() and uses the raw result directly to compute BPT price or exchange rate, without subtracting the BPT balance held by the pool itself",
+    "Divides a user's staked BPT amount by pool.totalSupply() to compute a share of underlying assets, feeding the pool-inflated totalSupply value straight into the share formula",
+    "Computes rate = totalAssets / IERC20(bpt).totalSupply() inside an oracle function, where totalSupply() includes the pool's own pre-minted Phantom BPT balance"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Balancer"
+    ]
+  ]
+}

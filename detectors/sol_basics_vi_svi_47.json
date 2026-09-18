@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_svi_47",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-47",
+  "source_hash": "4081464457e98804",
+  "description": "Duplicate free-function names/params colliding under buggy Solidity compiler version",
+  "question": "The source file in `source` declares a pragma solidity version affected by the free-function name-collision bug (e.g. 0.7.1 or another version lacking this fix) and defines two or more free functions (not inside a contract) sharing the same name and identical parameter types, or imports a free function under an alias that shadows another free function with a different name but identical parameter types, relying on the compiler to reject or disambiguate this when it may silently accept the collision.",
+  "criteria": [
+    "Two free functions outside any contract are both named the same, e.g. function foo(uint256 x) and a second function foo(uint256 y), in a file pragma solidity 0.7.1",
+    "A free function bar(uint256) is imported and aliased as baz, while another free function baz(uint256) with the same parameter types already exists in the importing file",
+    "Multiple free functions with identical name and parameter types are defined across different imported files that are combined via import statements into one source unit, under an affected pragma version"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

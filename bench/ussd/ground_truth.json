@@ -1,0 +1,493 @@
+{
+  "source": "Answer key: the judged H/M findings of the contest report (Sherlock 2023-05 USSD, 22 H/M issues). Code: the Truffle repo ussd-contracts in https://github.com/sherlock-audit/2023-05-USSD; files are relative to its contracts/ directory (the Foundry port in USSD-Foundry/src has the same 12 files). Snippets are the line ranges linked in each report entry (same commit line numbers, spot-checked).",
+  "issues": [
+    {
+      "id": "H-1",
+      "severity": "High",
+      "title": "StableOracleDAI calculates getPriceUSD with inverted base/rate tokens for Chainlink price",
+      "files": [
+        "oracles/StableOracleDAI.sol"
+      ],
+      "functions": [
+        "getPriceUSD"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "oracle_decimals_and_units",
+      "snippets": [
+        {
+          "file": "oracles/StableOracleDAI.sol",
+          "start": 46,
+          "end": 46
+        },
+        {
+          "file": "oracles/StableOracleDAI.sol",
+          "start": 36,
+          "end": 42
+        },
+        {
+          "file": "oracles/StableOracleDAI.sol",
+          "start": 50,
+          "end": 50
+        }
+      ]
+    },
+    {
+      "id": "H-2",
+      "severity": "High",
+      "title": "USSDRebalancer.sol#SellUSSDBuyCollateral the check of whether collateral is DAI is wrong",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "SellUSSDBuyCollateral"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": null,
+      "note": "|| instead of && in a condition; no subcategory covers a plain boolean-logic bug that makes rebalance revert",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 199,
+          "end": 199
+        }
+      ]
+    },
+    {
+      "id": "H-3",
+      "severity": "High",
+      "title": "The getOwnValuation() function contains errors in the price calculation",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "getOwnValuation"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "incorrect_formula",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 74,
+          "end": 74
+        },
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 76,
+          "end": 76
+        }
+      ]
+    },
+    {
+      "id": "H-4",
+      "severity": "High",
+      "title": "The price from StableOracleDAI is returned with the incorrect number of decimals",
+      "files": [
+        "oracles/StableOracleDAI.sol"
+      ],
+      "functions": [
+        "getPriceUSD"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "oracle_decimals_and_units",
+      "snippets": [
+        {
+          "file": "oracles/StableOracleDAI.sol",
+          "start": 33,
+          "end": 53
+        }
+      ]
+    },
+    {
+      "id": "H-5",
+      "severity": "High",
+      "title": "Price calculation susceptible to flashloan exploits",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "getOwnValuation"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "spot_price_dependency",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 71,
+          "end": 80
+        }
+      ]
+    },
+    {
+      "id": "H-6",
+      "severity": "High",
+      "title": "Wrong computation of the amountToSellUnit variable",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "BuyUSSDSellCollateral"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "incorrect_formula",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 121,
+          "end": 121
+        }
+      ]
+    },
+    {
+      "id": "H-7",
+      "severity": "High",
+      "title": "Not using slippage parameter or deadline while swapping on UniswapV3",
+      "files": [
+        "USSD.sol"
+      ],
+      "functions": [
+        "UniV3SwapInput"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "missing_slippage_protection",
+      "snippets": []
+    },
+    {
+      "id": "H-8",
+      "severity": "High",
+      "title": "Lack of access control for mintRebalancer() and burnRebalancer()",
+      "files": [
+        "USSD.sol"
+      ],
+      "functions": [
+        "mintRebalancer",
+        "burnRebalancer"
+      ],
+      "category_id": "access_control",
+      "subcategory_id": "missing_auth_on_privileged_function",
+      "snippets": [
+        {
+          "file": "USSD.sol",
+          "start": 204,
+          "end": 210
+        },
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 92,
+          "end": 107
+        },
+        {
+          "file": "USSD.sol",
+          "start": 179,
+          "end": 194
+        }
+      ]
+    },
+    {
+      "id": "H-9",
+      "severity": "High",
+      "title": "Uniswap v3 pool token balance proportion does not necessarily correspond to the price, and it is easy to manipulate.",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "getSupplyProportion",
+        "rebalance"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "spot_price_dependency",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 13,
+          "end": 16
+        },
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 83,
+          "end": 107
+        }
+      ]
+    },
+    {
+      "id": "H-10",
+      "severity": "High",
+      "title": "Wrong Oracle feed addresses",
+      "files": [
+        "oracles/StableOracleWBTC.sol",
+        "oracles/StableOracleDAI.sol",
+        "oracles/StableOracleWBGL.sol"
+      ],
+      "functions": [
+        "constructor"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": null,
+      "note": "hardcoded wrong feed/pool addresses; no subcategory covers misconfigured addresses",
+      "snippets": [
+        {
+          "file": "oracles/StableOracleWBTC.sol",
+          "start": 8,
+          "end": 28
+        },
+        {
+          "file": "oracles/StableOracleDAI.sol",
+          "start": 23,
+          "end": 31
+        },
+        {
+          "file": "oracles/StableOracleWBGL.sol",
+          "start": 17,
+          "end": 22
+        }
+      ]
+    },
+    {
+      "id": "H-11",
+      "severity": "High",
+      "title": "Oracle price should be denominated in DAI instead of USD",
+      "files": [
+        "oracles/StableOracleWETH.sol"
+      ],
+      "functions": [
+        "getPriceUSD"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "oracle_decimals_and_units",
+      "note": "report links StableOracleWETH; the design flaw applies to every oracle",
+      "snippets": [
+        {
+          "file": "oracles/StableOracleWETH.sol",
+          "start": 12,
+          "end": 27
+        }
+      ]
+    },
+    {
+      "id": "M-1",
+      "severity": "Medium",
+      "title": "Calls to Oracles don't check for stale prices",
+      "files": [
+        "oracles/StableOracleDAI.sol",
+        "oracles/StableOracleWBTC.sol",
+        "oracles/StableOracleWETH.sol"
+      ],
+      "functions": [
+        "getPriceUSD"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "chainlink_validation_missing",
+      "note": "report also names StableOracleWBGL, which has no Chainlink call; omitted",
+      "snippets": []
+    },
+    {
+      "id": "M-2",
+      "severity": "Medium",
+      "title": "Because of missing slippage parameter, mintForToken() can be front-runned",
+      "files": [
+        "USSD.sol"
+      ],
+      "functions": [
+        "mintForToken"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "missing_slippage_protection",
+      "snippets": []
+    },
+    {
+      "id": "M-3",
+      "severity": "Medium",
+      "title": "rebalance process incase of selling the collateral, could revert because of underflow calculation",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "BuyUSSDSellCollateral"
+      ],
+      "category_id": "dos_griefing",
+      "subcategory_id": null,
+      "note": "checked-math underflow reverts rebalance; no subcategory covers it (unsafe_cast_or_overflow is about silent wrapping)",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 116,
+          "end": 125
+        },
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 132,
+          "end": 138
+        }
+      ]
+    },
+    {
+      "id": "M-4",
+      "severity": "Medium",
+      "title": "StableOracleWBTC use BTC/USD chainlink oracle to price WBTC which is problematic if WBTC depegs",
+      "files": [
+        "oracles/StableOracleWBTC.sol"
+      ],
+      "functions": [
+        "getPriceUSD"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "oracle_decimals_and_units",
+      "note": "wrong denomination (BTC instead of WBTC)",
+      "snippets": []
+    },
+    {
+      "id": "M-5",
+      "severity": "Medium",
+      "title": "Inaccurate collateral factor calculation due to missing collateral asset",
+      "files": [
+        "USSD.sol"
+      ],
+      "functions": [
+        "collateralFactor",
+        "removeCollateral"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": "state_update_omission_or_double_count",
+      "snippets": [
+        {
+          "file": "USSD.sol",
+          "start": 179,
+          "end": 194
+        }
+      ]
+    },
+    {
+      "id": "M-6",
+      "severity": "Medium",
+      "title": "Inconsistency handling of DAI as collateral in the BuyUSSDSellCollateral function",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "BuyUSSDSellCollateral"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": null,
+      "note": "missing special case for the base asset; no subcategory fits",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 130,
+          "end": 139
+        }
+      ]
+    },
+    {
+      "id": "M-7",
+      "severity": "Medium",
+      "title": "Risk of Incorrect Asset Pricing by StableOracle in Case of Underlying Aggregator Reaching minAnswer",
+      "files": [
+        "oracles/StableOracleDAI.sol",
+        "oracles/StableOracleWBTC.sol",
+        "oracles/StableOracleWETH.sol"
+      ],
+      "functions": [
+        "getPriceUSD"
+      ],
+      "category_id": "oracle_price_manipulation",
+      "subcategory_id": "chainlink_validation_missing",
+      "snippets": [
+        {
+          "file": "oracles/StableOracleDAI.sol",
+          "start": 33,
+          "end": 53
+        },
+        {
+          "file": "oracles/StableOracleWBTC.sol",
+          "start": 21,
+          "end": 26
+        },
+        {
+          "file": "oracles/StableOracleWETH.sol",
+          "start": 21,
+          "end": 26
+        }
+      ]
+    },
+    {
+      "id": "M-8",
+      "severity": "Medium",
+      "title": "BuyUSSDSellCollateral() always sells 0 amount if need to sell part of collateral",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "BuyUSSDSellCollateral"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "precision_loss_division_before_multiplication",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 121,
+          "end": 121
+        }
+      ]
+    },
+    {
+      "id": "M-9",
+      "severity": "Medium",
+      "title": "Using the collateral assets' oracle price at 100% of its value to mint USSD without a fee can be used for arbitrage.",
+      "files": [
+        "USSD.sol"
+      ],
+      "functions": [
+        "mintForToken",
+        "calculateMint"
+      ],
+      "category_id": "flash_loan_economic",
+      "subcategory_id": "atomic_arbitrage_of_protocol_pricing",
+      "snippets": [
+        {
+          "file": "USSD.sol",
+          "start": 150,
+          "end": 173
+        }
+      ]
+    },
+    {
+      "id": "M-10",
+      "severity": "Medium",
+      "title": "If collateral factor is high enough, flutter ends up being out of bounds",
+      "files": [
+        "USSDRebalancer.sol"
+      ],
+      "functions": [
+        "SellUSSDBuyCollateral"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": null,
+      "note": "array index out of bounds after a loop; no subcategory fits",
+      "snippets": [
+        {
+          "file": "USSDRebalancer.sol",
+          "start": 178,
+          "end": 184
+        }
+      ]
+    },
+    {
+      "id": "M-11",
+      "severity": "Medium",
+      "title": "Lack of Redeem Feature",
+      "files": [
+        "USSD.sol"
+      ],
+      "functions": [],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": null,
+      "note": "missing feature; report links interfaces/IUSSDRebalancer.sol but the missing code belongs in USSD.sol",
+      "snippets": [
+        {
+          "file": "interfaces/IUSSDRebalancer.sol",
+          "start": 13,
+          "end": 21
+        }
+      ]
+    }
+  ]
+}

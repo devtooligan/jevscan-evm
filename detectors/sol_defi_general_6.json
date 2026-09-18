@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-6",
+  "source_hash": "e66d8d622296f652",
+  "description": "Unbounded/maximum token approval allowed without revert, enabling over-allowance abuse",
+  "question": "The source file in `source` implements a token approval or allowance-setting function (e.g., approve, safeApprove, increaseAllowance) that permits the caller to set an allowance equal to type(uint256).max (or another unbounded/maximum value) without reverting or capping the amount, thereby exposing users to unlimited spender risk if the approved spender is later compromised or malicious, excluding functions that already explicitly revert or clamp when the requested amount equals the maximum uint value.",
+  "criteria": [
+    "approve(spender, amount) sets allowances[msg.sender][spender] = amount directly with no check rejecting amount == type(uint256).max",
+    "increaseAllowance or safeApprove wrapper forwards an arbitrary max-value amount to the underlying token's approve call without validating or capping it",
+    "a permit() or approve-like function accepts amount == type(uint256).max as a valid allowance value and stores it without any require() preventing unlimited approval",
+    "custom ERC20-compatible approve function allows setting allowance to the maximum uint256 constant with no revert path or bounded-allowance enforcement"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

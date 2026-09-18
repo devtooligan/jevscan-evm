@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_pma_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-PMA-2",
+  "source_hash": "a23d4b91cdd85ddf",
+  "description": "Price derived from manipulable DEX spot reserves instead of TWAP/oracle",
+  "question": "The source file in `source` computes an asset's price or exchange rate directly from a DEX liquidity pool's current reserves or spot balances (e.g. reserve0/reserve1, getReserves(), token balance ratios) and uses that value in critical logic such as valuations, collateral checks, liquidations, or swaps, without using a time-weighted average price (TWAP) or an external/decentralized oracle, and without any safeguard against single-block reserve manipulation via flash loans or large swaps, making the price manipulable within one transaction. This excludes cases where the code already computes or consumes a TWAP over multiple observations/time windows, or where price comes from a reputable oracle (e.g. Chainlink) rather than instantaneous pool state.",
+  "criteria": [
+    "A function computes price as reserveA / reserveB (or similar ratio) read directly from getReserves() or pool balances at the current block",
+    "A liquidation, borrowing, or collateral valuation function calls a helper that returns the DEX pool's instantaneous spot price with no averaging over time",
+    "A function derives price from balanceOf(pool) ratios of two tokens instead of consulting an oracle or cumulative price accumulator",
+    "getAmountsOut/getAmountsIn or similar spot-based AMM math results are used directly as the reported 'price' for critical financial decisions"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Price Manipulation Attack"
+    ]
+  ]
+}

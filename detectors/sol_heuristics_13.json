@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-13",
+  "source_hash": "b792db8260ea25bd",
+  "description": "Memory copy of storage struct/array is modified but the updated copy is never written back to storage",
+  "question": "The source file in `source` copies a storage state variable (struct, array, or mapping value) into a `memory` variable, mutates fields of that memory copy, and never writes the modified memory copy back to the corresponding storage variable, so the on-chain global state remains unchanged and diverges from the intended updated values. This only applies when the code declares a `memory` (not `storage`) reference to state, performs mutations on it, and the function's purpose is to persist that change; it excludes cases where the memory copy is read-only, where a `storage` reference is used instead, or where the updated struct/array is explicitly reassigned back to the storage slot afterward.",
+  "criteria": [
+    "A struct is loaded as `SomeStruct memory s = states[id];`, fields of `s` are updated, but `states[id]` is never reassigned to `s` afterward",
+    "An array is copied with `uint256[] memory arr = balances[user];`, arr[i] is modified in a loop, but `balances[user]` is never set to `arr`",
+    "A function reads a mapping value into a local memory struct, updates its `amount` field based on new input, and returns without writing the struct back to the mapping",
+    "Nested struct fields are updated only on a `memory` copy obtained from storage, while the original storage struct's fields remain at their old values after the function returns"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

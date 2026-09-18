@@ -1,0 +1,17 @@
+{
+  "name": "access_control_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/access-control-patterns/SKILL.md",
+  "source_hash": "3c4d568721958019",
+  "description": "Missing access control on privileged/critical functions",
+  "question": "The source file in `source` defines a function that performs a privileged or critical operation (e.g., withdrawing/transferring funds, minting tokens, changing ownership or roles, pausing/unpausing, upgrading, or setting sensitive parameters) as an external or public function, and that function has no access-control restriction whatsoever: no onlyOwner, onlyRole, restricted, or AccessManaged modifier, and no explicit msg.sender authorization check, so that any arbitrary caller can invoke it and directly compromise funds, ownership, or protocol configuration.",
+  "criteria": [
+    "External/public function moves or withdraws Ether/tokens without any onlyOwner/onlyRole/restricted modifier or msg.sender check",
+    "External/public function mints tokens, changes fees, or updates critical parameters with no access-control guard",
+    "External/public function grants/revokes roles or transfers ownership without requiring caller authorization",
+    "External/public pause/unpause or upgrade function callable by any address, missing onlyRole/onlyOwner/restricted",
+    "Function is clearly intended to be privileged (name, comments, or state it mutates) yet omits any authorization check",
+    "No AccessControl/Ownable/AccessManaged inheritance or modifier is applied to functions performing sensitive state changes"
+  ],
+  "tags": []
+}

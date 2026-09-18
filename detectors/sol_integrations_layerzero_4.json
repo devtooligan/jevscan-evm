@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_layerzero_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LayerZero-4",
+  "source_hash": "85df020cef1a2a8c",
+  "description": "Bypassing LzApp's _lzSend wrapper by calling lzEndpoint.send directly",
+  "question": "The source file in `source` defines a contract inheriting from LzApp that sends LayerZero messages by directly invoking `lzEndpoint.send(...)` instead of calling the inherited `_lzSend` function, bypassing LzApp's built-in fee handling, trusted remote validation, and payload size/adapter checks, thereby risking message loss, incorrect fee payment, or sending to unverified destinations; this does not apply if the contract only calls `_lzSend` or does not inherit LzApp/interact with the endpoint at all.",
+  "criteria": [
+    "A function calls `lzEndpoint.send(dstChainId, trustedRemote, payload, refundAddress, zroPaymentAddress, adapterParams)` directly instead of `_lzSend(...)`",
+    "A cross-chain message-sending function inherits LzApp but constructs and submits the send call to `lzEndpoint` without going through the `_lzSend` wrapper",
+    "The contract skips LzApp's internal trusted remote lookup and calls the endpoint's `send` method directly with a manually specified destination address"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LayerZero"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_dosa_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-DOSA-2",
+  "source_hash": "af513d5bf9fc0e89",
+  "description": "Missing minimum transaction/amount check enabling dust-transaction denial-of-service or griefing",
+  "question": "The source file in `source` defines a user-facing function that accepts a caller-supplied amount, size, or offer value (e.g. deposit, loan, transfer, or offer creation) and processes or stores it without enforcing any minimum threshold, so an attacker can repeatedly submit zero-value or dust-sized transactions to spam state, bloat storage/arrays, or grief other users/the protocol, and this does not apply to admin-only configuration functions, functions whose amount is already bounded by a fixed or previously validated value, or functions that already check amount against a minimum before proceeding.",
+  "criteria": [
+    "deposit(uint256 amount) transfers or records amount into state without requiring amount >= MIN_DEPOSIT, allowing zero or dust deposits",
+    "createLoan(uint256 size) or createOffer(uint256 size) accepts any size including 0 or 1 wei with no minimum size check, enabling many tiny loans/offers that grief matching or accounting logic",
+    "transfer or mint function processes user-supplied amount without checking it against a nonzero/minimum threshold, letting attackers spam dust transactions to clog processing or storage",
+    "queue or list insertion function pushes an entry keyed on a user-supplied amount without a minimum-amount guard, letting attackers cheaply fill the queue/array with negligible-value entries"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Denial-Of-Service(DOS) Attack"
+    ]
+  ]
+}

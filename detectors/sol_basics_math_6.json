@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-6",
+  "source_hash": "40677868cf79aece",
+  "description": "Division-by-zero causing unintended revert due to unchecked denominator",
+  "question": "The source file in `source` performs an arithmetic division operation using a denominator variable, expression, or function return value that is not validated to be nonzero before the division, such that a zero value for that denominator will cause the transaction to revert unexpectedly, excluding cases where the denominator is a nonzero literal constant or is already guarded by an explicit prior check, require/assert statement, or SafeMath-style function that reverts or branches before the division occurs.",
+  "criteria": [
+    "A function divides by a user-supplied or externally fetched parameter without checking it is nonzero, e.g. `result = amount / totalSupply;` where totalSupply can be zero",
+    "A ratio or price calculation divides by a balance or reserve variable that can reach zero (e.g. after withdrawals) without a zero check, e.g. `price = reserveA / reserveB;`",
+    "A percentage or share calculation divides by the total number of participants or total weight without verifying it is greater than zero, e.g. `share = amount / numParticipants;`",
+    "An average or rate computation divides accumulated value by an elapsed time or count variable that could be zero, e.g. `rate = totalRewards / elapsedBlocks;` with no guard on elapsedBlocks"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

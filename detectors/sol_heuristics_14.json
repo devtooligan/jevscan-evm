@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_14",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-14",
+  "source_hash": "cc8e73d5dd9fa1bd",
+  "description": "Improper ETH/WETH dual-path handling causing accounting errors from unchecked exclusivity assumptions",
+  "question": "The source file in `source` contains a function that accepts or handles both native ETH (via msg.value or call{value:}) and WETH (via ERC20 transfer/transferFrom) as alternative payment or deposit paths, but does not validate that only one path is used at a time, so a caller can trigger both simultaneously and cause double-counted deposits, mismatched accounting, or incorrect fund transfers; this excludes functions that handle only ETH or only WETH exclusively, and functions that explicitly enforce mutual exclusivity (e.g., requiring msg.value == 0 when a WETH amount is supplied, or vice versa).",
+  "criteria": [
+    "A payable deposit(uint256 amount) function calls WETH.transferFrom(msg.sender, address(this), amount) and also credits msg.value to the user's balance without requiring msg.value == 0 or amount == 0",
+    "A swap or bridge function unwraps WETH to ETH when tokenIn == WETH but also allows msg.value > 0 in the same call without checking that the two paths are not both active, causing extra ETH to be silently absorbed or lost",
+    "A withdraw function pays out both call{value: amount}(...) for ETH and a separate WETH.transfer for the same recorded balance without zeroing or exclusivity checks, allowing double payout",
+    "A wrapper function that lets users deposit either ETH or WETH interchangeably credits the internal accounting token amount from msg.value while ignoring or double-adding the WETH transfer amount when both are nonzero"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

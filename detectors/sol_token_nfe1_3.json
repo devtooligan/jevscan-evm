@@ -1,0 +1,21 @@
+{
+  "name": "sol_token_nfe1_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-3",
+  "source_hash": "f9040586db605de5",
+  "description": "Reentrancy via ERC721/1155 safeTransferFrom callback to external receiver contracts",
+  "question": "The source file in `source` defines a function that calls safeTransferFrom (or _safeMint/_mint with a receiver hook) on an ERC721 or ERC1155 token to an external/user-supplied address, performs additional state changes (e.g., updating balances, minting counters, marking a sale/claim as complete, or making further transfers) after that call, and does not use a reentrancy guard or the checks-effects-interactions pattern, allowing the receiver's onERC721Received/onERC1155Received callback to reenter and exploit the stale state. This excludes cases where all state is updated before the transfer call, a nonReentrant modifier or equivalent lock is applied, or the transfer target is guaranteed to be a trusted/non-contract address.",
+  "criteria": [
+    "A withdraw or claim function calls safeTransferFrom(address(this), msg.sender, tokenId) to send an NFT before setting a claimed[msg.sender] or balance mapping to false/zero, with no reentrancy guard",
+    "A mint function calls _safeMint(to, tokenId) triggering onERC721Received before incrementing totalSupply or updating a per-user mint counter used for a mint limit check",
+    "A batch transfer function calls safeBatchTransferFrom for ERC1155 tokens before deducting the corresponding amounts from an internal balances or escrow mapping",
+    "A sale/auction settlement function calls safeTransferFrom to deliver the NFT to the buyer before updating the listing's sold/active status or refunding excess payment",
+    "A staking or vault contract calls safeTransferFrom to return a staked NFT to the owner before clearing the stake record or resetting reward accrual state"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

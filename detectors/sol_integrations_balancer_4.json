@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_balancer_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Balancer-4",
+  "source_hash": "9e9e8379237e990c",
+  "description": "Read-only reentrancy manipulation of Balancer pool pricing data",
+  "question": "The source file in `source` reads Balancer vault pool token balances, BPT supply, or exchange-rate data to compute a price or value, without first calling a Vault reentrancy-status check (such as VaultReentrancyLib's ensureNotInVaultContext or an equivalent Vault.getPoolTokens reentrancy guard), allowing an attacker to manipulate the derived price via read-only reentrancy while a flash-loan or multi-token swap is mid-execution. This excludes code that verifies the Vault is not in a reentrant context before consuming the balances, and code that does not use any Balancer pool balance or BPT supply data for pricing.",
+  "criteria": [
+    "Computes a token price or exchange rate directly from Vault.getPoolTokens() balances or BPT totalSupply, with the value used immediately for pricing/collateral logic and no prior reentrancy-context check",
+    "A BPT price oracle function divides pool value by BPT supply fetched via a live Vault call in the same transaction, then returns that price for use elsewhere without any reentrancy guard call",
+    "Reads Balancer pool reserves inside a lending or liquidation valuation function and feeds them straight into a health-factor or collateral-value calculation, skipping any Vault reentrancy flag check",
+    "Consumes a Balancer StablePool or WeightedPool spot price for collateral valuation by computing it from live pool balances, with the computed price used to authorize borrowing/liquidation and no ensureNotInVaultContext call anywhere in the call path"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Balancer"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_staking_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Staking-1",
+  "source_hash": "8b3e564a994e08a5",
+  "description": "Staking lets one user extend/amplify another user's time-lock duration without consent",
+  "question": "The source file in `source` implements a staking function that accepts a target/beneficiary address distinct from the caller and, when tokens are staked or added on behalf of that address, updates or extends that address's lock end time or lock duration, allowing any caller to lengthen or reset another user's time lock without the target's consent or any ownership/self-staking check, excluding functions that only allow staking for msg.sender itself, admin-only recovery functions, or designs where staking for others does not affect the lock timer.",
+  "criteria": [
+    "stake(address user, uint256 amount) sets lockEndTime[user] = block.timestamp + LOCK_DURATION for any caller-supplied user address",
+    "depositFor(address beneficiary, uint256 amount) resets beneficiary's unlockTime to a later value whenever called, with no check that msg.sender == beneficiary",
+    "restake()/topUp(address onBehalfOf) extends onBehalfOf's existing lock duration based on the new deposit amount without verifying caller authorization",
+    "addStake(address recipient, uint256 amount) increases recipient's stake and recalculates a longer lock period using block.timestamp, callable by any address"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Staking"
+    ]
+  ]
+}

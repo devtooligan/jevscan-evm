@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_48",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-48",
+  "source_hash": "381c986ab0f55ed5",
+  "description": "Solidity compiler bug: tuple assignment with multi-stack-slot components (nested tuples, external function pointers, dynamic calldata array references) corrupting values",
+  "question": "The source file in `source` declares a pragma solidity version within the range 0.1.6 to 0.6.5 (inclusive) and contains a tuple assignment where at least one component spans multiple stack slots, such as a nested tuple, an external function pointer, or a reference to a dynamically sized calldata array, without pinning or upgrading to a patched compiler version outside that range, risking silently corrupted assigned values.",
+  "criteria": [
+    "pragma solidity ^0.6.0; combined with a statement like (a, (b, c)) = f(); destructuring a nested tuple return value",
+    "pragma solidity 0.5.x; combined with (x, funcPtr) = g(); assigning an external function pointer as part of a tuple destructuring",
+    "pragma solidity 0.6.5; combined with (y, dynArr) = h(); where dynArr is a dynamically sized calldata array component of the tuple assignment",
+    "pragma solidity 0.4.x; combined with a multi-value return being destructured into a tuple containing a nested struct/tuple component"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

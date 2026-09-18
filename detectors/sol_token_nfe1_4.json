@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_nfe1_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-4",
+  "source_hash": "ccf35255697529bf",
+  "description": "Missing ownership check in transferFrom allows abuse of others' NFT approvals",
+  "question": "The source file in `source` defines a function that transfers an ERC721/1155 token using a `from` (or equivalent owner) parameter which is not checked to equal `msg.sender`, nor validated to be an approved operator acting on behalf of the actual token owner, allowing any caller who holds an approval for a different token or context to move tokens they do not own, excluding functions that correctly verify msg.sender is the owner or an approved operator/spender before transferring.",
+  "criteria": [
+    "A transfer function takes a `from` address parameter and calls the underlying token transfer using that `from` value without checking `from == msg.sender`",
+    "A function reuses a stored approval or allowance intended for one token/operation to authorize transfer of a different token owned by another user",
+    "Bulk/batch transfer logic iterates over token IDs and moves them from arbitrary owners using only a single caller-supplied approval check that does not bind to the specific token's actual owner",
+    "A wrapper or proxy transfer function forwards `from` to `transferFrom` internally without re-validating that msg.sender is the owner or an approved operator of that specific token"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

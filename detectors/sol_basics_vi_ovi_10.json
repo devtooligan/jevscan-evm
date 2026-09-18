@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_ovi_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-10",
+  "source_hash": "4dc69358d2fd4d1a",
+  "description": "Vulnerable OpenZeppelin Arbitrum L2 cross-chain sender detection misclassifies EOA calls",
+  "question": "The source file in `source` uses OpenZeppelin's CrossChainEnabledArbitrumL2 or LibArbitrumL2 utility (version >=4.6.0 <4.7.2) to determine whether a call originated cross-chain from L1, relying on its isCrossChain/crossChainSender logic, without upgrading to a patched OpenZeppelin version or adding an independent check that excludes direct EOA calls, so that direct calls from externally owned accounts on Arbitrum L2 are incorrectly classified as authenticated cross-chain messages from L1, allowing an attacker to bypass cross-chain sender restrictions.",
+  "criteria": [
+    "Imports or inherits CrossChainEnabledArbitrumL2 and uses its _isCrossChain() or _crossChainSender() result directly to gate a privileged function, granting access whenever that call returns true",
+    "Directly calls OpenZeppelin's LibArbitrumL2.isCrossChain(msg.sender) and, based solely on the boolean it returns, authorizes a sensitive action or unlocks funds for msg.sender",
+    "Calls LibArbitrumL2.crossChainSender(msg.sender) to derive the presumed L1 sender and executes privileged logic using that derived address without verifying msg.sender is actually the L1 bridge alias contract address"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

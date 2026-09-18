@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-10",
+  "source_hash": "64b470a2a2ce4da4",
+  "description": "AMM/pool fails to handle rebasing tokens, causing balance accounting mismatches",
+  "question": "The source file in `source` implements an AMM or liquidity pool that tracks pooled token balances using cached/stored reserve variables (e.g. `reserve0`/`reserve1` or similar) updated only on deposit/withdraw/swap, without reconciling them against the token's live `balanceOf(address(this))`, so that a rebasing token's automatic balance increase or decrease desynchronizes the pool's internal accounting from its real token holdings, enabling stuck funds, incorrect swap pricing, or drainage of the mismatched balance; this excludes pools that explicitly disallow rebasing tokens via allowlists or that resync reserves to actual balanceOf before every accounting-sensitive operation.",
+  "criteria": [
+    "swap() computes output amounts using stored reserve0/reserve1 state variables instead of calling balanceOf() on the pool's actual token holdings",
+    "addLiquidity()/removeLiquidity() mint or burn LP shares based on cached reserve variables that are never resynced with token.balanceOf(address(this))",
+    "_update() sets reserves directly from deposited/withdrawn amounts without querying the token's current real balance, ignoring rebasing-induced balance drift",
+    "the pool holds a rebasing token but computes user-owed amounts from a fixed recorded balance captured at deposit time rather than the token's live balance"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_reth_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-rETH-1",
+  "source_hash": "9c6f5ffea46c7277",
+  "description": "Failing to account for rETH value decreases from validator slashing/penalties",
+  "question": "The source file in `source` integrates Rocket Pool's rETH token by computing its ETH value or exchange rate for pricing, collateral, or accounting purposes, but assumes the rETH exchange rate is monotonically non-decreasing or relies on a stale/hardcoded conversion rate, so a real decrease in rETH value caused by validator penalties or slashing is not reflected, potentially causing mispricing, insolvency, or reverts; this excludes code that queries the live RocketPool exchange rate on every use and correctly handles decreases without assuming only-increase behavior.",
+  "criteria": [
+    "Computes rETH collateral value and asserts or requires the new exchange rate to be >= the previously stored rate, reverting or ignoring real decreases from slashing",
+    "Caches the rETH/ETH exchange rate at deposit time in a state variable and reuses it for later withdrawal or valuation calculations without refreshing it",
+    "Converts rETH to ETH using a hardcoded or constant conversion ratio instead of calling RocketPool's live getExchangeRate or getEthValue function",
+    "Calculates rETH value from total staking pool balance and total supply without handling the case where the balance decreases due to slashing, causing underflow, revert, or incorrect accounting"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "rETH"
+    ]
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "sol_basics_ac_1": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AC-1",
+    "source_hash": "b052fc2f0a2b7673",
+    "reason": "Pure process/documentation checklist item about clarifying actors and interactions, not verifiable from source code"
+  },
+  "sol_basics_math_1": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-1",
+    "source_hash": "b58b92a6fee81caa",
+    "reason": "Generic 'is the math correct' checklist item with no concrete flaw pattern a code snippet can be judged against"
+  },
+  "sol_basics_pu_10": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-10",
+    "source_hash": "9a1bcb6c005c3ffe",
+    "reason": "Requires comparing storage layouts across two separate contract upgrade versions; not determinable from a single source file"
+  },
+  "sol_basics_vi_ovi_14": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-14",
+    "source_hash": "10f84f52062130ae",
+    "reason": "Determining the OpenZeppelin package version (>=4.3.0 <4.4.2) that governs whether GovernorCompatibilityBravo is vulnerable requires external dependency/version metadata, not something a single source file's code can establish."
+  },
+  "sol_basics_vi_ovi_15": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-15",
+    "source_hash": "9a128e1881a99c66",
+    "reason": "This item checks the version of the external OpenZeppelin Initializable library dependency (>=3.2.0 <4.4.1), which is determined by package manifests/imports rather than by any vulnerable code pattern present in a single contract source file."
+  },
+  "sol_basics_vi_svi_5": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-5",
+    "source_hash": "70f25cb0331245d7",
+    "reason": "Compiler optimizer/build-configuration bug, not detectable from a single source file's code content"
+  },
+  "sol_cr_1": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-CR-1",
+    "source_hash": "372d45b3c259fdee",
+    "reason": "Process/design guidance about protocol behavior in special states, not a concrete code pattern a single file check can verify"
+  },
+  "sol_defi_as_4": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-4",
+    "source_hash": "cb4d85c197b31ca8",
+    "reason": "Asks whether AMM code is forked from another project, requiring external comparison via diffing tools; not a determinable code-level flaw within a single source file"
+  },
+  "sol_defi_lending_1": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-1",
+    "source_hash": "ff2ea6340fc3fc6a",
+    "reason": "Asks about economic/market robustness of liquidations under stress, not a concrete code-level flaw a static file review can verify"
+  },
+  "sol_defi_lending_5": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-5",
+    "source_hash": "73bda377af3199fc",
+    "reason": "Process/design question about implications of pausing/resuming liquidations, not a concrete code-checkable vulnerability"
+  },
+  "sol_defi_oracle_6": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-6",
+    "source_hash": "1218fd05cc7ab948",
+    "reason": "Off-chain/deployment configuration check about oracle feed availability across chains, not verifiable from a single source file's code"
+  },
+  "sol_ec_4": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-4",
+    "source_hash": "554eed4e98fd6124",
+    "reason": "Determining whether an external call is \"necessary\" requires business/design judgment about intent, not a detectable code pattern"
+  },
+  "sol_heuristics_6": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-6",
+    "source_hash": "f532d05e23b195f1",
+    "reason": "Pure process check requiring manual review of EIP documentation compliance, not detectable from code alone"
+  },
+  "sol_integrations_ac_4": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-4",
+    "source_hash": "6087a9751a36a7f9",
+    "reason": "Asks about expected protocol behavior when a pool is deprecated/paused, a design/process question with no single concrete vulnerable code pattern to check"
+  },
+  "sol_integrations_chainlink_ccip_4": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-4",
+    "source_hash": "2caa6c61c5cf7e31",
+    "reason": "Cross-chain finality latency is an application-design/timing consideration, not a checkable code-level flaw in a single source file"
+  },
+  "sol_integrations_chainlink_ccip_5": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-5",
+    "source_hash": "f4d50648f24dcfb1",
+    "reason": "Checks cross-chain deployment configuration consistency between token pools on different chains, not determinable from a single source file's code"
+  },
+  "sol_integrations_lsd_reth_4": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-rETH-4",
+    "source_hash": "3c00985ccbc6561b",
+    "reason": "Off-chain/protocol-governance concern about RPL node consensus attacks, not detectable from a single source file's code"
+  },
+  "sol_integrations_lsd_sfrxeth_2": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-sfrxETH-2",
+    "source_hash": "9746e2e5bce3de53",
+    "reason": "This item concerns documentation/communication about potential future rate changes, not a detectable code-level vulnerability."
+  },
+  "sol_mccc_12": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-12",
+    "source_hash": "2f8734ae96548022",
+    "reason": "This concerns compiler/deployment configuration (Solidity version vs. target chain EVM support for PUSH0), not a flaw detectable from a single source file's code"
+  },
+  "sol_mccc_2": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-2",
+    "source_hash": "0913d422f4b27adc",
+    "reason": "Cross-chain difference review is a process/documentation check, not something derivable from a single source file's code"
+  },
+  "sol_mccc_4": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-4",
+    "source_hash": "d7abf7422b13f853",
+    "reason": "Requires testing/verifying tx.origin and msg.sender semantics across multiple deployment chains, an off-chain, cross-environment verification process rather than a static code flaw detectable in a single source file."
+  },
+  "sol_mccc_5": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-5",
+    "source_hash": "1a4aaadcc34e6d36",
+    "reason": "Checklist item is a cross-chain economic/design risk assessment (low gas costs enabling transaction spam) not a detectable code-level flaw in a single source file"
+  },
+  "sol_mccc_7": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-7",
+    "source_hash": "006aba024f258fd7",
+    "reason": "Process/documentation check about evaluating off-chain chain-specific upgradability properties, not detectable from a single source file's code"
+  },
+  "sol_token_fe_15": {
+    "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-15",
+    "source_hash": "25808bf34f0c9688",
+    "reason": "Checklist item asks whether an external token contract can be paused by its owner, an off-chain/external-dependency property not determinable from a single source file's code"
+  }
+}

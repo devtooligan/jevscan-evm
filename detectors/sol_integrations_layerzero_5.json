@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_layerzero_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LayerZero-5",
+  "source_hash": "8adb76760b837dbb",
+  "description": "Missing forceResumeReceive in LayerZero User Application, enabling permanent message queue DoS",
+  "question": "The source file in `source` implements a LayerZero User Application that receives messages via `lzReceive` or integrates with a LayerZero endpoint, but does not implement the `ILayerZeroUserApplicationConfig` interface's `forceResumeReceive` function (or implements it as a no-op/reverting stub), so a single malformed or reverting inbound message can permanently block the ordered message queue for that path with no way to skip or clear the stuck payload, excluding cases where `forceResumeReceive` is properly implemented and callable by a trusted admin to clear stored payloads.",
+  "criteria": [
+    "A contract inherits from a LayerZero receiver base (e.g. NonblockingLzApp or similar) but never overrides or defines forceResumeReceive, leaving the inherited version absent or reverting",
+    "The contract implements lzReceive with logic that can revert on malformed payloads, but provides no forceResumeReceive or retryPayload function to clear the stuck message from the endpoint's storedPayload mapping",
+    "forceResumeReceive is defined but is empty, always reverts, or does not call endpoint.forceResumeReceive(_srcChainId, _srcAddress), so it cannot actually clear a blocked message",
+    "The contract implements ILayerZeroUserApplicationConfig but omits the forceResumeReceive function entirely, breaking the interface's guarantee of message-queue recovery"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LayerZero"
+    ]
+  ]
+}

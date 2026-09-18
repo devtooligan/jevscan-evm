@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-6",
+  "source_hash": "0b374ff2edad22d3",
+  "description": "Arbitrary external call/delegatecall using user-controlled target or data",
+  "question": "The source file in `source` contains a function that performs an external call, delegatecall, or low-level call using a target address and/or call data supplied directly from user input, without validating or restricting the target address, function selector, or call data against a trusted allowlist, enabling callers to make the contract execute arbitrary logic on arbitrary targets, excluding cases where the caller is a privileged trusted admin/owner-only function or the target/selector is validated against an allowlist or hardcoded set.",
+  "criteria": [
+    "A function calls target.call(data) where both target and data are parameters taken directly from external caller input with no allowlist check",
+    "A swap/execute function performs address(dexRouter).call(userSuppliedBytes) using a router address and payload passed in by msg.sender without restricting the router or selector",
+    "A proxy/forwarder function does delegatecall(msg.data) or delegatecall(userInput) to a user-specified implementation address without verifying it against a trusted registry",
+    "A batch/multicall function loops over user-provided (target, data) pairs and executes low-level calls to each without checking targets belong to a permitted set"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

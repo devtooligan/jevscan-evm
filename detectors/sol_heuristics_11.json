@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-11",
+  "source_hash": "3132f54170186949",
+  "description": "Uninitialized state variable confused with a valid default value used as initialization check",
+  "question": "The source file in `source` uses a state variable's default value (such as zero, empty address, or empty string) as the sole signal that the contract or a struct/mapping entry is uninitialized, even though that same default is also a legitimate valid value the variable could hold after proper initialization, so code paths cannot distinguish an uninitialized state from a genuinely valid zero/empty state, enabling logic bypass or incorrect access-control decisions. This excludes cases where a dedicated boolean flag, explicit initializer-only modifier, or sentinel value distinct from all valid values is used to track initialization.",
+  "criteria": [
+    "A function checks `if (owner == address(0))` to decide whether to run one-time initialization logic, but address(0) could also be intentionally set later as a valid owner value",
+    "A struct field defaulting to 0 is checked as `if (config.threshold == 0) revert NotInitialized()` even though 0 is an allowed valid threshold value elsewhere in the contract",
+    "A mapping value is checked with `if (balances[user] == 0)` to infer that a user record has never been set, while 0 is also a legitimate balance after withdrawal",
+    "Initialization status is inferred from `if (startTime == 0)` even though startTime being 0 could later be intentionally reset or represent a valid unset-but-active state"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

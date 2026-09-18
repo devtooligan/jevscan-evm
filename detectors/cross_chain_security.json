@@ -1,0 +1,16 @@
+{
+  "name": "cross_chain_security",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/cross-chain-security/SKILL.md",
+  "source_hash": "4cfe6473ad8cf86f",
+  "description": "Missing chain ID in EIP-712 domain separator enabling cross-chain signature replay",
+  "question": "The source file in `source` defines an EIP-712 domain separator (via keccak256 over an EIP712Domain typehash and fields used for signature verification) that omits block.chainid (or any chain identifier) from the hashed domain fields, allowing a signature valid on one chain to be replayed as valid on another chain where the contract is also deployed.",
+  "criteria": [
+    "Contains an EIP712Domain typehash string/definition and corresponding abi.encode for a domain separator",
+    "The EIP712Domain typehash string does not include 'chainId' as a field",
+    "The abi.encode call building the domain separator does not include block.chainid or any chain identifier value",
+    "The domain separator is used in signature verification (e.g., ecrecover, _hashTypedDataV4, or similar) implying cross-chain replay impact",
+    "No compensating chain-id check exists elsewhere in the same signature verification logic"
+  ],
+  "tags": []
+}

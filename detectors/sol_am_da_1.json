@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_da_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-DA-1",
+  "source_hash": "73400d10e38d75ba",
+  "description": "Donation/balance-manipulation attack via reliance on token.balanceOf instead of internal accounting",
+  "question": "The source file in `source` computes share price, exchange rate, collateral value, or reward distribution using `balance`/`balanceOf(address(this))` of a token directly instead of maintaining an internal accounting variable that tracks deposits, so an attacker can donate or directly transfer tokens to the contract to inflate the balance and manipulate calculations such as shares-per-token minted or rewards owed, causing incorrect accounting, share dilution, or fund loss for other users, excluding cases where the contract already maintains and uses an internally tracked balance/deposit variable for these calculations instead of the live token balance.",
+  "criteria": [
+    "deposit()/mint() computes shares = amount * totalSupply() / IERC20(token).balanceOf(address(this)) instead of using an internally tracked total deposited amount",
+    "withdraw()/redeem() calculates payout based on IERC20(asset).balanceOf(address(this)) rather than a stored accounting balance, allowing donation-inflated ratios",
+    "reward distribution logic divides by token.balanceOf(address(this)) to compute reward-per-share, letting an attacker donate tokens to skew rewardPerToken calculations",
+    "a vault's exchangeRate() or pricePerShare() reads balanceOf(address(this)) directly with no internal ledger of user deposits, enabling a first-depositor donation attack to break share minting"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Donation Attack"
+    ]
+  ]
+}

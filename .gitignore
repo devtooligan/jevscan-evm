@@ -1,0 +1,9 @@
+out/
+cache/
+.env
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+# benchmark runs: only HEATMAP.md is committed; run_bench.py rewrites the rest
+bench/*/run/*
+!bench/*/run/HEATMAP.md

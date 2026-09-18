@@ -1,0 +1,21 @@
+{
+  "name": "sol_defi_staking_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Staking-2",
+  "source_hash": "f06bb415cd38d2ee",
+  "description": "Missing time controls allow staking reward distribution to be delayed or claimed prematurely",
+  "question": "The source file in `source` implements a staking or reward-distribution mechanism where a user's or admin's ability to trigger reward accrual, claim, or distribution timing is not bound by any enforced time constraint (such as a required minimum elapsed period, lock-up, or vesting schedule check), allowing rewards to be claimed before they should legitimately be available or allowing distribution timing to be manipulated (e.g., via repeated calls, timestamp manipulation, or unconstrained admin-triggered distribution) to unfairly gain or withhold rewards, excluding cases where an intentional, documented, and correctly enforced time-lock or vesting schedule already restricts claim/distribution timing, or where the timing power is an explicitly trusted admin-only operational parameter with no security impact on other users.",
+  "criteria": [
+    "claimRewards() calculates and transfers rewards based on elapsed time since lastClaimTime without verifying a minimum staking duration has passed",
+    "distributeRewards() can be called repeatedly in the same block or transaction to accrue rewards multiple times because it does not check or update a last-distribution timestamp",
+    "updateReward() uses block.timestamp directly in reward-rate calculations without any lock period, allowing a user to stake and immediately claim rewards intended for long-term stakers",
+    "an admin or keeper function can arbitrarily trigger reward distribution at any time with no cooldown or scheduling check, letting rewards be released earlier or later than the protocol's intended schedule",
+    "reward accrual logic allows unstaking immediately after staking within the same block to still receive the full period's reward due to missing time-elapsed validation"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Staking"
+    ]
+  ]
+}

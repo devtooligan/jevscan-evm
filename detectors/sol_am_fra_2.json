@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_fra_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-FrA-2",
+  "source_hash": "75cda1b3278026f5",
+  "description": "Two-step actions vulnerable to front-running/interception between the two transactions",
+  "question": "The source file in `source` implements a multi-transaction action split into two separate calls (e.g., a first call that sets up or approves state and a second call that consumes it) where the second call relies on state, price, or parameters that can be altered or exploited by another party's transaction inserted between the two calls, without any lock, nonce, commitment hash, or freshness check binding the two transactions together, allowing an attacker to front-run or sandwich the sequence for profit or to break the intended invariant; this excludes single-transaction atomic operations, admin-only two-step flows with trusted signers, or flows already protected by a commit-reveal hash, deadline, or slippage/price check that neutralizes intervening transactions.",
+  "criteria": [
+    "A function approve(spender, amount) followed later by transferFrom(amount) with no mechanism preventing spender from front-running a change in allowance to drain more or less than intended",
+    "A two-step withdrawal where step1 records a pending amount/price and step2 executes the transfer using externally-fetched price data that can shift due to an attacker's transaction executed in between, with no price/deadline check",
+    "A commit-then-reveal function where reveal() accepts any value matching a weak or missing commitment hash, letting an attacker observe the reveal transaction and front-run with their own more favorable commit/reveal pair",
+    "A first transaction that sets a target price or oracle snapshot and a second transaction that executes a trade against that snapshot without re-validating it, letting an attacker insert a transaction to manipulate the snapshot before the trade executes"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Front-running Attack"
+    ]
+  ]
+}

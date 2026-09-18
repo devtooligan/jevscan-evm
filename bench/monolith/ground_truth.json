@@ -1,0 +1,203 @@
+{
+  "source": "Answer key: bench/monolith/answer_key.json (Sherlock contest 1212, Monolith Stablecoin Factory by Inverse Finance, Dec 8-14 2025; 1 High, 6 Medium from Sherlock's results API). Code: Monolith/ in https://github.com/sherlock-audit/2025-12-monolith-stablecoin-factory (contest commit b36e9ef); files are relative to the repo root, matching the contest scope list. Categories assigned by hand from each report. Snippets are the line ranges each report links or quotes (checked against the source).",
+  "issues": [
+    {
+      "id": "H-1",
+      "severity": "High",
+      "title": "User can abuse rounding issue in order to borrow unbacked tokens",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "increaseDebt",
+        "redeem"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "rounding_direction_error",
+      "note": "Root cause per the report is rounding: per-user debt rounds up, so redeeming all but 1 wei and repaying one wallet leaves totalFreeDebt 0 with huge totalFreeDebtShares, and increaseDebt then mints shares 1:1. Alternative label: accounting_share_math / debt_and_interest_accounting_error. redeem added (the report's first step inflates the share ratio there).",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 606,
+          "end": 606
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 487,
+          "end": 491
+        }
+      ]
+    },
+    {
+      "id": "M-1",
+      "severity": "Medium",
+      "title": "If there's only a single user which has reached a state with bad debt, anyone can mint unbacked tokens.",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "writeOff"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "liquidation_logic_error",
+      "note": "Root cause: writeOff is allowed while the borrower still has collateral, and the collateral goes to the caller while the debt is socialized. Answer key left functions empty; writeOff from the report. Alternative label: accounting_share_math / debt_and_interest_accounting_error.",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 431,
+          "end": 431
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 435,
+          "end": 455
+        }
+      ]
+    },
+    {
+      "id": "M-2",
+      "severity": "Medium",
+      "title": "Inconsistency in position health checks will lead to the incorrect user liquidations",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "adjust",
+        "getLiquidatableDebt",
+        "liquidate"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "liquidation_logic_error",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 321,
+          "end": 322
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 669,
+          "end": 670
+        }
+      ]
+    },
+    {
+      "id": "M-3",
+      "severity": "Medium",
+      "title": "EIP violation for `totalAssets()` in the `Vault`",
+      "files": [
+        "src/Vault.sol",
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "totalAssets",
+        "getPendingInterest"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": null,
+      "note": "Uncertain label. EIP-4626 says totalAssets MUST NOT revert; Vault.totalAssets calls Lender.getPendingInterest, whose catch block reverts when gas is short. No subcategory covers an ERC-4626 view that can revert; dos_griefing is the other candidate category. Answer key lists only Lender.sol; Vault.sol added because totalAssets lives there. calculateInterest dropped from functions (it is InterestModel's, called from Lender).",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 908,
+          "end": 910
+        },
+        {
+          "file": "src/Vault.sol",
+          "start": 39,
+          "end": 41
+        }
+      ]
+    },
+    {
+      "id": "M-4",
+      "severity": "Medium",
+      "title": "Accounting will be broken if a user redeems when there is a bad debt position",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "redeem"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": "debt_and_interest_accounting_error",
+      "note": "Answer key left functions empty; redeem from the report (redemption is spread over free-debt shares, including a bad-debt position's, so more collateral leaves than the solvent borrowers owe).",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 463,
+          "end": 463
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 478,
+          "end": 482
+        }
+      ]
+    },
+    {
+      "id": "M-5",
+      "severity": "Medium",
+      "title": "Incorrect interest calculation",
+      "files": [
+        "src/InterestModel.sol"
+      ],
+      "functions": [
+        "calculateInterest"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "incorrect_formula",
+      "snippets": [
+        {
+          "file": "src/InterestModel.sol",
+          "start": 49,
+          "end": 49
+        },
+        {
+          "file": "src/InterestModel.sol",
+          "start": 47,
+          "end": 50
+        }
+      ]
+    },
+    {
+      "id": "M-6",
+      "severity": "Medium",
+      "title": "Interest accrual can get stuck when `wadExp()` underflows to 0 causing division-by-zero",
+      "files": [
+        "src/InterestModel.sol",
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "calculateInterest",
+        "accrueInterest",
+        "setHalfLife"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "precision_loss_division_before_multiplication",
+      "note": "Root cause is math: wadExp truncates to 0 for a large elapsed time and calculateInterest divides by it; the impact (accrual silently skipped forever) is DoS, so dos_griefing / state_forcing_dos is the other candidate. The subcategory's 'small values truncating to zero in critical math' is the closest fit. wadExp dropped from functions (Solmate library, not in scope).",
+      "snippets": [
+        {
+          "file": "src/InterestModel.sol",
+          "start": 33,
+          "end": 33
+        },
+        {
+          "file": "src/InterestModel.sol",
+          "start": 36,
+          "end": 36
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 202,
+          "end": 202
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 915,
+          "end": 920
+        }
+      ]
+    }
+  ]
+}

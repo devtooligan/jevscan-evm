@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_chainlink_ccip_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-8",
+  "source_hash": "1d943088b0bd1626",
+  "description": "CCIP receiver lacks failure handling, causing permanent message queue blocking after Smart Execution window expires",
+  "question": "The source file in `source` implements a CCIPReceiver (e.g., overrides _ccipReceive) that directly executes message-processing logic without wrapping it in try/catch or other error-recovery handling, so that if processing a message reverts, the message stays stuck and, once the Smart Execution time window (8 hours) expires, all subsequent messages from the same sender become permanently blocked with no recovery mechanism to skip, retry, or manually resolve the failed message.",
+  "criteria": [
+    "_ccipReceive calls an internal function that can revert (e.g., due to price staleness, external call failure, or invalid data) with no try/catch around it",
+    "Message processing logic performs state updates or external calls that can fail without any fallback path to mark the message as failed-but-skippable",
+    "There is no admin or permissionless function to manually retry, replace, or clear a stuck failed CCIP message",
+    "The receiver processes messages strictly in order with no mechanism to bypass a permanently failing message, causing all later messages to queue indefinitely"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "CCIP"
+    ]
+  ]
+}

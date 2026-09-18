@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-2",
+  "source_hash": "1e4f5db27454b79c",
+  "description": "Precision loss/truncation in time-based arithmetic (e.g., rate-per-time calculations)",
+  "question": "The source file in `source` performs a time-based calculation (such as deriving a rate, interest, or reward per unit time, or converting between time units) using integer division before multiplication or without adequate scaling/fixed-point precision, causing the result to truncate to zero or accumulate significant rounding error over repeated calls or long durations, and this is not merely an intentional, safe rounding-down that only ever favors the protocol/users in a negligible, non-exploitable way.",
+  "criteria": [
+    "computes rewardRate = totalReward / duration then later multiplies rewardRate by elapsed time, truncating the fractional reward per second before scaling up",
+    "divides a timestamp difference by a large denominator (e.g., SECONDS_PER_YEAR) before multiplying by a principal or rate, losing precision due to premature integer division",
+    "calculates interest or fee per second by dividing an annual rate by seconds-in-year without any fixed-point scaling factor, causing the value to round to zero for short elapsed periods",
+    "converts a duration between units (e.g., seconds to days) using integer division and then uses that truncated value directly in downstream multiplicative calculations, compounding the rounding error"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

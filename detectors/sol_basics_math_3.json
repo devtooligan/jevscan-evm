@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-3",
+  "source_hash": "6c90528239972783",
+  "description": "Implicit cast of time/unit literal expressions to a smaller integer type causing silent overflow",
+  "question": "The source file in `source` uses a time or unit literal expression (such as `1 day`, `365 days`, or similar arithmetic on time units) that is implicitly assigned or cast into a smaller unsigned integer type (e.g., uint8, uint16, uint24) without explicit type annotation or range validation, risking silent truncation or overflow of the value; this excludes cases where the literal is stored in uint256 or another sufficiently large type, or where the value is explicitly validated or safely cast with bounds checks.",
+  "criteria": [
+    "A state variable declared as uint24 (or smaller) is assigned the result of an expression like `1 days` or `30 days` without explicit casting or range checks",
+    "A function parameter or local variable of type uint16 stores a computed duration such as `52 weeks` that can exceed the type's max value",
+    "A struct field of type uint8 is set using a time literal like `1 hours` multiplied by a variable, risking truncation",
+    "An arithmetic expression combining time units (e.g., `365 days * years`) is directly assigned to a uint24 variable without verifying it fits within the type's range"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

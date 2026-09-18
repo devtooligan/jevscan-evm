@@ -1,0 +1,19 @@
+{
+  "name": "sol_basics_inheritance_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Inheritance-2",
+  "source_hash": "8c22df2e1094f7d5",
+  "description": "Inherited parent functionality (e.g. Pausable) never exposed via public/external wrapper functions",
+  "question": "The source file in `source` defines a contract that inherits from a parent contract (such as OpenZeppelin's Pausable) whose functionality is only accessible through internal functions like _pause() or _unpause(), and the inheriting contract never defines any public or external function that calls these internal functions, so the inherited functionality can never be triggered by anyone, excluding cases where the child contract does expose at least one external/public wrapper (even if access-restricted to an admin) that invokes the inherited internal function.",
+  "criteria": [
+    "A contract inherits Pausable and defines internal-only overrides but has no external/public function calling _pause() or _unpause() anywhere in the contract or its non-parent code",
+    "A contract inherits an abstract base exposing only internal setter/mutator functions intended for child use, and the child never wraps them in any reachable external/public function",
+    "A contract inherits ReentrancyGuard-like or access-control base providing internal helper functions meant to be exposed, but no public/external function in the child ever calls them, leaving the feature completely unreachable"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Inheritance"
+    ]
+  ]
+}

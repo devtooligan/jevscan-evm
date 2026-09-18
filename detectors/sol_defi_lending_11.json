@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-11",
+  "source_hash": "9516ab8a91f7fe25",
+  "description": "Liquidation reward calculation can silently shortchange liquidators without revert or slippage protection",
+  "question": "The source file in `source` implements a liquidation function that computes and transfers a collateral/reward amount to the liquidator, but that amount can be silently reduced below what the liquidator expected (e.g., via capping to available balance, rounding down, or a price/ratio that changes mid-transaction) without reverting and without any liquidator-specified minimum-amount or slippage check, so the liquidator can receive less than anticipated; this excludes cases where the liquidator supplies a minCollateralOut/minReward parameter that reverts on underpayment, or where the reduced payout is an intentional, fixed, and clearly documented admin-configured liquidation bonus.",
+  "criteria": [
+    "liquidate() computes seizeAmount = debtToCover * price / collateralPrice then pays min(seizeAmount, availableCollateral) to the liquidator without reverting or reducing debtToCover proportionally",
+    "liquidation reward is computed via integer division that rounds down the collateral amount sent to the liquidator with no check against an expected minimum",
+    "liquidate() has no minCollateralOut or minReward parameter, so price movement between submission and execution can silently lower the payout with no revert",
+    "multiple liquidators can partially liquidate the same position such that a later liquidator's seized collateral is reduced by earlier calls without any notification or revert"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

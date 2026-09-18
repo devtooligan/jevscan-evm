@@ -1,0 +1,16 @@
+{
+  "name": "denial_of_service",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/denial-of-service/SKILL.md",
+  "source_hash": "9c2013bb8ae6f07c",
+  "description": "Unbounded loop over growing user-controlled array causing denial-of-service via block gas limit",
+  "question": "The source file in `source` contains a function that iterates with a for-loop over a dynamic array (e.g. a state array like `stakers`, `positions`, or `recipients`) that grows via user actions, performing per-element external calls or transfers inside the loop, without any pagination, batch-size limit, or cap on array length, such that as the array grows the function can exceed the block gas limit and become permanently uncallable, causing denial-of-service for fund distribution or other critical operations.",
+  "criteria": [
+    "A for/while loop bounded by `array.length` where the array is a public/state variable appended to by users (e.g. via deposit, stake, register functions)",
+    "No pagination parameters (like `startIndex`/`batchSize`) or fixed maximum iteration count limiting the loop",
+    "Loop body performs external calls, ETH transfers, or token transfers per iteration (e.g. `_sendReward`, `.transfer`, `.call{value:}`)",
+    "No pull-based claim function as an alternative to the push-based loop",
+    "Function lacks any check reverting or skipping when array length would make gas cost exceed block limits"
+  ],
+  "tags": []
+}

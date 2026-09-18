@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_ma_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-MA-2",
+  "source_hash": "0aeb35fe2d46de49",
+  "description": "Weak randomness from predictable block properties (timestamp, difficulty, blockhash)",
+  "question": "The source file in `source` derives a random value used for security- or outcome-sensitive logic (e.g. selecting winners, minting rare items, shuffling, lottery draws) by hashing or otherwise combining block.timestamp, block.difficulty, block.number, or blockhash with no external unpredictable entropy source such as Chainlink VRF or a commit-reveal scheme, allowing miners or attackers to predict or influence the outcome; this excludes uses of these block properties purely for non-randomness purposes like timelocks, deadlines, or event ordering.",
+  "criteria": [
+    "computes randomNumber = keccak256(abi.encodePacked(block.timestamp, block.difficulty)) to pick a lottery winner",
+    "uses blockhash(block.number - 1) combined with msg.sender as the sole seed for minting a random token ID",
+    "shuffles an array or selects a rare NFT attribute using block.number or block.difficulty as the random seed",
+    "generates a random index for reward distribution via uint(keccak256(abi.encodePacked(block.timestamp))) % length without external entropy"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Miner Attack"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "usdc_integration",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/usdc-integration/SKILL.md",
+  "source_hash": "96290a8e03431683",
+  "description": "Incorrect USDC decimal assumption (treating it as 18-decimal instead of 6-decimal) causing miscalculated amounts",
+  "question": "The source file in `source` contains code that defines or manipulates monetary amounts for USDC (explicitly named or referenced via its known token address/symbol), and it assumes or hardcodes 18-decimal scaling (e.g., `1e18`, `10**18`, or a decimals constant of 18) for USDC amounts instead of the correct 6-decimal unit, without any explicit 6-to-18 decimal conversion, causing USDC amounts to be computed, transferred, or compared at a scale up to 10^12 times too large or too small.",
+  "criteria": [
+    "A constant such as `USDC_UNIT`, `USDC_DECIMALS`, or similar is set to `1e18`/`10**18`/`18` rather than `1e6`/`6`.",
+    "USDC amounts are multiplied or divided by `1e18` (or `10**18`) directly, with no `SCALE_FACTOR`/6-decimal adjustment.",
+    "A deploy-time or constructor check validates `decimals() == 18` for a token identified as USDC, instead of `== 6`.",
+    "USDC amount literals are written assuming 18 decimals, e.g. `100 * 1e18` intended to represent $100 USDC.",
+    "Mixed 6-decimal/18-decimal arithmetic (e.g. combining USDC with WETH/DAI) is performed without any decimal conversion or scaling step."
+  ],
+  "tags": []
+}

@@ -1,0 +1,16 @@
+{
+  "name": "governance_attacks",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/governance-attacks/SKILL.md",
+  "source_hash": "0d9c33ede874a2b7",
+  "description": "Flash-loan-exploitable governance voting from using live token balances instead of historical snapshots",
+  "question": "The source file in `source` contains a governance/voting contract whose vote-casting or quorum logic determines voting power or quorum using the current token balance (e.g., balanceOf) or current totalSupply() at the time of voting, rather than a historical snapshot taken at proposal creation (e.g., getPastVotes/getPastTotalSupply with a recorded snapshot block), such that tokens acquired and returned within a single transaction (e.g., via flash loan) can be used to cast or swing a vote.",
+  "criteria": [
+    "Voting power is read via token.balanceOf(msg.sender) or an equivalent live balance instead of a checkpointed/historical balance",
+    "No snapshot block number or votingDelay is recorded at proposal creation to separate token acquisition from voting eligibility",
+    "Quorum or vote totals are computed from totalSupply() at vote time instead of a historical getPastTotalSupply(snapshot)",
+    "Delegation and voting can occur within the same transaction without any checkpoint restricting same-block delegated power",
+    "No mechanism (getPastVotes, snapshot, or minimum holding period) prevents momentarily-held tokens from being used to vote"
+  ],
+  "tags": []
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-7",
+  "source_hash": "0ca2e4434aabf6e9",
+  "description": "Solidity ABI-encoding bug corrupting head of dynamic data when tuple ends in static calldata array",
+  "question": "The source file in `source` uses a Solidity pragma version between 0.5.8 and 0.8.15 (inclusive) and contains code that ABI-encodes (via abi.encode, abi.encodePacked, external call arguments, or event emission) a tuple or struct whose last element is a statically-sized calldata array, while an earlier element of that same tuple is a dynamically-sized type (e.g., bytes, string, dynamic array), so the compiler bug corrupts the head/offset of that earlier dynamic component; this does not apply if the pragma is outside 0.5.8-0.8.15, if no calldata array is involved, or if the tuple contains no dynamically-encoded component before the static array.",
+  "criteria": [
+    "A function with pragma solidity 0.8.13 calls abi.encode(someBytesParam, calldataFixedArray) where calldataFixedArray is a statically-sized calldata array declared as the last argument",
+    "A struct passed to abi.encode contains a dynamic string field followed by a fixed-size uint256[3] calldata array field as its final member",
+    "An external call uses abi.encodeWithSelector(selector, dynamicStringArg, staticCalldataArrArg) where the static calldata array is the last parameter and a dynamic string precedes it",
+    "An event is emitted with abi.encode(dynamicBytesData, fixedSizeCalldataArray) under pragma 0.8.15, placing the calldata array last after a dynamic type"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

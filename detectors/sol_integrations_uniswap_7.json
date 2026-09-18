@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-7",
+  "source_hash": "02fa423564106141",
+  "description": "Improper use of `unchecked` in Uniswap-style math (TickMath/FullMath) causing silent overflow/underflow",
+  "question": "The source file in `source` implements or uses Uniswap-style fixed-point math functions (such as TickMath.getSqrtRatioAtTick/getTickAtSqrtRatio or FullMath.mulDiv) and wraps arithmetic operations that can genuinely overflow or underflow (multiplication, subtraction, or bit-shifting on unbounded/unvalidated inputs) inside an `unchecked` block without any accompanying bounds check, denominator validation, or overflow-detection guard, so results can silently wrap and produce incorrect prices, ticks, or liquidity values; this excludes `unchecked` blocks wrapping operations that are provably safe (e.g. loop counters, or arithmetic preceded by explicit range/overflow checks) and excludes standard Solidity >=0.8 default-checked arithmetic used without `unchecked`.",
+  "criteria": [
+    "FullMath.mulDiv multiplies two 256-bit numbers and divides by a denominator inside unchecked without checking denominator != 0 or checking for phantom overflow via the mulmod carry bit",
+    "TickMath.getSqrtRatioAtTick performs unchecked subtraction/shifting on tick-derived values without first validating tick is within MIN_TICK/MAX_TICK bounds",
+    "TickMath.getTickAtSqrtRatio does unchecked bit-shifting and multiplication on sqrtPriceX96 without validating sqrtPriceX96 is within MIN_SQRT_RATIO/MAX_SQRT_RATIO",
+    "a custom pricing function wraps unchecked multiplication of user-supplied liquidity and price values with no upper bound check, allowing silent overflow that understates or overstates output amounts"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

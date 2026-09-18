@@ -1,0 +1,17 @@
+{
+  "name": "upgrade_safety",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/upgrade-safety/SKILL.md",
+  "source_hash": "d9f5459ef6b510ad",
+  "description": "Uninitialized upgradeable proxy/implementation allowing attacker to seize ownership via initialize()",
+  "question": "The source file in `source` defines an upgradeable contract (using OpenZeppelin `Initializable`/`initializer` or an equivalent manual `_initialized` flag pattern) that exposes a public `initialize` function setting privileged state such as an owner or admin, and either the contract's constructor never calls `_disableInitializers()` or the proxy deployment code calls `initialize` in a separate step from proxy creation rather than passing init data atomically, allowing an attacker to call `initialize()` first on the implementation or proxy and take administrative control.",
+  "criteria": [
+    "Contract imports/uses Initializable or has a custom `initializer`-style function guarded only by a boolean like `_initialized`",
+    "Constructor is empty or missing `_disableInitializers()` call",
+    "`initialize()` sets `owner`, `admin`, or other privileged role and lacks any check restricting caller identity",
+    "Proxy deployment code (e.g., `new ERC1967Proxy(implementation, \"\")`) passes empty init data instead of `abi.encodeCall(initialize, ...)`",
+    "Deployment script/comment shows initialize() called in a transaction separate from proxy creation",
+    "No access control (e.g., onlyDeployer/onlyFactory) restricting who can call initialize()"
+  ],
+  "tags": []
+}

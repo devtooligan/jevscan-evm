@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_payment_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Payment-5",
+  "source_hash": "bdeb428ee87706c9",
+  "description": "Push-based payments to multiple recipients instead of pull-based withdrawal pattern",
+  "question": "The source file in `source` contains a function that proactively sends ETH or tokens to multiple recipients (e.g., iterating over an array of addresses or paying out to several parties) directly via transfer, send, or call within the same transaction, rather than crediting an internal balance that recipients must later withdraw themselves, so that a single failing or malicious recipient's transfer can revert or block payment to all other recipients, or an attacker-controlled recipient can cause unbounded gas consumption or denial of service, and this excludes single-recipient withdrawal functions where a user withdraws only their own already-tracked balance.",
+  "criteria": [
+    "A distribute() or payAll() function loops over an array of recipient addresses and calls recipient.transfer(amount) or recipient.send(amount) for each one in a single transaction",
+    "A payout function uses a low-level call{value: amount}(\"\") to push funds to multiple stored addresses without allowing individual withdrawal",
+    "A refund or dividend distribution function iterates over a list of investors/holders and sends ETH or tokens directly to each rather than incrementing a claimable balance mapping",
+    "A function pays a fee or reward to several parties (e.g., seller, platform, referrer) by directly transferring funds to each within one call instead of updating a withdrawable balance mapping for each"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Payment"
+    ]
+  ]
+}

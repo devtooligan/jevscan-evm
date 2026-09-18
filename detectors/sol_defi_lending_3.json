@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-3",
+  "source_hash": "8bee991048bcefb7",
+  "description": "Self-liquidation profit exploit in lending protocol liquidation logic",
+  "question": "The source file in `source` implements a liquidation function that lets a borrower liquidate their own undercollateralized position and still receive the liquidation bonus, discounted collateral price, or other liquidator incentive without any check preventing msg.sender (or a controlled proxy) from being the position owner, allowing the user to extract undue profit or improperly close their own debt cheaply; this excludes designs where liquidation pays no bonus/discount, where self-liquidation is explicitly blocked or reverts, or where the liquidator incentive is capped so no net profit versus fair value is possible.",
+  "criteria": [
+    "liquidate() transfers a liquidation bonus or discounted collateral to msg.sender without verifying msg.sender differs from the position owner being liquidated",
+    "the liquidation flow computes seized collateral using a discount factor applied uniformly even when the liquidator address equals the borrower address",
+    "a repay-and-seize function allows the borrower to call it on their own undercollateralized position and receive collateral at below-market price as the liquidation incentive",
+    "close factor logic permits full self-liquidation of an account's own debt while still granting the standard liquidation reward meant for third-party liquidators"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-4",
+  "source_hash": "5a9535a772e57eac",
+  "description": "Vault inflation attack via unsafe initial deposit share-price calculation",
+  "question": "The source file in `source` implements a vault or pool deposit/mint function that computes minted shares proportionally from totalSupply and totalAssets (or equivalent reserves) without enforcing a minimum first deposit, permanently burning/locking initial shares, or using virtual shares/assets offsets, so the first depositor can set an extreme share price or an attacker can donate/transfer underlying tokens before the first real deposit to inflate the price and steal or block subsequent depositors' funds.",
+  "criteria": [
+    "deposit() computes shares = amount * totalSupply / totalAssets and totalSupply can be zero, letting the first caller mint an arbitrarily favorable share amount for a tiny deposit such as 1 wei",
+    "The contract mints 100% of shares to the first depositor for any deposit size with no dead-share burn or lock, so a later attacker donation before real users deposit inflates the price they receive",
+    "Vault mints shares based on the raw token balance() of the contract rather than an internally tracked totalAssets value, letting an attacker front-run the first deposit with a direct token transfer that inflates the share price for subsequent depositors",
+    "Share calculation totalAssets/totalSupply is performed without adding virtual offset constants, so a near-zero totalSupply combined with an attacker-controlled totalAssets lets the attacker dictate the exchange rate for all following depositors"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

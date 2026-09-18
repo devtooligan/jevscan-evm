@@ -1,0 +1,21 @@
+{
+  "name": "sol_defi_as_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-8",
+  "source_hash": "7ca01f54f5ea1917",
+  "description": "AMM miscalculates swaps/liquidity due to unhandled token decimal or non-standard token behavior",
+  "question": "The source file in `source` implements AMM/swap or liquidity logic that computes swap amounts, price ratios, or liquidity shares using raw token balances or amounts without normalizing for each token's decimals() or without accounting for non-standard token behavior (fee-on-transfer, rebasing, or balance changes on transfer), causing incorrect pricing, reserve accounting, or fund loss, excluding designs that explicitly restrict the pool to a single fixed-decimal or standard ERC20 whitelist enforced elsewhere and documented as intentionally out of scope.",
+  "criteria": [
+    "computes swap output or price ratio by directly dividing raw reserve amounts of two tokens without scaling by each token's decimals()",
+    "calculates liquidity shares or invariant (e.g., constant product) using token amounts as-is when the pool supports tokens with different decimal counts",
+    "assumes the amount transferred into the pool equals the amount requested (msg amount) without measuring actual balance change, breaking on fee-on-transfer or rebasing tokens",
+    "hardcodes a decimal constant (e.g., 1e18) when normalizing amounts instead of reading each token's actual decimals()",
+    "credits liquidity or updates reserves based on the transfer input amount rather than the post-transfer balance delta, ignoring transfer fees or deflationary token mechanics"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

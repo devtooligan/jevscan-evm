@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lsd_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-3",
+  "source_hash": "41fe8b9ea5dc8167",
+  "description": "Reentrancy in LSD reward/withdrawal ETH transfers or NFT minting via callbacks",
+  "question": "The source file in `source` implements a liquid staking derivative's reward or withdrawal function that sends ETH via a low-level call or mints a withdrawal-representing NFT via `_safeMint` before updating the user's balance, staked amount, or withdrawal-request storage, and lacks a reentrancy guard or checks-effects-interactions ordering, allowing an attacker to re-enter (via the ETH call fallback or the ERC721 receiver hook) and repeatedly withdraw, claim, or mint before state is finalized, draining protocol ETH; this excludes functions where storage is fully updated before the external call/mint, or where a reentrancy guard modifier is applied, or where the recipient/minter is a trusted admin-only address.",
+  "criteria": [
+    "A withdrawal function sends ETH with call{value: amount}(\"\") to msg.sender and only sets balances[msg.sender] = 0 or pendingWithdrawal = 0 afterwards, with no nonReentrant modifier",
+    "A rewards claim function transfers accumulated ETH rewards before zeroing out the user's reward accounting variable",
+    "A function calls _safeMint(user, tokenId) to represent a pending withdrawal request before marking the corresponding withdrawal amount as claimed or removing it from a mapping",
+    "A batch withdrawal loop sends ETH to each recipient inside the loop before updating the aggregate protocol ETH balance or the user's withdrawal queue entry"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

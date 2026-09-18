@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_46",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-46",
+  "source_hash": "3730f1afd32dbb4a",
+  "description": "Solidity 0.6.9\u20130.8.13 bug: overriding functions change calldata/memory data location, causing invalid codegen for virtual calls",
+  "question": "The source file in `source` declares a Solidity contract compiled with a pragma version between 0.6.9 and 0.8.13 that defines a base function with a `calldata` or `memory` parameter or return type, which is overridden in a derived contract with the opposite data location (`memory` instead of `calldata` or vice versa), for a function called internally through virtual dispatch, excluding cases where the pragma targets a version outside 0.6.9-0.8.13 or where the override keeps the exact same data location as the base declaration.",
+  "criteria": [
+    "A base contract function parameter is typed `bytes calldata data` while the derived contract's override of that same function types the parameter `bytes memory data`",
+    "A virtual function returns `string memory` in the base contract but the overriding function in the derived contract returns `string calldata`",
+    "An interface or abstract contract declares a public/internal function with an array `uint256[] calldata` argument, and a concrete override changes it to `uint256[] memory`",
+    "A derived contract's override changes the return variable's data location from `calldata` to `memory` relative to the virtual function it overrides, and the function is invoked internally via a base-type reference"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

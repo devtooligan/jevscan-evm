@@ -1,0 +1,16 @@
+{
+  "name": "solidity_security",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/solidity-security/SKILL.md",
+  "source_hash": "6b5a4d6829240621",
+  "description": "Reentrancy vulnerability from unguarded or misordered external calls before state updates",
+  "question": "The source file in `source` contains a function that performs an external call (e.g., `.call{value: ...}(...)`, `.transfer`, or a call to an external contract/token) affecting a user's balance or funds, and that function either updates the relevant balance or state variable after the external call instead of before it, or lacks a reentrancy guard (such as `nonReentrant`) and does not follow strict checks-effects-interactions ordering, allowing an attacker to re-enter and drain funds or corrupt state before the balance is updated.",
+  "criteria": [
+    "External call (`.call{value:}`, `.transfer`, `.send`, or external contract/token call) occurs before the corresponding state/balance update in the same function",
+    "Function lacks `nonReentrant` or any reentrancy guard while making an external call to an address that could be attacker-controlled",
+    "Balance or accounting variable is decremented/updated after, not before, the external call",
+    "No use of checks-effects-interactions pattern: effects (state changes) happen after interactions (external calls)",
+    "Function that sends ETH or tokens to `msg.sender` or arbitrary address without updating internal accounting first"
+  ],
+  "tags": []
+}

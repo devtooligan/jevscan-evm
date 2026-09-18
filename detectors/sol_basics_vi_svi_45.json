@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_45",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-45",
+  "source_hash": "e219a0f8699c4325",
+  "description": "Silent skip of side-effect expressions when `.selector` accessed on complex expression (legacy codegen bug)",
+  "question": "The source file in `source` accesses the `.selector` member directly on a complex expression (such as a function call, ternary, or other non-trivial expression) rather than on a simple identifier or state variable, in a Solidity version between 0.6.2 and 0.8.20 without the via-ir pipeline, where that complex expression has side effects (state writes, event emissions, external calls) that the code relies on occurring, even though the legacy code generator leaves the expression unevaluated when only its `.selector` is accessed, silently skipping those side effects while the code assumes they executed.",
+  "criteria": [
+    "Code writes `someFunction(x).selector` where someFunction(x) mutates state or emits an event, and that mutation/event is expected to occur",
+    "Code uses `(condition ? funcA : funcB).selector` where funcA or funcB has side effects that the surrounding logic depends on happening",
+    "Code calls `this.externalCall(args).selector` inside a require or comparison, relying on externalCall's storage update or external interaction actually executing",
+    "Code retrieves a function selector via `f(a, b).selector` used purely to trigger f's side effects rather than to just obtain the selector value"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

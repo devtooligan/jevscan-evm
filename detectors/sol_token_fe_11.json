@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-11",
+  "source_hash": "2e303bab73000c91",
+  "description": "Missing or incorrectly bound EIP-712 DOMAIN_SEPARATOR in ERC2612 permit implementation enabling signature replay",
+  "question": "The source file in `source` implements an ERC2612-style permit() function that verifies EIP-712 signatures but either has no DOMAIN_SEPARATOR() function or computes/uses a domain separator that is not uniquely bound to the current contract address and chain ID, so permit signatures can be replayed across chains, forks, or other contract instances; this does not apply to token contracts that either do not implement permit() at all or correctly derive DOMAIN_SEPARATOR from block.chainid and address(this) per call or per deployment.",
+  "criteria": [
+    "permit() verifies signatures against a DOMAIN_SEPARATOR that was computed once in the constructor and cached, without recomputing it based on current chainid, allowing replay after a chain fork",
+    "permit() builds the EIP-712 digest using a hardcoded domain separator constant that omits address(this), enabling the same signature to be replayed against other deployments of the same contract bytecode",
+    "The contract implements permit()/nonces() but has no DOMAIN_SEPARATOR() function or public variable at all, so the EIP-712 digest used for ecrecover is not properly domain-separated",
+    "permit() computes the domain separator inline without including chainid in the keccak256 hash, so the resulting signature is valid on any EVM chain the contract is deployed to"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

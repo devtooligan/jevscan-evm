@@ -1,0 +1,19 @@
+{
+  "name": "sol_mccc_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-13",
+  "source_hash": "0dfe206e7e688991",
+  "description": "Bridged asset attributes (e.g. rewards, approvals) not updated or reset on destination chain",
+  "question": "The source file in `source` implements cross-chain bridging logic that mints, burns, or updates balances of a bridged asset carrying auxiliary attributes (such as staking rewards, approvals, or voting power) on the destination chain, but fails to correspondingly update or reset those attributes when processing the incoming bridge message, causing incorrect accounting or state on the destination chain, excluding cases where the attributes are explicitly designed to not carry over or are correctly recalculated/reset as part of the bridging logic.",
+  "criteria": [
+    "handleIncomingUpdate() updates a user's staked token balance from a cross-chain message but never updates the corresponding reward-per-token or accrued-rewards state for that user",
+    "A lock-and-mint bridge function mints wrapped tokens on the destination chain without resetting or transferring the token's approval/allowance mapping from the source chain representation",
+    "A bridge relay function updates a user's balance via an incoming message but leaves stale delegate/voting power attributes unchanged, causing incorrect governance weight",
+    "processIncomingTransfer() copies the raw token amount from the cross-chain payload but does not recompute or migrate the associated vesting/lock-up schedule attributes"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

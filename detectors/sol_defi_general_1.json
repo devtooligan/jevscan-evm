@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-1",
+  "source_hash": "776a84fd216be63e",
+  "description": "Incorrect handling of ERC20 tokens with non-18 decimals causing miscalculation",
+  "question": "The source file in `source` performs arithmetic or scaling on arbitrary ERC20 token amounts (e.g., price calculations, share/asset conversions, normalization) using a hardcoded 18-decimal assumption or fixed scaling factor such as 1e18, without querying the token's actual decimals() value or otherwise normalizing for it, so tokens with fewer or more than 18 decimals (e.g., 6-decimal USDC or 8-decimal WBTC) produce incorrect computed amounts; this excludes code that explicitly restricts usage to a single known 18-decimal token, or that correctly calls decimals() and scales amounts accordingly.",
+  "criteria": [
+    "Computes token value or price by multiplying/dividing raw token amounts directly by 1e18 without checking the token's decimals()",
+    "Converts between shares and assets using a fixed 10**18 scaling factor for an arbitrary ERC20 token parameter",
+    "Normalizes deposit/withdraw amounts across multiple ERC20 tokens assuming they all have 18 decimals",
+    "Compares or sums raw balances of different ERC20 tokens without adjusting for their differing decimals()"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

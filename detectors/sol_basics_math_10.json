@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_math_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-10",
+  "source_hash": "c518d7d2420af2de",
+  "description": "Off-by-one boundary error from wrong strict inequality operator (< or >) instead of <= or >=",
+  "question": "The source file in `source` contains a comparison using a strict inequality operator (< or >) to enforce a security-relevant boundary (such as balance sufficiency, deadline/expiry, allowance, threshold, or access-control limit) where the boundary value itself should be treated as valid, causing the check to incorrectly reject or allow the exact boundary value and produce unintended access, fund-handling, or timing behavior at that edge, excluding cases where the strict comparison is clearly intentional (e.g., deliberately excluding zero or excluding the exact boundary by design) or where the boundary is already safely handled by another check elsewhere in the same logic.",
+  "criteria": [
+    "require(balance > amount) is used to permit a withdrawal of exactly 'amount', incorrectly reverting when balance equals amount",
+    "if (block.timestamp < deadline) allows an action to proceed, but the action should also be allowed exactly at the deadline timestamp",
+    "a loop or access check like if (userTier > requiredTier) excludes users whose tier exactly equals requiredTier, when they should be permitted",
+    "require(amount < maxLimit) rejects a value exactly equal to maxLimit even though maxLimit is intended to be an allowed maximum",
+    "if (index > array.length) is used instead of >= to bound-check an index, allowing an out-of-range access at index == array.length"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_14",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-14",
+  "source_hash": "328a1d268b126130",
+  "description": "ABIDecoderV2 memory-corruption bug: abi.decode of multi-dimensional arrays/structs from memory in vulnerable Solidity versions",
+  "question": "The source file in `source` declares a pragma solidity version within the vulnerable ABIDecoderV2 range (0.4.16 to 0.8.3, or leaves the version unpinned/floating so it can compile with one of these) and calls abi.decode on a memory byte array to produce a multi-dimensional array or a struct value, without upgrading to or pinning a patched compiler version (>=0.8.4) or otherwise avoiding decoding such nested memory types, so decoded results can be corrupted by memory contents outside the actual encoded array.",
+  "criteria": [
+    "A function uses abi.decode(data, (uint256[][])) or similar nested/multi-dimensional array type on a memory bytes/byte array parameter",
+    "A function uses abi.decode(data, (SomeStruct)) or (SomeStruct[]) where SomeStruct contains dynamic members, decoding from a memory byte array",
+    "A low-level call's returned memory bytes are decoded via abi.decode into a struct or multi-dimensional array type",
+    "A function accepts bytes calldata/memory input, copies or receives it in memory, and decodes it with abi.decode into a struct containing a dynamic array field"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

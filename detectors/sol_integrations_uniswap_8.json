@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-8",
+  "source_hash": "55dca4f2a396a66c",
+  "description": "Missing slippage check on final output amount before transferring swap proceeds to users",
+  "question": "The source file in `source` performs a multi-step or multi-hop token swap and transfers the resulting output tokens to a user without validating that the final output amount received by the user meets or exceeds a caller-specified minimum acceptable amount, checking any minAmountOut only against an intermediate swap step's output rather than the actual final amount sent to the user, so users can receive fewer tokens than intended due to price movement or manipulation between the intermediate check and the final transfer.",
+  "criteria": [
+    "swapExactTokensForTokens or similar is called on an intermediate hop with amountOutMin enforced, then the final hop's output is transferred to the user without any minimum-amount check",
+    "A multi-step swap function checks `require(intermediateAmountOut >= minIntermediateOut)` after step 1 but sends the step 2 output directly to msg.sender with no comparison against a user-supplied minimum",
+    "A router function accepts a `minAmountOut` parameter but validates it against a quoted or estimated value computed before the final swap executes, instead of against the actual tokens transferred to the user",
+    "Funds are transferred to the recipient immediately after the last swap call without a subsequent require() comparing the received balance to any minimum output threshold"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

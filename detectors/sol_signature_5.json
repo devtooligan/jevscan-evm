@@ -1,0 +1,19 @@
+{
+  "name": "sol_signature_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Signature-5",
+  "source_hash": "ba642fcdc65df1b7",
+  "description": "Missing deadline/expiration check on signatures, allowing reuse of expired signatures",
+  "question": "The source file in `source` implements a function that accepts a signature intended to include a deadline or expiration timestamp (e.g., verifies signer via ecrecover, EIP-712, or similar signature validation, and the signed data or function parameters include a deadline/expiry field), but the function never compares this deadline against the current block timestamp before accepting the signature, allowing an expired signature to still be processed as valid. This excludes signatures that have no deadline field at all by design, and cases where the deadline is properly checked against block.timestamp (or equivalent) and the transaction reverts if expired.",
+  "criteria": [
+    "A function takes a `deadline` parameter as part of signed data but never checks `deadline >= block.timestamp` or similar before executing the signature-authorized action",
+    "An EIP-712 permit-like function recovers the signer and validates the signature hash, but skips any comparison of an included expiry/deadline timestamp against the current time",
+    "A meta-transaction or relayer function includes an expiration field in the signed payload, yet processes the transaction regardless of whether the expiration has passed",
+    "A struct or signed message contains a `validUntil` or `expiry` field that is stored or hashed but is never read or compared during verification logic"
+  ],
+  "tags": [
+    [
+      "Signature"
+    ]
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "sol_defi_lending_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-2",
+  "source_hash": "9801b4dcd52c6f71",
+  "description": "Lending protocol lacks a working liquidation mechanism for undercollateralized or defaulted loans",
+  "question": "The source file in `source` implements a lending/borrowing system with collateralized positions but either provides no liquidate() function or contains one whose logic prevents any liquidation from ever succeeding once a loan is unpaid or the collateral ratio drops below the required threshold, leaving lenders unable to recover funds, and this does not include cases where liquidation is correctly gated only by legitimate conditions such as an actually healthy position, a valid grace period, or an intentional admin-only pause.",
+  "criteria": [
+    "A liquidate() function checks collateral value against the debt but uses a stale or unreachable price feed so the health-factor comparison never evaluates to unhealthy, blocking liquidation even when undercollateralized",
+    "borrow()/repay() logic updates debt state but there is no corresponding function anywhere in the contract that allows a third party to seize collateral when a loan is overdue or undercollateralized",
+    "liquidate() requires msg.sender to equal the position owner or another condition that no external liquidator can satisfy, effectively disabling liquidation entirely",
+    "The health factor or collateral ratio calculation contains an inverted comparison (e.g. requiring ratio < threshold to be healthy) so positions that are actually undercollateralized are always treated as safe and rejected from liquidation",
+    "liquidate() reverts unconditionally due to a hardcoded require(false) style check or an unreachable branch after the eligibility check, so no liquidation call can ever complete",
+    "The loan default/overdue timestamp check uses the wrong comparison operator or wrong variable, so loans past their due date are never flagged as liquidatable"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

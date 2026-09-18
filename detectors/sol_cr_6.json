@@ -1,0 +1,19 @@
+{
+  "name": "sol_cr_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-CR-6",
+  "source_hash": "0abdab5c10211bcc",
+  "description": "Single-step ownership/privilege transfer instead of secure two-step transfer pattern",
+  "question": "The source file in `source` implements a privileged role transfer function (e.g., transferOwnership, setAdmin, changeOwner) that immediately overwrites the current owner/admin state variable with the new address in one call, without requiring the new address to explicitly accept or claim the role via a separate pendingOwner/acceptOwnership step, allowing an irrecoverable loss of privileges if the wrong address is supplied, excluding cases where the function already implements a two-step propose-then-accept mechanism or only renounces the role to zero address intentionally.",
+  "criteria": [
+    "transferOwnership(address newOwner) sets owner = newOwner directly in a single call with no pendingOwner staging variable",
+    "setAdmin(address newAdmin) immediately overwrites admin = newAdmin without requiring newAdmin to call an acceptAdmin/claimAdmin function",
+    "changeOwner directly assigns the storage owner variable from the caller-provided argument with no two-step handshake or confirmation step",
+    "onlyOwner-guarded function updates the privileged role address in one transaction without emitting a pending-transfer event or storing a candidate address for later acceptance"
+  ],
+  "tags": [
+    [
+      "Centralization Risk"
+    ]
+  ]
+}

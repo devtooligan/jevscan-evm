@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_inheritance_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Inheritance-3",
+  "source_hash": "d4b5d69b7a5e9fab",
+  "description": "Contract declares an interface but fails to implement all its required functions",
+  "question": "The source file in `source` declares that a contract implements a given interface (via inheritance, `is InterfaceName`, or similar) but omits the implementation of one or more functions required by that interface, or implements a required function with a mismatched signature, so calls made through the interface type revert or behave unexpectedly.",
+  "criteria": [
+    "A contract declares `is IERC20` or another named interface but does not define one of the interface's required functions (e.g. missing `transferFrom`)",
+    "A contract inherits an interface and implements a required function with a different signature (wrong parameter types or return type) than the interface declares",
+    "A contract implements an interface function but omits required return values specified by the interface, causing callers decoding the return data to revert or misinterpret results",
+    "A contract claims ERC-165 support for an interface ID via `supportsInterface` without actually implementing all of that interface's required functions"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Inheritance"
+    ]
+  ]
+}

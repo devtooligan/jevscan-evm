@@ -1,0 +1,20 @@
+{
+  "name": "sol_heuristics_15",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-15",
+  "source_hash": "1808128242128931",
+  "description": "Sensitive data stored unencrypted on-chain, exposed via public state despite being marked private",
+  "question": "The source file in `source` declares a state variable (even if marked `private`) or otherwise persists sensitive data such as passwords, secrets, personal information, unencrypted private keys, or confidential business data directly to contract storage without encryption, relying on the `private` visibility modifier to hide it from public inspection, excluding cases where the data is encrypted before storage, is non-sensitive, or is never written to on-chain storage at all.",
+  "criteria": [
+    "A `private` state variable stores a plaintext password, API key, or secret string that is later used in contract logic",
+    "A struct or mapping persists users' personal identifiable information (e.g. names, emails, SSNs) directly to storage without encryption",
+    "A function writes a raw private key or seed phrase to a storage variable for later on-chain use",
+    "Sensitive whitelist, voting choice, or auction bid data is stored in a `private` variable under the assumption that visibility keywords prevent public access",
+    "Comments or code assume `private` variables are hidden from users and design access control around that false assumption"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "constructor_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/constructor-patterns/SKILL.md",
+  "source_hash": "32dee23ec8c9badf",
+  "description": "Missing _disableInitializers() in upgradeable contract constructor allowing implementation takeover",
+  "question": "The source file in `source` defines an upgradeable Solidity contract (using Initializable/initializer or reinitializer) with a public/external initialize function, but its constructor does not call _disableInitializers(), allowing an attacker to call initialize directly on the implementation contract and take it over or corrupt its state.",
+  "criteria": [
+    "Contract inherits Initializable or uses OpenZeppelin upgradeable base contracts",
+    "Has an initialize()/initializer-modified function or reinitializer(n) function setting state",
+    "Constructor is absent, or present but does not call _disableInitializers()",
+    "No other mechanism disables initialization on the implementation contract",
+    "Not a case where the contract is intentionally non-upgradeable (plain constructor-only pattern)"
+  ],
+  "tags": []
+}

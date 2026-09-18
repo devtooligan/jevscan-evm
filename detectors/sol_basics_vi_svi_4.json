@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-4",
+  "source_hash": "8350b1ec7dbe74a9",
+  "description": "Hash collision via abi.encodePacked with multiple dynamic-type arguments",
+  "question": "The source file in `source` computes a hash such as keccak256(abi.encodePacked(a, b, ...)) where two or more of the packed arguments are dynamic types (e.g., string, bytes, or dynamic arrays), allowing different input combinations to produce identical packed encodings and thus colliding hash outputs, excluding cases where abi.encodePacked is only applied to a single argument or to fixed-size types where no such collision is possible.",
+  "criteria": [
+    "keccak256(abi.encodePacked(name, symbol)) where both name and symbol are dynamic string parameters, enabling collisions like ('a','bc') vs ('ab','c')",
+    "A signature or leaf hash computed as keccak256(abi.encodePacked(user, data)) where data is a dynamic bytes parameter concatenated with another dynamic field",
+    "A Merkle leaf or commitment hash built via abi.encodePacked(strA, strB, ...) combining multiple dynamic-length strings/bytes without delimiters",
+    "A mapping key or unique identifier derived from abi.encodePacked(arr1, arr2) where arr1 and arr2 are dynamic arrays, allowing element reshuffling across boundaries to collide"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

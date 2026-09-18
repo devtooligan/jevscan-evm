@@ -1,0 +1,17 @@
+{
+  "name": "storage_layout",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/storage-layout/SKILL.md",
+  "source_hash": "3d0a2f2cdcefdfb2",
+  "description": "Storage slot collision from insecure custom/unstructured storage slot derivation in upgradeable or diamond contracts",
+  "question": "The source file in `source` defines a contract or library that uses inline assembly to set a custom storage slot (e.g. `ds.slot := <constant>` or `$.slot := <constant>`) for a struct used as unstructured/diamond/namespaced storage, and the slot constant is either a small hardcoded integer or a keccak256 hash computed without applying the collision-resistant derivation (subtracting 1 and/or masking as required by EIP-1967/ERC-7201), making the slot predictable or likely to collide with sequential Solidity storage slots or other libraries' storage, risking storage corruption across upgrades.",
+  "criteria": [
+    "assembly block with `<var>.slot := <constant>` assigning a custom storage location",
+    "slot constant is a literal small integer (e.g. 0, 1, 2) used as a storage pointer instead of a hashed value",
+    "slot constant computed as plain `keccak256(\"...\")` without subtracting 1 or masking, unlike EIP-1967/ERC-7201 pattern",
+    "no `- 1` offset or `& ~bytes32(uint256(0xff))` bitmask applied to the keccak256 result before use as slot",
+    "multiple distinct storage structs/libraries in the file appear to share or overlap the same slot constant",
+    "namespace string used for hashing is short, guessable, or reused elsewhere in the file without uniqueness guarantee"
+  ],
+  "tags": []
+}

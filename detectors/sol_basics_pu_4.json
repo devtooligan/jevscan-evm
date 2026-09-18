@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-4",
+  "source_hash": "8594a616b8547c0f",
+  "description": "Missing/weak access control on UUPS _authorizeUpgrade allowing unauthorized upgrades",
+  "question": "The source file in `source` defines a UUPS upgradeable contract overriding `_authorizeUpgrade(address)` but the function lacks any access-control restriction (or uses an easily bypassed/incorrect check) such that any address, not just a trusted owner/admin role, can call `upgradeTo`/`upgradeToAndCall` to change the implementation contract, excluding cases where `_authorizeUpgrade` is properly restricted with `onlyOwner`, a role-based modifier, or an equivalent correctly enforced authorization check.",
+  "criteria": [
+    "_authorizeUpgrade(address) is overridden with an empty body, granting anyone permission to upgrade",
+    "_authorizeUpgrade(address) contains no modifier or require statement checking msg.sender against an owner or admin role",
+    "_authorizeUpgrade(address) checks a condition unrelated to caller authorization (e.g., always true or a tautology) instead of verifying privilege",
+    "_authorizeUpgrade(address) relies on a role check against a variable that is never initialized or is settable by any user"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

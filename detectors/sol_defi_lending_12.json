@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-12",
+  "source_hash": "7e3bf1589506459e",
+  "description": "Lending protocol logic that can permanently trap a borrower in unrepayable debt",
+  "question": "The source file in `source` implements borrow/repay functions for a lending protocol, and its repay logic (interest accrual, fee deduction, rounding, token-transfer handling, or a blocking check) can leave a borrower permanently unable to reduce their debt to zero or fully close their loan, trapping them in perpetual debt, excluding cases where repayment is intentionally blocked only for admin-enforced liquidation, sanctioned/blacklisted addresses, or a protocol-wide pause that equally affects all users' actions.",
+  "criteria": [
+    "repay() subtracts a fee from the repay amount using integer division so the remaining debt can never reach exactly zero, leaving a permanent residual balance",
+    "the interest-accrual function runs and compounds debt inside repay() before the debt reduction, so a fee or minimum-repay threshold makes debt grow faster than the user can pay it down",
+    "repay() calls transferFrom for the full debt amount but the underlying token deducts a transfer fee, so the contract always credits less than the required debt and rejects full repayment",
+    "repay() reverts whenever block.timestamp exceeds a fixed maturity/deadline even though the borrower still owes debt, with no path left to close the position afterward"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "erc1155_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/erc1155-patterns/SKILL.md",
+  "source_hash": "4909b9fb9062feb3",
+  "description": "Missing array length validation in ERC-1155 batch mint/transfer functions",
+  "question": "The source file in `source` defines a custom ERC-1155 batch minting or batch transfer function that loops over an `ids` array and a separate `amounts` (or `values`) array using a shared index, without first requiring that both arrays have equal length, so mismatched array lengths let indices pair incorrectly and mint or transfer wrong token amounts, or cause unhandled out-of-bounds reverts, rather than merely relying on trusted owner-only access.",
+  "criteria": [
+    "Custom function like `mintBatch` or `safeBatchTransferFrom` override loops with `for (uint256 i = 0; i < ids.length; i++)`",
+    "Loop body indexes a second array such as `amounts[i]` or `values[i]` without validating it has the same length as `ids`",
+    "No `require(ids.length == amounts.length, ...)` or equivalent length-equality check before the loop",
+    "Function is externally/publicly callable and performs `_mint`, `_mintBatch`, or token transfer logic based on the mismatched arrays",
+    "Absence of reliance on OpenZeppelin's internal `_mintBatch`/`_update` length checks (i.e., custom loop bypasses them)"
+  ],
+  "tags": []
+}

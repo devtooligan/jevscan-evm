@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-8",
+  "source_hash": "6470bd57e2e9dde3",
+  "description": "Same-block deposit-then-withdraw enabling flashloan deposit-harvest-withdraw exploits",
+  "question": "The source file in `source` implements deposit and withdraw (or redeem/claim/harvest) functions that grant benefits based on deposit amount, but contains no mechanism (such as a timestamp/block-number check, lock period, or cooldown) preventing a user from depositing and withdrawing or harvesting benefits within the same transaction or block, allowing a flashloan-funded deposit-harvest-withdraw cycle to extract rewards without real capital exposure, excluding protocols that explicitly enforce a minimum holding period, use time-weighted balances, or otherwise block same-block withdrawal.",
+  "criteria": [
+    "deposit() credits shares/balance and withdraw() lets the same address remove funds with no minimum elapsed time or block delay check between the two calls",
+    "harvest() or claimRewards() computes rewards from current balance immediately after deposit() with no snapshot delay or vesting so a same-tx deposit+harvest+withdraw yields rewards",
+    "a staking or yield function updates rewardDebt/shares on deposit and allows withdraw() in the same block without checking lastDepositBlock or a cooldown timestamp",
+    "a bonus/discount is calculated from deposit size and immediately claimable via withdraw() in the same transaction with no lock-up enforced"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

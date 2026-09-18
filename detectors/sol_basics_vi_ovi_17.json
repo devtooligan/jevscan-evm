@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_17",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-17",
+  "source_hash": "1a855d2143d60b78",
+  "description": "Uninitialized UUPS implementation contract exploitable for takeover or self-destruct",
+  "question": "The source file in `source` defines a contract that inherits OpenZeppelin's UUPSUpgradeable (implementing the UUPS upgradeable proxy pattern with an initialize() function) but does not call _disableInitializers() in its constructor, leaving the implementation contract's initializer unlocked so an attacker can call initialize() directly on the implementation to become its owner, upgrade it to a malicious contract, or trigger a delegatecall-based self-destruct.",
+  "criteria": [
+    "A contract extends UUPSUpgradeable and exposes an initialize() function but declares no constructor at all",
+    "A contract extends UUPSUpgradeable with a constructor that performs other setup but never calls _disableInitializers()",
+    "An upgradeable contract's initialize() function sets owner/admin state and is reachable without any prior lock on the implementation instance",
+    "A base/abstract contract inheriting UUPSUpgradeable omits _disableInitializers() in every constructor defined across the inheritance chain"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

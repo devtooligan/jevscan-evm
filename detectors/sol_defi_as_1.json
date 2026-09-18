@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-1",
+  "source_hash": "c00bda8c2fc9cfc4",
+  "description": "Hardcoded slippage tolerance in AMM/swap trade execution instead of user-specified minimum",
+  "question": "The source file in `source` implements a swap/trade function that computes an acceptable output or price bound using a fixed, hardcoded slippage percentage or constant (not a caller-supplied parameter derived from an off-chain calculated amount), so users cannot adjust slippage tolerance and trades can execute at a fixed, potentially unfavorable rate or freeze during high volatility, excluding functions that accept a user- or caller-provided minAmountOut/maxAmountIn/slippage parameter that is enforced in the trade logic.",
+  "criteria": [
+    "swap() computes minOut = amountIn * 99 / 100 using a hardcoded 1% constant instead of accepting a minOut parameter from the caller",
+    "A constant like uint256 constant SLIPPAGE = 5; is used to derive the acceptable price bound inside the trade execution function",
+    "The function signature for swapExactTokensForTokens omits a minAmountOut/maxSlippage argument and instead applies an internal fixed percentage tolerance to the on-chain quoted price",
+    "getAmountOutMin() applies a fixed basis-point deduction defined in the contract rather than using a value passed in by the user based on off-chain calculation"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

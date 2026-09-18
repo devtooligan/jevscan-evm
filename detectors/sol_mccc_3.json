@@ -1,0 +1,20 @@
+{
+  "name": "sol_mccc_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-3",
+  "source_hash": "b27cc70f0b7c8a9f",
+  "description": "Use of chain-specific EVM opcodes/operations that behave differently or are unsupported on target L2/multi-chain deployments",
+  "question": "The source file in `source` contains contract code intended for deployment across multiple EVM chains (e.g., Ethereum mainnet plus Arbitrum/Optimism) that relies on EVM opcodes or operations whose behavior, gas cost, or availability differs across those chains (such as PUSH0, block.number-based timing, block.difficulty/basefee, or SELFBALANCE) without any chain-specific handling, guard, or documented assumption limiting deployment to compatible chains, risking incorrect logic or deployment failure on some target chains. This excludes contracts explicitly scoped to a single chain or that already branch/guard for chain-specific semantics.",
+  "criteria": [
+    "Contract is compiled with pragma solidity ^0.8.20 or later (introducing PUSH0) and is deployed/deployable on chains like pre-Bedrock Optimism or other L2s lacking PUSH0 support",
+    "Contract measures elapsed time or vesting/cooldown periods using block.number multiplied by an assumed ~12s Ethereum block time, while being deployable on Arbitrum/Optimism with different block intervals",
+    "Contract uses block.difficulty or block.basefee as a source of randomness or timing assuming Ethereum L1 semantics, though these opcodes return different or constant values on L2 chains",
+    "Contract calls SELFBALANCE or relies on CHAINID-dependent opcode behavior without validating it against the specific target chain's supported opcode set",
+    "Contract uses gas-cost-sensitive opcodes (e.g., SSTORE cold/warm assumptions or gas refunds) that differ materially between L1 and L2 chains without recalculating gas limits per chain"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

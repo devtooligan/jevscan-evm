@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_14",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-14",
+  "source_hash": "b24d534c2477ff7c",
+  "description": "Missing sanity/range check on oracle price allows flash-crash price manipulation",
+  "question": "The source file in `source` fetches a price value from an external oracle (e.g., price feed, AMM spot price, or aggregator) and uses it directly in a financial calculation such as collateral valuation, liquidation, swap pricing, or minting/burning amounts, without validating that the returned price falls within a sane, bounded, or previously-expected range (e.g., min/max bounds, deviation-from-last-price checks, or staleness-independent sanity checks), so that an oracle reporting an extreme or manipulated value during a flash crash or flash-loan-driven price swing can be consumed as-is, leading to incorrect valuations, unfair liquidations, or drainable arbitrage; this excludes cases where the code already clamps, bounds, or rejects out-of-range prices, or where the price is only used for non-financial, informational display purposes.",
+  "criteria": [
+    "getPrice() returns oracle.latestAnswer() directly used to compute collateral value with no upper/lower bound check",
+    "liquidate() computes collateral-to-debt ratio using a raw oracle price without comparing it to a previous price or deviation threshold",
+    "swap() prices assets using the current AMM spot price without checking it against a TWAP or bounded reference price",
+    "mint()/burn() calculates token amounts from an oracle price feed value with no sanity check for extreme deviations from a reference price"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

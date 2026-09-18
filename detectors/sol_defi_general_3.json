@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-3",
+  "source_hash": "f92de63418e3e080",
+  "description": "Accounting relies on token/ETH balanceOf instead of internal ledger, enabling donation-based manipulation",
+  "question": "The source file in `source` computes shares, exchange rates, or other protocol accounting directly from `balanceOf(address(this))` or `address(this).balance` rather than from an internally tracked variable that is updated only through the protocol's deposit/withdraw logic, so an attacker can directly transfer or self-destruct funds into the contract to inflate or deflate the computed balance and skew accounting, share pricing, or reward calculations, excluding cases where the contract already reconciles or caps the raw balance against an internally tracked accounting variable before using it.",
+  "criteria": [
+    "previewDeposit or convertToShares computes totalAssets() as token.balanceOf(address(this)) and uses it directly to price shares without subtracting untracked deposits",
+    "A reward-per-token calculation multiplies by address(this).balance instead of an internally incremented totalDeposited state variable",
+    "A vault's totalAssets() returns balanceOf(address(this)) directly, allowing a donation transfer to inflate share price for later depositors",
+    "getExchangeRate() divides totalSupply by token.balanceOf(address(this)) with no internal accounting variable tracking actual deposits"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

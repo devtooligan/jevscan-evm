@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-10",
+  "source_hash": "ed62fe81a6e6f60e",
+  "description": "Calling token transfer/transferFrom with a zero amount without guarding, risking revert on tokens that reject zero-value transfers",
+  "question": "The source file in `source` calls an ERC20 `transfer` or `transferFrom` function with an amount value that may be zero, without first checking that the amount is greater than zero, so integration with tokens that revert on zero-amount transfers would cause the whole operation to unexpectedly fail.",
+  "criteria": [
+    "A function calls `token.transfer(recipient, amount)` where `amount` can be zero (e.g. computed from a fee, reward, or difference calculation) with no prior `if (amount == 0) return;` or `require(amount > 0)` check",
+    "A loop iterates over multiple recipients calling `token.transferFrom(msg.sender, recipients[i], amounts[i])` without skipping or checking entries where `amounts[i] == 0`",
+    "A reward or interest distribution function calls `transfer` with an amount derived from a calculation that can legitimately evaluate to zero, without a zero-amount guard before the transfer call",
+    "A withdrawal or sweep function forwards the entire `balanceOf(address(this))` via `transfer` without checking that the balance is nonzero before calling transfer"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

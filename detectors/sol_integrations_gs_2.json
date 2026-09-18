@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_gs_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-GS-2",
+  "source_hash": "204a3bf0d5809b50",
+  "description": "Missing nonce increment in Gnosis Safe module transaction execution enabling signature replay",
+  "question": "The source file in `source` defines a Gnosis Safe module-related function such as `execTransactionFromModule()` that executes a transaction on behalf of the Safe but never increments a nonce (state variable tracking executed transactions) during its execution, so that a signature or authorization tied to a given nonce value can be relied upon as unique when it is not, enabling replay or reuse; this does not apply if the function is not responsible for executing module transactions, or if the nonce increment happens elsewhere in a way that still guarantees uniqueness per execution.",
+  "criteria": [
+    "execTransactionFromModule() executes an arbitrary call via the Safe without ever reading or writing a nonce variable",
+    "A module execution function increments a local counter but never persists it to storage, so the nonce value resets or repeats across calls",
+    "The nonce increment is placed after an external call that can reenter the function, allowing the same nonce to be used twice before it updates",
+    "A function meant to execute transactions from a module relies on signatures bound to a nonce, but the nonce is only incremented in a different, unrelated function that is not guaranteed to be called alongside it"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Gnosis Safe"
+    ]
+  ]
+}

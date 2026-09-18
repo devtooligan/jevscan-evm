@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-8",
+  "source_hash": "6be866f271a5f322",
+  "description": "Upgradeable proxy contract inherits non-upgradeable OpenZeppelin base contract instead of its Upgradeable variant",
+  "question": "The source file in `source` defines a contract that uses the upgradeable/proxy pattern (e.g. has an initializer function, inherits Initializable, or calls _disableInitializers) yet inherits a non-upgradeable OpenZeppelin base contract (such as Ownable, ReentrancyGuard, Pausable, or ERC20) instead of its Upgradeable counterpart, so that constructor-set state in the base contract never executes through the proxy and the corresponding protections (ownership checks, reentrancy guard, pause state, token accounting) are left uninitialized or broken. This excludes non-proxy, non-upgradeable contracts correctly using standard non-upgradeable OZ bases, and contracts that correctly inherit the matching Upgradeable variants (e.g. OwnableUpgradeable).",
+  "criteria": [
+    "A contract with an initialize() function inherits Ownable instead of OwnableUpgradeable, so owner is never set via the proxy's initializer and onlyOwner checks can be bypassed or permanently locked",
+    "A contract with an initializer pattern and _disableInitializers() in its constructor inherits ReentrancyGuard instead of ReentrancyGuardUpgradeable, leaving the reentrancy guard's storage slot uninitialized after being deployed behind a proxy",
+    "A contract meant to be deployed as an upgradeable implementation inherits Pausable instead of PausableUpgradeable, so the pause state variable set in Pausable's constructor is never initialized through the proxy's storage",
+    "A contract using Initializable and initialize() inherits ERC20 instead of ERC20Upgradeable, causing the constructor-based token name/symbol/decimals setup to never run through the proxy"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

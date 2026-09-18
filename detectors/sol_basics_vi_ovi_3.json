@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-3",
+  "source_hash": "cd3c4896015db9bb",
+  "description": "ECDSA signature malleability via OpenZeppelin recover/tryRecover with signature-based replay protection",
+  "question": "The source file in `source` calls OpenZeppelin's ECDSA.recover(hash, signature) or ECDSA.tryRecover(hash, signature) using a single bytes signature argument, and implements replay/reuse protection by marking that raw signature (or its hash) as used, rather than marking the signed message hash or a nonce as used, allowing an attacker to resubmit a malleable re-encoding (e.g. EIP-2098 compact form) of an already-used signature to bypass the replay check. This excludes uses of ECDSA functions that take r, v, s or r, vs as separate arguments, and excludes contracts whose replay protection is based on a nonce or message hash rather than the signature bytes themselves.",
+  "criteria": [
+    "A function recovers the signer via ECDSA.recover(hash, signature) and then sets usedSignatures[signature] = true (or similar) to block reuse of that exact signature",
+    "A function uses ECDSA.tryRecover(hash, signature) and checks a mapping keyed by the signature bytes (or keccak256(signature)) to determine whether it has already been consumed",
+    "Replay protection stores a mapping from the raw signature blob to a boolean 'used' flag instead of tracking a nonce or the signed hash",
+    "Code marks a signature as spent via signatureUsed[sig] = true after calling recover/tryRecover with a single bytes signature parameter, with no nonce or message-hash-based tracking"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

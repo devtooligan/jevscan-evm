@@ -1,0 +1,17 @@
+{
+  "name": "token_integration_safety",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/token-integration-safety/SKILL.md",
+  "source_hash": "6252c47fb35a7316",
+  "description": "Unsafe ERC-20 integration: raw transfer/approve calls and unchecked transfer amounts for non-standard tokens",
+  "question": "The source file in `source` contains a contract that calls an ERC-20 token's transfer, transferFrom, or approve function directly (not via SafeERC20 wrappers) or credits an internal balance using the input amount parameter instead of the measured balance difference, such that non-standard tokens (e.g., no bool return, fee-on-transfer, or rebasing tokens) would cause reverted transfers, silent accounting failures, or inflated internal balances.",
+  "criteria": [
+    "Direct call to token.transfer(...), token.transferFrom(...), or token.approve(...) without using SafeERC20's safeTransfer/safeTransferFrom/forceApprove",
+    "Approval is set directly to a new non-zero value without first resetting to zero (breaks with USDT-style tokens)",
+    "Deposit/transfer-in function increments internal balance or minted shares by the passed 'amount' parameter rather than by measured balanceOf() difference before/after the transfer",
+    "No decimals() query is used when computing token amounts, hardcoding 18 decimals for an arbitrary or non-18-decimal token",
+    "Contract stores raw token balances for a rebasing token without wrapping it or using share-based accounting",
+    "Absence of any SafeERC20 import/usage combined with direct low-level token interface calls"
+  ],
+  "tags": []
+}

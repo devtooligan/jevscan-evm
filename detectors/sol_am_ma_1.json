@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_ma_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-MA-1",
+  "source_hash": "9a15ec07b2e12293",
+  "description": "Unsafe reliance on block.timestamp for time-sensitive/critical logic",
+  "question": "The source file in `source` uses block.timestamp as the sole basis for a time-sensitive critical operation, such as determining auction/lottery/random outcomes, unlocking funds, computing precise deadlines, or comparing timestamps for access control, without tolerating miner manipulation of several seconds and without alternative safeguards like block.number or a manipulation-tolerant time window, so a miner can adjust block.timestamp within allowed limits to bias the outcome or bypass timing logic, excluding cases where block.timestamp is used only for coarse-grained, long-duration periods (e.g., days/weeks) where second-level manipulation has no meaningful security impact.",
+  "criteria": [
+    "A lottery or randomness function derives its outcome directly from block.timestamp, letting a miner bias the result by adjusting timestamp within allowed drift",
+    "A deadline check like require(block.timestamp == exactValue) or tight equality comparisons on timestamp that miners can manipulate to pass or fail the check",
+    "Funds unlock or vesting logic compares block.timestamp to a short-duration threshold (seconds/minutes) where a few seconds of manipulation changes the unlock outcome",
+    "An auction or bidding contract ends or determines winners based on block.timestamp comparisons that a miner can shift to favor a specific bid"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Miner Attack"
+    ]
+  ]
+}

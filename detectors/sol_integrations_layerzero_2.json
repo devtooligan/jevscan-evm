@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_layerzero_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LayerZero-2",
+  "source_hash": "90cee94e3dd840fb",
+  "description": "LayerZero blocking message receiver allows DoS by stalling the cross-chain channel",
+  "question": "The source file in `source` implements a LayerZero receiver function (such as lzReceive) that processes incoming cross-chain messages using a blocking mechanism, executing message logic directly without wrapping it in a try/catch or non-blocking retry queue, so that a single malicious or failing message can permanently revert and block all subsequent messages on that channel, and this does not apply to implementations that catch failures and store them for later retry via a non-blocking pattern.",
+  "criteria": [
+    "lzReceive directly executes the payload logic inline without any try/catch, so a revert in message handling blocks the endpoint from processing further messages on that path",
+    "The receiver calls an internal _nonblockingLzReceive-style function directly without catching exceptions, causing a stuck message to permanently block the channel",
+    "Message execution logic can revert based on attacker-controlled payload data (e.g., failing token transfer or arithmetic) with no failedMessages storage or retry mechanism to bypass the stuck message",
+    "The contract has no way to clear or skip a failed inbound message, so once one message reverts, the nonce ordering requirement halts all future messages from that sender/chain"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LayerZero"
+    ]
+  ]
+}

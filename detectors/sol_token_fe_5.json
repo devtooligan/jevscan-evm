@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-5",
+  "source_hash": "e23755c9af46ddc2",
+  "description": "Accounting logic keyed on a single token address for tokens with multiple valid addresses",
+  "question": "The source file in `source` performs accounting, access control, or identity checks by comparing or keying data structures on a token's contract address (e.g., mapping(address => ...) balances, or `if (token == KNOWN_ADDRESS)` checks) without accounting for the possibility that the same underlying token has multiple valid addresses, allowing a user to bypass limits, duplicate balances, or evade special-case handling by interacting through an alternate address for the same token. This excludes tokens that are documented or assumed to have a single canonical address, and cases where the code already normalizes or maps all known addresses of a token to one canonical identity before using it in accounting.",
+  "criteria": [
+    "A mapping such as balances[tokenAddress][user] is updated on deposit using the raw token address as key, with no normalization step mapping equivalent addresses to one canonical token id",
+    "A conditional like `if (token == USDT_ADDRESS)` or `require(token == whitelistedAddress)` applies special fee/logic only for one address of a token known to have multiple valid addresses, letting the alternate address skip that logic",
+    "A price oracle lookup or collateral valuation function uses the token's address as the sole key to fetch price/config data, causing the same token, deposited via a second address, to be priced as zero or as an unrelated asset",
+    "A deposit cap or allowlist check compares msg.sender-supplied token address against a single stored address instead of a set of equivalent addresses, allowing double counting of collateral across both addresses"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

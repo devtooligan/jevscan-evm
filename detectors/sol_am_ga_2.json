@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_ga_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-GA-2",
+  "source_hash": "46fc65efadd3f9ea",
+  "description": "Gas-limit griefing via unchecked gas-dependent execution paths in external calls or branching",
+  "question": "The source file in `source` performs a critical operation whose control flow depends on the amount of gas available or forwarded (e.g., low-level calls with a gas stipend, gasleft() checks, or try/catch around external calls) without first validating that sufficient gas remains, so an attacker can craft a precise transaction gas limit to force a specific branch (such as making a sub-call fail while unrelated state changes still commit, or causing partial completion of a batch loop) and thereby grief or manipulate contract behavior, excluding code that already validates gasleft() or the forwarded gas amount before the sensitive step, or where the gas-sensitive path is restricted to trusted administrators.",
+  "criteria": [
+    "A function forwards a fixed low gas stipend via call{gas: X}() to an external contract and continues executing state changes regardless of whether that call succeeded, letting an attacker sized the outer transaction gas so the inner call runs out of gas while the rest proceeds",
+    "A loop that pays out rewards or refunds to multiple recipients via low-level calls never checks gasleft() before each iteration, so a caller can supply just enough gas to complete some iterations and stall or revert on a later one, deadlocking the batch",
+    "A try/catch around an external call relies on default forwarded gas without checking gasleft() beforehand, so a caller can pick a gas limit that starves the callee into the catch branch even though it would otherwise succeed, diverting control flow",
+    "A withdrawal function performs an external transfer and then updates accounting state afterward without ensuring enough gas remains for the post-call bookkeeping, allowing an attacker to exhaust gas right after the call so state updates are skipped"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Griefing Attack"
+    ]
+  ]
+}

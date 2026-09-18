@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_payment_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Payment-4",
+  "source_hash": "de57d03b6a572d84",
+  "description": "Missing minimum deposit/withdrawal threshold enabling dust-amount rounding or DoS exploits",
+  "question": "The source file in `source` implements a deposit or withdrawal function that accepts any nonzero amount without enforcing a minimum threshold, allowing dust-sized amounts to be processed such that share/asset conversion rounding or repeated tiny operations can corrupt accounting balances or be exploited for denial-of-service, excluding functions that already enforce a minimum amount check or revert on zero/negligible amounts, and excluding admin-only or trusted-role restricted functions.",
+  "criteria": [
+    "deposit(uint256 amount) transfers tokens and mints shares via a division-based conversion formula without checking amount against any minimum value",
+    "withdraw(uint256 amount) burns shares and transfers underlying assets computed by rounding division with no floor/minimum enforced, letting dust withdrawals zero out shares while assets remain",
+    "a public deposit function only checks amount > 0 but allows amounts small enough that share calculation rounds down to zero shares minted",
+    "a loop or accounting structure updates per-user balances on every deposit call regardless of size, enabling unbounded dust deposits that inflate storage or gas costs for later processing"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Payment"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-12",
+  "source_hash": "ad1d143bd8b6489a",
+  "description": "Missing replay/duplicate-call protection allowing repeated invocation with identical parameters",
+  "question": "The source file in `source` defines a function that performs a one-time or idempotent-intended action (such as processing a claim, deposit, mint, or registration keyed by an identifier or parameter set) but has no mechanism (such as a used-flag, nonce, mapping check, or state marking it processed) to prevent that same function from being invoked repeatedly with identical parameters, allowing duplicate execution of effects like double payouts, double minting, or double registration, excluding functions that are naturally safe to call repeatedly (pure view functions, idempotent setters with no side effects, or functions restricted to a trusted admin whose repeated calls are intentional and harmless).",
+  "criteria": [
+    "claim(uint256 id) transfers reward tokens for id without setting claimed[id] = true or checking it beforehand, so the same id can be claimed repeatedly",
+    "processDeposit(bytes32 depositHash) credits balances based on depositHash but never records depositHash as used, allowing the same deposit to be credited multiple times",
+    "mint(address to, uint256 requestId) mints tokens tied to requestId with no mapping tracking fulfilled requestIds, enabling repeated minting for the same request",
+    "register(string name) or vote(uint256 proposalId, address voter) executes state-changing logic keyed by an identifier without any check or storage flag preventing the same identifier/voter pair from triggering the logic again"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

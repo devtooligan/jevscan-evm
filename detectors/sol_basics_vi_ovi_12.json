@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_ovi_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-12",
+  "source_hash": "8d5f6bd883f93227",
+  "description": "Unexpected revert in OpenZeppelin SignatureChecker.isValidSignatureNow instead of returning false",
+  "question": "The source file in `source` calls OpenZeppelin's SignatureChecker.isValidSignatureNow (from a version >=4.1.0 and <4.7.1) to validate a signature that may come from a contract signer, and treats a false return as the only invalid-signature outcome without wrapping the call in try/catch or otherwise handling the case where the target does not properly implement EIP-1271, so an unexpected revert can occur where non-reverting invalid-signature handling was assumed. This excludes code that only validates signatures from EOAs via ecrecover without using SignatureChecker, code that wraps the isValidSignatureNow call in try/catch to handle reverts gracefully, and code confirmed to use OpenZeppelin version >=4.7.1.",
+  "criteria": [
+    "calls SignatureChecker.isValidSignatureNow(signer, hash, signature) directly and branches on the boolean result without any try/catch, assuming it can never revert",
+    "passes an arbitrary or user-supplied contract address as the signer into isValidSignatureNow and treats a revert-free false return as the sole rejection path for invalid signatures",
+    "uses SignatureChecker.isValidSignatureNow inside a function that must not revert (e.g., a batch process or fallback validation path) and does not guard the call against unexpected reverts from malformed EIP-1271 return data"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

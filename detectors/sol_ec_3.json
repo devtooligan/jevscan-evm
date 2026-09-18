@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-3",
+  "source_hash": "547e512287259827",
+  "description": "Unsafe use of delegatecall to an untrusted or unauthorized-controllable target address",
+  "question": "The source file in `source` performs a delegatecall to a contract address that can be set or influenced by an unauthorized or untrusted party (e.g., a user-supplied parameter, an unprotected storage variable, or a mapping writable without access control), without restricting who may set that address or validating that it points to a trusted, immutable implementation, thereby allowing an attacker to redirect delegatecall execution to malicious code that runs in the caller's storage context. This excludes delegatecalls to hardcoded, immutable, or constructor-fixed trusted addresses, and cases where the target address can only be modified via properly access-controlled admin-only functions with no attacker path to alter it.",
+  "criteria": [
+    "A function performs delegatecall(target) where target is taken directly from a public/external function parameter with no validation or access restriction",
+    "The delegatecall target is read from a storage variable that can be overwritten via a public setter lacking an owner/access-control check",
+    "A proxy-like fallback function delegatecalls to an implementation address stored in a mapping that any user can update",
+    "Delegatecall target address is derived from user-supplied calldata or an external call return value without verifying it against a whitelist or trusted registry"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

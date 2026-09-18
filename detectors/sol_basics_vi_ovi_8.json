@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_ovi_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-8",
+  "source_hash": "59977b3d78d9225c",
+  "description": "OpenZeppelin ERC721Consecutive batch-size-1 minting causes balanceOf underflow/overflow",
+  "question": "The source file in `source` inherits or imports OpenZeppelin's ERC721Consecutive contract from a version >=4.8.0 and <4.8.2, and mints tokens via _mintConsecutive with a batch of size exactly one token, so that the recipient's balance is not incremented, causing a subsequent transfer from that recipient to underflow/overflow the balance tracked by balanceOf.",
+  "criteria": [
+    "Calls _mintConsecutive(to, 1) to mint a single token to an address, relying on the vulnerable version's logic that skips updating the recipient's balance for batches of size one",
+    "Defines a mint or safeMint function that internally invokes _mintConsecutive with a batchSize parameter that can equal 1 for a single NFT, without separately incrementing the recipient's balance",
+    "Contains a loop or conditional path that calls _mintConsecutive once per single token (batch size 1) instead of grouping multiple tokens into one batch call, leaving balanceOf uncorrected for each such mint"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

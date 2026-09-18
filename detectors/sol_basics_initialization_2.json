@@ -1,0 +1,19 @@
+{
+  "name": "sol_basics_initialization_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Initialization-2",
+  "source_hash": "c65dc6680b2afd84",
+  "description": "Base contract meant to be inherited uses `initializer` modifier instead of `onlyInitializing`",
+  "question": "The source file in `source` defines a contract that inherits OpenZeppelin's Initializable and is designed to be inherited by other contracts (e.g., an abstract base or mixin providing its own init function), yet its initialization function is guarded with the `initializer` modifier instead of `onlyInitializing`, causing derived contracts' initializer to revert or the base initialization logic to be skipped/blockable when composed, rather than a standalone top-level contract correctly using `initializer` on its own single init function.",
+  "criteria": [
+    "An abstract/base contract with a function like `__Base_init()` intended to be called from child contracts' initializers is decorated with `modifier initializer` instead of `onlyInitializing`",
+    "A mixin contract meant for multiple inheritance defines `initialize()` with `initializer`, so only the first parent's initializer succeeds and subsequent parents' initialization calls revert",
+    "A contract providing shared init logic to derived contracts uses `initializer` on that logic, preventing it from being safely invoked multiple times through different inheritance paths"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Initialization"
+    ]
+  ]
+}

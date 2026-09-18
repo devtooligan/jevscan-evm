@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_ac_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-5",
+  "source_hash": "385ef7e7cbd37e38",
+  "description": "Unvalidated eMode category mismatch between collateral and borrowed assets in Aave integration",
+  "question": "The source file in `source` integrates with Aave's eMode feature (e.g., calls setUserEMode, supply, borrow, or reads eMode category data) but does not verify that the collateral asset and the borrowed/lent asset belong to the same eMode category before relying on eMode-specific LTV or liquidation-threshold parameters, allowing risk calculations or position health checks to use preferential eMode parameters for assets that are not actually members of that eMode category, potentially enabling under-collateralized or mispriced positions. This excludes code that never uses eMode-specific parameters, or that explicitly checks each asset's eMode category ID against the active user eMode before applying those parameters.",
+  "criteria": [
+    "Calls pool.setUserEMode(categoryId) and then allows supplying or borrowing arbitrary assets without checking those assets' eMode category matches categoryId",
+    "Reads eMode LTV or liquidation threshold via getEModeCategoryData and applies it to a health-factor or borrow-limit calculation without confirming both collateral and debt assets belong to that eMode category",
+    "Permits a borrow call while the user has an active eMode set, assuming the eMode's preferential risk parameters apply without validating the borrowed asset's eMode category ID",
+    "Computes maximum borrowable amount using eMode category parameters for a collateral asset while the borrowed asset is outside that eMode category, with no cross-check of category membership"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

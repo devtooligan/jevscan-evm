@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_steth_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-stETH-2",
+  "source_hash": "44e0523096faca15",
+  "description": "Unhandled stETH/wstETH withdrawal queue overhead (delay, NFT claim, amount limits) causing broken assumptions",
+  "question": "The source file in `source` implements logic that initiates or relies on stETH/wstETH withdrawal to ETH (e.g., via Lido's withdrawal queue) and assumes the withdrawal completes synchronously within the same transaction or call, without accounting for the withdrawal request producing an NFT claim ticket, queue/waiting time before funds are available, or protocol-imposed withdrawal amount limits, leading to incorrect balance accounting, stuck funds, or reverted downstream logic; this excludes code that already tracks pending withdrawal requests/NFTs and defers dependent logic until claim completion.",
+  "criteria": [
+    "A function calls Lido's requestWithdrawals and immediately treats the returned amount as available ETH balance without waiting for claim",
+    "Code assumes stETH/wstETH redemption to ETH happens instantly in the same transaction, using the expected ETH amount in subsequent calculations before it is claimed",
+    "A withdrawal function does not store or track the NFT/request ID returned by the withdrawal queue, making it impossible to later claim the funds",
+    "Logic ignores per-request or per-block withdrawal amount limits imposed by the LSD protocol, causing requests to silently fail or revert unhandled"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "stETH"
+    ]
+  ]
+}

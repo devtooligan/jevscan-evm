@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-1",
+  "source_hash": "ed6f621cfad1e24f",
+  "description": "Use of deprecated Chainlink price feed functions returning stale or incorrect oracle data",
+  "question": "The source file in `source` retrieves price data from a Chainlink oracle using deprecated functions such as latestAnswer(), latestTimestamp(), getAnswer(), or getTimestamp(), or otherwise fails to use the current latestRoundData() interface with proper validation, so the contract may consume stale, zero, or incorrect price data affecting its financial logic. This excludes code that already uses latestRoundData() and validates the returned answer, updatedAt, and roundId/answeredInRound fields, and excludes non-oracle-consuming code.",
+  "criteria": [
+    "A price-fetching function calls priceFeed.latestAnswer() to obtain a price used in valuation or liquidation logic",
+    "A function calls getAnswer(roundId) or getTimestamp(roundId) on a Chainlink aggregator instead of latestRoundData()",
+    "latestTimestamp() is called to check data freshness instead of the updatedAt field from latestRoundData()",
+    "latestRoundData() is called but the returned answer is used directly without checking updatedAt for staleness or answer > 0"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

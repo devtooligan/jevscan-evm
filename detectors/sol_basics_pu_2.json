@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-2",
+  "source_hash": "9bacaa4376e9461c",
+  "description": "Missing initializer modifier allows repeated/unauthorized calls to upgradeable contract's initialization function",
+  "question": "The source file in `source` defines an upgradeable contract with an initialize/initialization function that sets critical state (such as owner, admin roles, or key parameters) but does not apply the `initializer` (or `reinitializer`) modifier from OpenZeppelin's Initializable, nor any equivalent one-time-call guard, so the function can be called multiple times or by unauthorized parties after deployment, allowing state such as ownership or configuration to be overwritten; this does not apply if the function already uses `initializer`/`reinitializer` or an internal boolean flag that is checked and set to prevent re-entry into initialization.",
+  "criteria": [
+    "An `initialize()` function sets `owner = msg.sender` and other core state but has no `initializer` modifier or manual guard, so it can be invoked again after deployment",
+    "A contract inherits `Initializable` but its `initialize()` function omits the `initializer` modifier entirely",
+    "A function named `initialization()` or similar sets up roles/admins without any check like `require(!initialized)` or use of `initializer`",
+    "An upgradeable proxy's implementation contract has an init function callable directly without restricting it to run only once, enabling re-initialization to hijack contract ownership"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_svi_17",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-17",
+  "source_hash": "dfe5083490c32083",
+  "description": "Solidity storage cleanup bug: shrinking dynamic array of \u226416-byte elements leaves stale data",
+  "question": "The source file in `source` declares a Solidity pragma version affected by the dynamic-array storage cleanup bug (before 0.7.4, e.g. ~0.7.2) and defines a dynamically-sized storage array whose element type is at most 16 bytes wide, which is shrunk via direct assignment, pop, or length reduction, relying on the freed slots being fully zeroed even though the compiler bug leaves residual data in some deleted slots, excluding files that pin a fixed pragma at or above 0.7.4 or that only use fixed-size arrays or element types larger than 16 bytes.",
+  "criteria": [
+    "A storage array declared as uint128[] or a packed struct array with elements \u226416 bytes is assigned a shorter array, e.g. myArray = newShorterArray;, under pragma solidity ^0.7.0",
+    "A storage array of bytes16[] or similar small-type elements has its length reduced via arr.pop() in a loop, under pragma solidity 0.7.2, and later code assumes the vacated slots are zero",
+    "A contract sets storageArray.length or reassigns a shorter literal array of int8/uint16 elements in storage under an affected 0.7.x pragma, then reads beyond the new length assuming zeroed memory"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

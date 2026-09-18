@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-12",
+  "source_hash": "0a96faa3b9fbb046",
+  "description": "Missing caller validation in AMM/swap callback functions",
+  "question": "The source file in `source` defines a callback function (such as a swap/flash callback invoked by a pool or router) that trusts msg.sender-supplied data or performs token transfers/state updates without verifying that msg.sender is the legitimate pool/factory-authorized contract that initiated the callback, allowing an attacker to call the callback directly or via a malicious contract to manipulate balances or steal funds; this excludes callbacks that check msg.sender against a stored pool address, factory-derived address, or authorized caller list before acting.",
+  "criteria": [
+    "A uniswapV3SwapCallback or similar swap callback transfers tokens based on amounts passed in calldata without checking msg.sender equals the expected pool address",
+    "A flashLoan or flash callback function executes arbitrary logic or moves funds using a 'data' parameter without verifying the caller is the authorized lending pool/factory",
+    "A callback function reads self-reported token addresses or amounts from calldata and performs transferFrom/transfer without validating msg.sender against a factory-computed pool address",
+    "A receive/onTokenTransfer style hook updates internal accounting or state based on caller-supplied parameters with no require(msg.sender == pool) or equivalent authorization check"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

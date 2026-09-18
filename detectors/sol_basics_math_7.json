@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-7",
+  "source_hash": "232d0fd70f36dd0b",
+  "description": "Unchecked arithmetic causing integer overflow/underflow reverts or wraparound",
+  "question": "The source file in `source` performs arithmetic (addition, subtraction, or multiplication) on variables, using an `unchecked` block or manual bit-width casting, without first validating that the operands cannot exceed the variable's numeric bounds, so the operation can silently wrap around or unexpectedly revert and corrupt state or cause denial of service; this excludes ordinary arithmetic left to Solidity's default (>=0.8.0) automatic overflow/underflow checks, and cases where a prior require/assert already guarantees the operands are within safe range before the unchecked or bounded arithmetic executes.",
+  "criteria": [
+    "unchecked { balances[msg.sender] -= amount; } with no prior require(balances[msg.sender] >= amount) check, allowing underflow wraparound to a huge balance",
+    "uint8 counter = counter + 1; incremented in a loop with no bounds check, causing an unexpected revert or wraparound once counter exceeds 255",
+    "unchecked { totalSupply += mintAmount; } where mintAmount is user-supplied and not validated against a maximum, allowing silent overflow of totalSupply",
+    "int128 price = int128(rawPrice * multiplier); casting a multiplication result into a smaller type without checking the product fits, causing silent truncation/overflow"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

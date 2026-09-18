@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-9",
+  "source_hash": "b05377419ab9fc6e",
+  "description": "AMM swap accounting assumes transferred token amount equals requested amount, breaking on fee-on-transfer tokens",
+  "question": "The source file in `source` implements an AMM/swap function that pulls ERC20 tokens via transferFrom or transfer and then updates reserves, balances, or output calculations using the input `amount` parameter directly instead of the actual measured token balance change, so fee-on-transfer tokens that deduct a fee cause reserve desynchronization or incorrect swap output, and the code contains no balance-before/after check or explicit rejection of tokens with a transfer fee.",
+  "criteria": [
+    "swap() calls token.transferFrom(msg.sender, address(this), amountIn) and then credits reserves or balances by amountIn without checking the actual balance received",
+    "addLiquidity() increases pool reserves by the amount parameter passed in rather than the measured increase in the pool's token balance after the transfer",
+    "a token transfer-in function trusts the transfer return value and amount argument to compute output amounts without comparing balanceOf(this) before and after the transfer",
+    "reserve or accounting variables are updated using the nominal transfer amount inside a function that calls an arbitrary ERC20's transferFrom without validating the token is fee-free"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

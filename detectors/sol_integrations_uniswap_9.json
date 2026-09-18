@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-9",
+  "source_hash": "23f567c585ebc1ee",
+  "description": "Manipulable Uniswap V3 spot price via slot0 used for sensitive price calculations",
+  "question": "The source file in `source` reads `pool.slot0` (e.g. `sqrtPriceX96`) directly from a Uniswap V3 pool and uses that value to compute current price, exchange rate, or slippage/output limits for a swap, deposit, withdrawal, or liquidation, without deriving the price from a time-weighted average (TWAP) observation or an external oracle such as Chainlink, making the computed price manipulable via flash loans or same-block sandwich attacks.",
+  "criteria": [
+    "Calls `pool.slot0()` and uses the returned `sqrtPriceX96` directly to compute a token price or exchange rate used in a swap or valuation function",
+    "Derives `amountOutMinimum` or a slippage bound for a swap from a spot price read via `slot0` instead of a TWAP or external oracle",
+    "Sets `sqrtPriceLimitX96` for a swap call directly from `slot0`'s current sqrtPrice/tick, so a manipulated spot price becomes the trade's execution price bound",
+    "Computes collateral value or liquidation threshold from `slot0` spot price rather than a TWAP/oracle price feed"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

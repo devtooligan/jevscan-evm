@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_ovi_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-6",
+  "source_hash": "de83d01b91286213",
+  "description": "OpenZeppelin Governor/GovernorCompatibilityBravo proposal-creation frontrunning vulnerability",
+  "question": "The source file in `source` defines a contract that inherits from OpenZeppelin's Governor (version 4.9.0) or GovernorCompatibilityBravo (any version >=4.3.0 and <4.9.1), without any custom safeguard preventing an attacker from frontrunning proposal creation to become the proposer and repeatedly cancel the proposal, thereby blocking it from ever being proposed.",
+  "criteria": [
+    "A contract inherits from OpenZeppelin's GovernorCompatibilityBravo using a package version >=4.3.0 and <4.9.1, with no override of propose()/cancel() to prevent proposer-frontrunning",
+    "A contract inherits from OpenZeppelin's Governor using version 4.9.0 exactly, with no patch or override addressing proposal-creation frontrunning",
+    "The package manifest or import path pins @openzeppelin/contracts to a version in the vulnerable range while the contract uses the Governor's default propose() and cancel() logic unmodified"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

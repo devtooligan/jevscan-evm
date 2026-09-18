@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-2",
+  "source_hash": "3722ff1d214377da",
+  "description": "Unvalidated zero price from oracle feed used without a sanity check",
+  "question": "The source file in `source` reads a price value from an oracle/price feed call and uses that value directly (e.g., in calculations, valuations, or comparisons) without checking that the returned price is non-zero, so a zero price returned by the feed can be silently used as valid data, excluding cases where the code explicitly reverts or rejects when the returned price equals zero.",
+  "criteria": [
+    "Calls a price feed function like latestAnswer() or getPrice() and uses the returned value directly in a division, multiplication, or valuation formula without checking price > 0 or price != 0",
+    "Stores the oracle's returned price into a state variable and later uses it in a financial calculation such as collateral value or swap output without any zero-value validation at the point it is fetched",
+    "Fetches price and updatedAt from the feed, requires that updatedAt is recent enough, then computes collateralValue = amount * price / 1e18 without also requiring price > 0, so a zero price passes the staleness check and yields a zero valuation instead of reverting",
+    "Computes tokenAmount = usdValue / price immediately after calling getLatestPrice() with no require(price > 0) guard beforehand, so a zero price causes a division-by-zero revert or, if guarded elsewhere only for negative values, silently propagates a zero result"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "flash_loan_attacks",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/flash-loan-attacks/SKILL.md",
+  "source_hash": "2d2ecd4402ab2c3f",
+  "description": "Flash-loan-exploitable use of manipulable spot price/balance/voting power within a single transaction",
+  "question": "The source file in `source` contains a smart contract that uses a spot price, current token balance, current voting power, or pool share price read directly on-chain (e.g. from a DEX pair reserve, balanceOf, or getCurrentVotes) for a critical decision such as collateral valuation, liquidation, governance vote counting, or share minting, without any TWAP/time-delayed oracle, snapshot-based voting, deposit-borrow same-block restriction, or slippage/deadline protection, making the value manipulable within one atomic transaction using borrowed capital.",
+  "criteria": [
+    "Reads a DEX pool's instantaneous reserves or spot price (e.g. getReserves, slot0) directly for collateral/loan valuation instead of a TWAP or Chainlink oracle",
+    "Uses current token balance or balanceOf-based voting power for proposal creation/voting instead of a historical snapshot (getPastVotes/checkpoints)",
+    "Allows deposit and borrow/withdraw of the same asset within the same block/transaction with no block-based cooldown check",
+    "Computes share price (assets/totalSupply) for minting/redeeming without safeguards against first-depositor/inflation manipulation",
+    "Executes a swap or trade without slippage minimum (amountOutMin) or deadline parameter",
+    "No mention or use of snapshotting, TWAP window, staleness checks, or same-block restriction modifiers anywhere in the file"
+  ],
+  "tags": []
+}

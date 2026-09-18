@@ -1,0 +1,21 @@
+{
+  "name": "sol_defi_lsd_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-9",
+  "source_hash": "d7d7c5ad750936cc",
+  "description": "Precision loss from division-before-multiplication or bad rounding in LSD share/asset math",
+  "question": "The source file in `source` implements a liquid staking derivative deposit, withdrawal, or reward calculation that performs division before multiplication or rounds in a way that unnecessarily loses precision (including rounding down to zero for legitimate nonzero amounts or truncating via unsafe casting), causing users or the protocol to receive incorrect share or asset amounts, excluding cases where rounding direction is intentionally chosen to favor the protocol/vault as a deliberate anti-manipulation safeguard.",
+  "criteria": [
+    "computes shares = (amount / totalAssets) * totalSupply, dividing before multiplying and truncating intermediate result",
+    "converts a small deposit amount to shares using integer division that rounds the result down to zero, silently minting no shares while accepting funds",
+    "calculates reward distribution per user via (reward / totalStakers) then multiplies by stakerWeight, losing precision from the early division",
+    "casts a uint256 exchange rate or balance to a smaller integer type (e.g. uint128) before using it in withdrawal math, truncating higher-order bits",
+    "computes withdrawal amount as (shares * pricePerShare) / PRECISION but pricePerShare itself was already divided down earlier, compounding rounding error"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

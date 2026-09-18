@@ -1,0 +1,22 @@
+{
+  "name": "sol_integrations_chainlink_vrf_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-VRF-1",
+  "source_hash": "9d6035fb2c4f3ed2",
+  "description": "Unverified parameters passed to Chainlink VRF requestRandomWords call",
+  "question": "The source file in `source` calls Chainlink VRF's requestRandomWords (or a wrapper around it) passing parameters such as keyHash, subscriptionId, requestConfirmations, callbackGasLimit, or numWords that are taken directly from constructor/user/external input or hardcoded without validating them against expected values or safe bounds, so a malformed or attacker-influenced parameter can cause fulfillRandomWords to silently return an incorrect random value or fail to revert on invalid input, excluding cases where every VRF parameter is validated against known-good constants or subscription ownership before the call, or where parameters are fixed immutable values set and checked at deployment by a trusted admin.",
+  "criteria": [
+    "requestRandomWords is called with a subscriptionId variable that is never checked to match the contract's actual funded subscription before submitting the request",
+    "numWords is passed directly from a user-controlled or external input into requestRandomWords without any minimum/maximum bounds check",
+    "keyHash is taken from a constructor or setter argument and used in requestRandomWords without verifying it matches the network's known valid keyHash",
+    "callbackGasLimit is set from an unchecked variable and passed to requestRandomWords without enforcing a minimum value needed for fulfillRandomWords to execute correctly",
+    "requestConfirmations is hardcoded to an insufficiently low value or taken from unchecked input without validating it against the chain's safe minimum confirmation count"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "VRF"
+    ]
+  ]
+}

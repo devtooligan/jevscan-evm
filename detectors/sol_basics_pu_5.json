@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-5",
+  "source_hash": "92dd4bf515ec4f61",
+  "description": "Uninitialized upgradeable implementation/proxy contract allowing attacker takeover via initializer",
+  "question": "The source file in `source` defines an upgradeable contract using an `initializer` modifier or `initialize`-style function (e.g. inheriting OpenZeppelin's `Initializable`) but its constructor does not call `_disableInitializers()`, and/or the contract's initializer function can be called by anyone after deployment without restriction, leaving the implementation or proxy contract uninitialized and allowing an attacker to call the initializer to take ownership or control of the contract. This excludes contracts whose constructor explicitly calls `_disableInitializers()`, non-upgradeable contracts that only use a normal constructor, and cases where initialization is already properly restricted to a trusted deployer via access control.",
+  "criteria": [
+    "An upgradeable contract inherits Initializable and defines `function initialize(...) public initializer` but has no constructor calling `_disableInitializers()`",
+    "A contract meant to be used only as a logic/implementation behind a proxy has an empty constructor, leaving `initialize()` callable by any external account after deployment",
+    "A proxy contract is deployed and the accompanying implementation's initializer function sets `owner = msg.sender` but nothing calls `initialize` during or immediately after deployment, leaving a window for a frontrunning attacker to call it",
+    "An implementation contract's constructor is empty/default while the same contract exposes a public `initialize()` that sets critical state (owner, admin, token addresses) with no guard against being called on the implementation contract directly"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_heuristics_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-9",
+  "source_hash": "ffeb3540fbe4d7d5",
+  "description": "Missing validation that user-supplied actor addresses aren't the protocol's own contracts",
+  "question": "The source file in `source` defines a function that accepts an address parameter representing an external actor (such as recipient, spender, liquidator, or receiver) and uses it directly in transfers, accounting updates, or callbacks without verifying that the address is not one of the protocol's own contracts, allowing a caller to pass an internal protocol contract address as that actor and thereby corrupt accounting, bypass invariants, or trigger unintended reentrant-like behavior; this excludes cases where the address is restricted to admin-only callers, is already constrained to external users by other checks, or where passing an internal contract address has no security-relevant effect.",
+  "criteria": [
+    "A deposit/mint function lets `to` equal the vault's own contract address, causing shares to be minted to the contract itself and permanently locking or double-counting funds",
+    "A transfer or withdraw function sends tokens to a `recipient` parameter without checking it isn't the protocol's treasury/pool contract, letting a user redirect funds to inflate that contract's balance and manipulate share price",
+    "A liquidation function accepts a `liquidator` address parameter and pays out rewards to it without verifying it isn't the lending pool contract itself, breaking internal accounting",
+    "A callback-triggering function accepts a `target` address that is later called externally, without excluding the protocol's own core contracts, enabling self-referential calls that corrupt state",
+    "An approve/spender-setting function allows the spender to be set to the protocol's own token or pool contract without restriction, enabling unauthorized internal transfers"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

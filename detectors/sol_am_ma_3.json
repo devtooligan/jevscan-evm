@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_ma_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-MA-3",
+  "source_hash": "8530f49ab7b0226d",
+  "description": "Missing front-running/sandwich-attack protection due to transaction-order-sensitive logic",
+  "question": "The source file in `source` contains a function whose outcome (e.g. price, amount received, or auction result) depends on the order in which transactions are mined, and it executes without letting the caller specify an acceptable bound (such as a minimum output, maximum price, or deadline) that would cause the transaction to revert if breached, making it exploitable via front-running, back-running, or sandwich attacks; this excludes functions restricted to trusted admin/owner roles or that already enforce a caller-supplied slippage or deadline check.",
+  "criteria": [
+    "A swap/trade function computes the output amount from current on-chain reserves or price and transfers it without a caller-supplied minAmountOut or maxAmountIn parameter",
+    "A function executes at whatever price or state exists at execution time with no deadline or expiry parameter, allowing it to be delayed and executed under manipulated conditions",
+    "An auction, bid, or first-come allocation function processes submitted values in arrival order with no commit-reveal or batching, letting a later transaction see and outbid an earlier one",
+    "A liquidation, redemption, or reward-claim function's payout depends on the relative ordering of other pending transactions with no bound or revert condition supplied by the caller"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Miner Attack"
+    ]
+  ]
+}

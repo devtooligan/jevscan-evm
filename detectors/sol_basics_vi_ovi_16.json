@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_ovi_16",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-16",
+  "source_hash": "5f946e6557917104",
+  "description": "Reentrant totalSupply inconsistency during OpenZeppelin ERC1155 mint callback",
+  "question": "The source file in `source` implements an ERC1155-style `_mint` (or `mint`) function that increases the recipient's token balance and then invokes the recipient's `onERC1155Received` callback (directly or via a safe-transfer acceptance check) before updating the tracked `totalSupply` state variable for that token id, allowing the callback to observe a balance that already reflects the mint while `totalSupply` still reflects the pre-mint amount. This applies only to code that itself maintains a `totalSupply`-like accounting variable alongside ERC1155 balances and calls receiver hooks during minting; it excludes contracts that update `totalSupply` before invoking the receiver callback, that omit receiver-callback invocation entirely, or that do not track total supply at all.",
+  "criteria": [
+    "_mint() sets balances[to][id] += amount and calls _doSafeTransferAcceptanceCheck (triggering onERC1155Received) before totalSupply[id] += amount is executed",
+    "mint() increments recipient balance, then calls IERC1155Receiver(to).onERC1155Received(...), and only afterward updates the totalSupply mapping/state",
+    "_mintBatch() updates all recipient balances and invokes onERC1155BatchReceived on the receiver contract prior to updating the corresponding totalSupply values for each token id"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "erc721_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/erc721-patterns/SKILL.md",
+  "source_hash": "a6f71ee376a02434",
+  "description": "Reentrancy in NFT mint function via _safeMint callback bypassing supply/limit checks",
+  "question": "The source file in `source` contains a Solidity ERC-721 contract whose payable mint function calls `_safeMint` (or `_mint`) to an externally supplied recipient before updating the state variable that enforces a max-supply cap or per-wallet mint limit (e.g. incrementing `_nextTokenId`, `mintedCount[msg.sender]`, or `totalSupply` only after the mint call), with no reentrancy guard applied, so a malicious contract's `onERC721Received` callback can reenter the mint function and mint tokens beyond the intended cap or repeatedly consume the same paid value.",
+  "criteria": [
+    "mint function invokes _safeMint or _mint before incrementing a supply/limit counter",
+    "no nonReentrant modifier or reentrancy lock on the mint function",
+    "state variable enforcing maxSupply, perWallet limit, or nextTokenId is written after the external mint call",
+    "payable mint function checks msg.value/price but relies on later state update for limit enforcement",
+    "recipient address for _safeMint is attacker-controllable (msg.sender or external parameter)"
+  ],
+  "tags": []
+}

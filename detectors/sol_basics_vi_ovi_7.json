@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-7",
+  "source_hash": "0941d5df92cfce1c",
+  "description": "Selector-clash transparency bypass in vulnerable OpenZeppelin TransparentUpgradeableProxy versions",
+  "question": "The source file in `source` deploys, imports, or vendors OpenZeppelin's TransparentUpgradeableProxy while explicitly pinning or embedding an OpenZeppelin Contracts version string in the range >=3.2.0 and <4.8.3 (via import path version tag, package.json/foundry.toml dependency pin, or a version header in a vendored copy of the proxy file), exposing the proxy to broken call transparency from selector clashes with non-decodable calldata, and does not pin or upgrade to version >=4.8.3 or a custom proxy implementation unaffected by this issue.",
+  "criteria": [
+    "Imports TransparentUpgradeableProxy via an npm-style path like '@openzeppelin/contracts@4.7.0/proxy/transparent/TransparentUpgradeableProxy.sol'",
+    "package.json lists \"@openzeppelin/contracts\": \"^3.4.0\" as a dependency while a contract instantiates or inherits from TransparentUpgradeableProxy",
+    "foundry.toml or remappings.txt pin openzeppelin-contracts to a tagged release such as v4.6.0 and the project deploys TransparentUpgradeableProxy",
+    "A vendored copy of TransparentUpgradeableProxy.sol in the repo contains a NatSpec/version comment indicating OpenZeppelin Contracts v4.5.0, and is used unmodified as the proxy implementation"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_replayattack_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-ReplayAttack-2",
+  "source_hash": "54e5362bc963c190",
+  "description": "Cross-chain signature replay due to missing chain ID / domain separator binding",
+  "question": "The source file in `source` verifies off-chain generated signatures (e.g., via ecrecover or a signature-based authorization function) to authorize an action, but the signed message or EIP-712 domain separator does not include chain ID or any other chain-specific parameter, so a valid signature produced for one chain can be replayed to authorize the same action on a different chain, excluding cases where the domain separator or signed payload already incorporates block.chainid or an equivalent unique chain identifier.",
+  "criteria": [
+    "A function recovers a signer via ecrecover using a message hash built only from function arguments, a nonce, and contract address, without including chain ID",
+    "An EIP-712 domain separator is constructed with name, version, and verifyingContract but omits chainid, allowing the same signature to validate on multiple deployments",
+    "A permit-style approval function checks signature validity and nonce but never binds the signed struct to the current chain's identifier",
+    "A meta-transaction relayer verifies a user signature against a hash that excludes block.chainid, enabling replay of the same signed transaction on a forked or sibling chain"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Replay Attack"
+    ]
+  ]
+}

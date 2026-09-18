@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-11",
+  "source_hash": "16d5a25c426f914b",
+  "description": "Unchecked overflow/underflow or division-by-zero in inline assembly arithmetic",
+  "question": "The source file in `source` contains an inline assembly (e.g. Yul) block that performs arithmetic operations such as div, mod, mul, add, or sub on values used in security-relevant logic, without any preceding or surrounding check that a divisor is nonzero or that the operands cannot overflow/underflow, so that assembly silently returns 0 for division/modulo by zero or wraps around on overflow/underflow instead of reverting, potentially corrupting balances, shares, or other critical state. This excludes assembly arithmetic where the inputs are already bounds-checked in high-level code before entering the block, or where overflow/underflow is provably impossible given fixed, small, hardcoded constants.",
+  "criteria": [
+    "An assembly block computes div(a, b) or mod(a, b) with b coming from user input or external calls, with no check that b != 0 before or inside the assembly block",
+    "An assembly block computes mul(a, b) used for share/amount calculations without any check that the result did not overflow relative to a or b",
+    "An assembly block computes sub(a, b) representing a balance or amount decrease without verifying a >= b beforehand, allowing underflow to wrap to a huge value",
+    "An assembly block computes add(a, b) for accumulating balances or totals without verifying the sum does not overflow the storage type before writing it back"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_ac_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-3",
+  "source_hash": "5aa9f5ea73668b6b",
+  "description": "Missing handling for external lending protocol (e.g., AAVE) being paused, causing DoS or stuck funds",
+  "question": "The source file in `source` contains code that calls AAVE (or a similarly pausable external lending/money-market protocol) functions such as deposit, withdraw, borrow, or repay without first checking the protocol's paused/frozen state or handling the revert that occurs when the protocol is paused, so that a pause of the external protocol can cause user funds to become stuck, transactions to unexpectedly revert, or protocol invariants to break, excluding cases where the code already checks a pause flag, wraps the external call in a try/catch with fallback logic, or where the call is to a non-pausable, purely internal function.",
+  "criteria": [
+    "A function calls aavePool.withdraw(...) or aavePool.deposit(...) directly with no prior check of a paused/frozen state variable or return flag from the AAVE protocol",
+    "A borrow/repay function invokes the AAVE lending pool without wrapping the call in try/catch or handling a possible revert due to the pool being paused",
+    "A function assumes funds can always be withdrawn from AAVE and has no fallback or alternative path if the AAVE market is paused, causing user funds to be inaccessible",
+    "Core protocol logic (e.g., liquidation or rebalancing) depends on successful AAVE calls with no check for AAVE's paused state, allowing a pause to break protocol invariants or leave funds locked"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

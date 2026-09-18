@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-10",
+  "source_hash": "3852d1d4ce8f5e86",
+  "description": "Same-token lend and borrow allowed in one transaction, enabling flash-loan price manipulation",
+  "question": "The source file in `source` implements lending/borrowing logic that allows a user to both supply (lend) and borrow the same token for the same asset within a single transaction or block, without any check or restriction preventing this same-token lend-and-borrow pattern, thereby enabling flash-loan-based price or collateral manipulation attacks; this excludes protocols that explicitly block same-block/same-tx same-asset lend-and-borrow actions or that use oracle/TWAP safeguards making such manipulation ineffective.",
+  "criteria": [
+    "deposit() and borrow() for the same asset can both be called by the same address within the same transaction with no block-based or same-tx restriction",
+    "borrow() does not check whether the caller supplied the same token as collateral in the same block before allowing the borrow",
+    "a flash-loaned token can be deposited as collateral and then immediately borrowed against within the same transaction, inflating exchange rate or share price",
+    "the contract lacks any timestamp, block-number, or reentrancy-style check to prevent lending and borrowing the same underlying asset atomically"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

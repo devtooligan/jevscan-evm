@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_nfe1_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-6",
+  "source_hash": "13f8c9dafd15fc13",
+  "description": "Marketplace/transfer logic mishandles NFTs that implement both ERC721 and ERC1155 interfaces",
+  "question": "The source file in `source` implements NFT transfer or deposit logic that checks `supportsInterface` for ERC721 and ERC1155 as mutually exclusive branches (e.g. if/else-if), so a token contract implementing both standards is only processed via one branch, causing incorrect amount, ownership, or balance handling or unexpected reverts; this excludes code that explicitly supports tokens implementing both interfaces simultaneously or contracts intentionally restricted to a single token standard.",
+  "criteria": [
+    "transferNFTs() uses `if (supportsInterface(ERC721_ID)) {...} else if (supportsInterface(ERC1155_ID)) {...}` treating the standards as mutually exclusive",
+    "code hardcodes amount = 1 whenever the ERC721 interface check passes, ignoring that the same token could also expose an ERC1155 balance/amount",
+    "transfer logic calls ownerOf() guarded only by an ERC721 interface check without verifying balanceOf() for tokens that also support ERC1155",
+    "deposit/withdraw function picks the transfer method (safeTransferFrom vs safeBatchTransferFrom) based solely on the first matching supportsInterface() result, misrouting dual-standard tokens"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

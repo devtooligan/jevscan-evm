@@ -1,0 +1,21 @@
+{
+  "name": "sol_am_sandwichattack_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-SandwichAttack-1",
+  "source_hash": "c9b1622207b60f1f",
+  "description": "Missing slippage protection allowing sandwich attacks on user trades/swaps",
+  "question": "The source file in `source` implements a function that performs a token swap, trade, or liquidity operation with a variable execution price (e.g., via an AMM, oracle, or external DEX call) but does not accept or enforce a user-specified minimum output, maximum input, or price bound parameter, so a transaction can be sandwiched by front-running and back-running trades to extract value from the user, excluding functions where price impact is fixed, irrelevant, or already bounded by a required minOut/maxIn/deadline check that reverts on violation.",
+  "criteria": [
+    "swap() calls a DEX or AMM router without any minAmountOut or maxAmountIn parameter, allowing execution at any price",
+    "addLiquidity()/removeLiquidity() computes token amounts from current pool reserves with no minimum share or minimum token amount check",
+    "a trade function reads price directly from an on-chain oracle and executes at that price with no bound on acceptable slippage or deviation",
+    "closePosition() or liquidate() settles at the current spot price without any check against a user- or caller-supplied acceptable price range",
+    "a function accepts a minOut parameter but never compares it against the actual output amount before completing the transfer"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Sandwich Attack"
+    ]
+  ]
+}

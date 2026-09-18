@@ -1,0 +1,21 @@
+{
+  "name": "sol_defi_oracle_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-8",
+  "source_hash": "793e9ac896bac198",
+  "description": "Mismatched decimal precision across multiple price feeds causing incorrect price calculations",
+  "question": "The source file in `source` retrieves prices from two or more price feeds with different decimal precisions and combines, multiplies, divides, or sums the raw returned values in a financial calculation (e.g., collateral value, exchange rate, liquidation threshold) without normalizing them to a common decimal base, resulting in an incorrect computed value; this excludes code that only ever uses a single price feed, or that explicitly reads each feed's decimals() and rescales values to a shared precision before combining them.",
+  "criteria": [
+    "multiplies the raw price from an 8-decimal feed by the raw price from an 18-decimal feed without rescaling either value first",
+    "sums or averages prices from feeds with differing decimals directly, treating them as if they share the same scale",
+    "hardcodes a fixed decimal constant (e.g., 1e8 or 1e18) applied to all price feed outputs instead of calling decimals() per feed",
+    "computes a collateral or health ratio by dividing token price by collateral price from feeds with different decimal precision without adjusting for the difference",
+    "converts a value using one feed's price and later uses another feed's price of different decimals in the same formula without a scaling factor"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_initialization_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Initialization-3",
+  "source_hash": "448af15d1eabc7f9",
+  "description": "Front-runnable initializer function that sets critical state instead of a constructor",
+  "question": "The source file in `source` defines a separate initializer function (not the constructor) that sets critical state such as owner, admin, or access-control roles, and that function can be called by any external account after deployment without any restriction ensuring only the deployer, factory, or a designated caller can invoke it, allowing an attacker to front-run the legitimate initialization call and seize control of the contract; this excludes cases where initialization is done in the constructor, where the initializer is restricted via a factory-only or msg.sender-equals-deployer check, or where an `onlyOwner`/`initializer`-modifier pattern combined with atomic factory deployment prevents front-running.",
+  "criteria": [
+    "An initialize() function sets owner = msg.sender or admin = msg.sender with no check restricting who may call it after deployment",
+    "A setup()/init() function assigns roles or access-control addresses and is public/external with no onlyFactory or onlyDeployer guard",
+    "An initializer function lacks any 'initialized' flag or modifier preventing it from being called by an arbitrary first caller",
+    "Contract logic relies on a separate initialize() call after a bare constructor with no restriction on who triggers initialize(), enabling front-running of the setup transaction"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Initialization"
+    ]
+  ]
+}

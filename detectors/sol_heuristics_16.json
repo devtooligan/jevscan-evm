@@ -1,0 +1,20 @@
+{
+  "name": "sol_heuristics_16",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-16",
+  "source_hash": "cc7e271f91115ba7",
+  "description": "Paired state-changing functions (add/remove, deposit/withdraw) are asymmetric, leaving stale or incorrect state.",
+  "question": "The source file in `source` defines a pair of inverse-operation functions (such as add/remove, deposit/withdraw, mint/burn, whitelist/unwhitelist) where the reversing function fails to fully undo all state changes made by the corresponding forward function, or one of the two functions is missing entirely, causing stale, inconsistent, or leaked state (e.g., forgetting to zero a field, remove an entry, decrement a counter, or clear a mapping), excluding cases where the asymmetry is intentional and documented, or the omitted operation is deliberately restricted to trusted/admin logic with no security impact.",
+  "criteria": [
+    "addToWhitelist() sets whitelisted[user] = true, but there is no removeFromWhitelist() function anywhere in the contract",
+    "deposit() increments balances[msg.sender] and totalDeposits, but withdraw() only decrements balances[msg.sender] without updating totalDeposits",
+    "stake() pushes a new entry into an active-stakes array/mapping, but unstake() clears the user's staked amount without removing or resetting the corresponding array/mapping entry",
+    "grantRole() sets roles[user] = ROLE_ADMIN, but revokeRole() only checks the role without resetting roles[user] to a default/unset value",
+    "lock() sets lockedUntil[user] = block.timestamp + duration and isLocked[user] = true, but the unlock function only checks lockedUntil without setting isLocked[user] = false"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

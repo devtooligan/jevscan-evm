@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_dosa_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-DOSA-5",
+  "source_hash": "c220e170607ed33f",
+  "description": "Low-decimal token amounts rounding to zero causing transaction failure or fund lock",
+  "question": "The source file in `source` performs arithmetic (such as dividing a deposit amount by a duration or rate) on ERC20 token amounts of variable, unvalidated decimals without accounting for tokens with low decimals, so that for such tokens the computed per-unit or streamed amount rounds down to zero, causing reverts, locked funds, or stalled transaction processing, excluding cases where the code already validates a minimum decimal count, scales amounts to a fixed precision, or only ever operates on a hardcoded token with known sufficient decimals.",
+  "criteria": [
+    "rate = totalAmount / streamDuration is computed and used to transfer tokens each period without checking that rate is nonzero for low-decimal tokens",
+    "a function divides depositAmount by a large denominator (e.g., seconds, shares, or precision constant) and stores the result as the transferable amount without ensuring the token's decimals make the result nonzero",
+    "transfer or mint calls use a computed amount that can be zero for low-decimal tokens, and the ERC20 implementation reverts on zero-amount transfers, causing the whole transaction to fail",
+    "a streaming/vesting contract computes claimable = elapsedTime * rate where rate was truncated to zero due to low decimals, permanently locking the deposited funds"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Denial-Of-Service(DOS) Attack"
+    ]
+  ]
+}

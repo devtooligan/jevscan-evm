@@ -1,0 +1,16 @@
+{
+  "name": "front_running_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/front-running-patterns/SKILL.md",
+  "source_hash": "c337fd7e979a23cd",
+  "description": "Missing slippage/deadline protection on swaps enabling sandwich/front-running attacks",
+  "question": "The source file in `source` defines a Solidity function that performs a token swap or liquidity operation (e.g., calling an internal swap/exchange routine or transferring tokens based on a computed output amount) but does not accept or enforce a user-supplied minimum-output (slippage) parameter and/or does not enforce a deadline/timestamp check before executing, allowing an attacker to sandwich the transaction and force execution at a manipulated, unfavorable price.",
+  "criteria": [
+    "Function performs a swap, exchange, or liquidity add/remove and computes an output/input amount internally",
+    "No parameter such as minAmountOut, minLiquidity, or minReceived is checked against the computed result before completing the operation",
+    "No deadline parameter or block.timestamp/expiry check is present to bound when the transaction can be executed",
+    "Absence of a revert/require statement comparing actual output to a minimum acceptable value",
+    "Function is externally/publicly callable and directly affects token transfer amounts or pricing"
+  ],
+  "tags": []
+}

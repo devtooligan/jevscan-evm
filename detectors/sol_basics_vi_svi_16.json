@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_16",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-16",
+  "source_hash": "5705afadd783d9d5",
+  "description": "Empty bytes/string memory-to-storage copy bug in vulnerable Solidity compiler versions causing storage corruption",
+  "question": "The source file in `source` declares a pragma solidity version affected by the empty byte array copy bug (Solidity 0.7.0 through 0.7.3) and contains a statement that assigns a `bytes` or `string` variable located in `memory` or `calldata` directly to a `storage` variable, where the source value can be empty, without any workaround such as first clearing or manually resizing the storage array, exposing the contract to storage corruption when the storage array's length is later increased without writing new data, excluding files that pin a Solidity version 0.7.4 or later or 0.6.x and earlier, or that only copy non-empty compile-time constant literals.",
+  "criteria": [
+    "pragma solidity ^0.7.0; (or 0.7.1/0.7.2/0.7.3) combined with a function that does `storageVar = memoryOrCalldataBytesOrString;` where the right-hand side can be an empty bytes/string value",
+    "a function parameter of type `bytes calldata` or `bytes memory` (or `string`) is assigned directly to a state variable of type `bytes`/`string` without checking or handling the case where the parameter length is zero",
+    "a loop or external call copies an empty `bytes`/`string` array element into a storage array slot (e.g., `storageArray[i] = memoryArray[i];`) under pragma 0.7.0-0.7.3, with no subsequent explicit zero-length handling",
+    "code copies a dynamically computed `bytes`/`string` memory value (which may resolve to length zero) into storage under the affected pragma without first deleting the storage slot or checking `length == 0`"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

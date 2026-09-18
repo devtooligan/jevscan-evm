@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_payment_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Payment-2",
+  "source_hash": "5456b63eacf010be",
+  "description": "Payable function accepts an amount parameter without verifying msg.value equals it",
+  "question": "The source file in `source` defines a payable function that takes a payment `amount` parameter and uses that parameter (e.g., to credit balances, record deposits, or transfer value) without requiring `msg.value == amount` or otherwise validating that the ETH actually sent matches the specified amount, allowing a caller to under-pay or over-pay ETH while the function still records or acts on the stated `amount`. This excludes functions that do not accept ETH (non-payable) and functions that explicitly check `msg.value` against the parameter (e.g., via a require statement) before proceeding.",
+  "criteria": [
+    "A payable deposit(uint256 amount) function sets balances[msg.sender] += amount without any require(msg.value == amount) check",
+    "A payable buyTokens(uint256 amount) function transfers `amount` tokens to the caller while ignoring the actual ETH received in msg.value",
+    "A payable pay(uint256 amount) function forwards `amount` to a recipient via call{value: amount} while msg.value could be less, draining contract funds",
+    "A payable fund(uint256 amount) function emits an event or updates state using `amount` parameter but never compares it to msg.value"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Payment"
+    ]
+  ]
+}

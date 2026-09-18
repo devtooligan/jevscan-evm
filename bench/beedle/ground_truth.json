@@ -1,0 +1,979 @@
+{
+  "source": "Answer key: the judged H/M findings of the contest report (CodeHawks 2023-07 Beedle - Oracle free perpetual lending, 26 H / 15 M plus one duplicated key entry); code: https://github.com/Cyfrin/2023-07-beedle, files are relative to that repo root. Snippets are the line ranges linked in each report entry (same commit line numbers, spot-checked).",
+  "issues": [
+    {
+      "id": "H-1",
+      "severity": "High",
+      "title": "Tokens with less than 18 decimals allow for draining of funds",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "borrow",
+        "giveLoan",
+        "refinance"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "decimal_mismatch",
+      "note": "loanRatio = debt*1e18/collateral assumes both tokens have 18 decimals",
+      "snippets": []
+    },
+    {
+      "id": "H-2",
+      "severity": "High",
+      "title": "Lender contract can be drained by re-entrancy in `repay`",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "repay"
+      ],
+      "category_id": "reentrancy",
+      "subcategory_id": "single_function_reentrancy",
+      "note": "tokens transferred before the loan is deleted; exploited via a transfer-hook token",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 317,
+          "end": 317
+        }
+      ]
+    },
+    {
+      "id": "H-3",
+      "severity": "High",
+      "title": "Lender contract can be drained by re-entrancy in `setPool`",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "setPool"
+      ],
+      "category_id": "reentrancy",
+      "subcategory_id": "single_function_reentrancy",
+      "note": "balance difference transferred before pools[poolId] is written; exploited via a transfer-hook token",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 159,
+          "end": 159
+        }
+      ]
+    },
+    {
+      "id": "H-4",
+      "severity": "High",
+      "title": "Sandwich attack to steal all ERC-20 tokens in the Fees contract",
+      "files": [
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "sellProfits"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "missing_slippage_protection",
+      "snippets": [
+        {
+          "file": "src/Fees.sol",
+          "start": 38,
+          "end": 39
+        }
+      ]
+    },
+    {
+      "id": "H-5",
+      "severity": "High",
+      "title": "Borrower can use Refinance to cancel auctions so they can extend their loan indefinitely",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "refinance"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "invalid_state_transition",
+      "note": "refinance is allowed while the loan is in auction and resets auctionStartTimestamp",
+      "snippets": []
+    },
+    {
+      "id": "H-6",
+      "severity": "High",
+      "title": "During refinance() new Pool balance debt is subtracted twice",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "refinance"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": "state_update_omission_or_double_count",
+      "note": "new pool balance reduced by debt in _updatePoolBalance and again by pools[poolId].poolBalance -= debt",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 636,
+          "end": 636
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 698,
+          "end": 698
+        }
+      ]
+    },
+    {
+      "id": "H-7",
+      "severity": "High",
+      "title": "Borrower can bypass maxLoanRatio's configuration of a pool via buyLoan()",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "buyLoan"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "missing_input_validation",
+      "note": "no loanRatio <= pool.maxLoanRatio check in buyLoan",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 465,
+          "end": 465
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 485,
+          "end": 485
+        }
+      ]
+    },
+    {
+      "id": "H-8",
+      "severity": "High",
+      "title": "Lender#buyLoan - Malicious user could take over a loan for free without having a pool because of wrong access control",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "buyLoan"
+      ],
+      "category_id": "access_control",
+      "subcategory_id": "arbitrary_from_or_on_behalf_of",
+      "note": "buyLoan debits pools[poolId] without checking msg.sender is that pool's lender",
+      "snippets": []
+    },
+    {
+      "id": "H-9",
+      "severity": "High",
+      "title": "Using forged/fake lending pools to steal any loan opening for auction",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "buyLoan"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "missing_input_validation",
+      "note": "buyLoan does not check the new pool's loanToken/collateralToken match the loan",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 489,
+          "end": 489
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 518,
+          "end": 518
+        }
+      ]
+    },
+    {
+      "id": "H-10",
+      "severity": "High",
+      "title": "Stealing any loan opening for auction through others' lending pool",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "buyLoan"
+      ],
+      "category_id": "access_control",
+      "subcategory_id": "arbitrary_from_or_on_behalf_of",
+      "note": "same root cause as H-8",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 489,
+          "end": 489
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 518,
+          "end": 518
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 304,
+          "end": 304
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 311,
+          "end": 312
+        }
+      ]
+    },
+    {
+      "id": "H-11",
+      "severity": "High",
+      "title": "Attacker can steal a loan's collateral and break the protocol",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "buyLoan"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "missing_input_validation",
+      "note": "combines the missing token-match check (H-9) with the missing pool-lender check (H-8/H-10); labelled by the token-mismatch that enables the collateral theft",
+      "snippets": []
+    },
+    {
+      "id": "H-12",
+      "severity": "High",
+      "title": "Fee on transfer tokens will cause users to lose funds",
+      "files": [
+        "src/Staking.sol"
+      ],
+      "functions": [
+        "deposit",
+        "withdraw"
+      ],
+      "category_id": "external_call_token_integration",
+      "subcategory_id": "fee_on_transfer_or_rebasing_token",
+      "note": "report links point at Staking deposit/withdraw; the impact narrative mentions Lender.addToPool, covered separately by H-20",
+      "snippets": []
+    },
+    {
+      "id": "H-13",
+      "severity": "High",
+      "title": "update() not getting called right after a WETH amount has been sent will cause users to lose staking rewards",
+      "files": [
+        "src/Staking.sol",
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "update",
+        "sellProfits"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": "reward_accounting_error",
+      "note": "index is only updated lazily, so WETH sent by Fees.sellProfits is later distributed over a changed stake supply",
+      "snippets": []
+    },
+    {
+      "id": "H-14",
+      "severity": "High",
+      "title": "Sandwich attack to steal all ERC-20 tokens in the Fees contract",
+      "files": [
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "sellProfits"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "missing_slippage_protection",
+      "note": "duplicate of H-4 (the report lists it twice as H-4 and H-14)",
+      "snippets": [
+        {
+          "file": "src/Fees.sol",
+          "start": 38,
+          "end": 39
+        }
+      ]
+    },
+    {
+      "id": "H-15",
+      "severity": "High",
+      "title": "Token spending by Uniswap router doesn't get approved",
+      "files": [
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "sellProfits"
+      ],
+      "category_id": "external_call_token_integration",
+      "subcategory_id": "approval_handling_flaw",
+      "note": "missing approve to the router; the subcategory describes approval mishandling rather than a missing approval, closest fit",
+      "snippets": []
+    },
+    {
+      "id": "H-16",
+      "severity": "High",
+      "title": "Front-runnig the first deposit on stake yealds the whole WETH amount",
+      "files": [
+        "src/Staking.sol"
+      ],
+      "functions": [
+        "deposit",
+        "update",
+        "updateFor",
+        "claim"
+      ],
+      "category_id": "flash_loan_economic",
+      "subcategory_id": "instant_reward_or_snapshot_gaming",
+      "note": "no time weighting: a 1-wei stake placed before the first WETH top-up captures all of it",
+      "snippets": [
+        {
+          "file": "src/Staking.sol",
+          "start": 88,
+          "end": 88
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 53,
+          "end": 58
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 38,
+          "end": 42
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 61,
+          "end": 76
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 80,
+          "end": 94
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 65,
+          "end": 65
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 92,
+          "end": 92
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 66,
+          "end": 73
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 88,
+          "end": 89
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 55,
+          "end": 55
+        }
+      ]
+    },
+    {
+      "id": "H-17",
+      "severity": "High",
+      "title": "Rewards can be sabotaged by large deposit and withdraw",
+      "files": [
+        "src/Staking.sol"
+      ],
+      "functions": [
+        "deposit",
+        "withdraw",
+        "claim",
+        "update"
+      ],
+      "category_id": "flash_loan_economic",
+      "subcategory_id": "instant_reward_or_snapshot_gaming",
+      "note": "index uses current TKN balance at update time, so deposit/withdraw around a claim distorts rewards",
+      "snippets": []
+    },
+    {
+      "id": "H-18",
+      "severity": "High",
+      "title": "Borrower can prevent his/her loan from being liquidated",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "buyLoan"
+      ],
+      "category_id": "access_control",
+      "subcategory_id": "arbitrary_from_or_on_behalf_of",
+      "note": "borrower calls buyLoan into the original pool to reset auctionStartTimestamp; root cause is buyLoan not requiring msg.sender to be the pool lender",
+      "snippets": []
+    },
+    {
+      "id": "H-19",
+      "severity": "High",
+      "title": "A pool lender can fully drain another user's pool by abusing `buyLoan`",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "buyLoan"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "missing_input_validation",
+      "note": "same missing maxLoanRatio check as H-7, exploited by front-running refinance",
+      "snippets": []
+    },
+    {
+      "id": "H-20",
+      "severity": "High",
+      "title": "`Lender` does not handle correctly rebasing, inflationary, deflationary tokens and tokens with fee on transfer",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "setPool",
+        "addToPool",
+        "borrow",
+        "repay",
+        "refinance"
+      ],
+      "category_id": "external_call_token_integration",
+      "subcategory_id": "fee_on_transfer_or_rebasing_token",
+      "snippets": []
+    },
+    {
+      "id": "H-21",
+      "severity": "High",
+      "title": "Forcing a borrower to pay a huge debt via the giveLoan()",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "giveLoan"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": "debt_and_interest_accounting_error",
+      "note": "lender can repeatedly capitalise accrued interest into principal via giveLoan",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 381,
+          "end": 381
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 420,
+          "end": 420
+        }
+      ]
+    },
+    {
+      "id": "H-22",
+      "severity": "High",
+      "title": "Hardcoded Router Address May Cause Token Lockup in Non-Standard Networks",
+      "files": [
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "sellProfits"
+      ],
+      "category_id": "external_call_token_integration",
+      "subcategory_id": "external_protocol_assumption",
+      "note": "the flaw is the hardcoded swapRouter constant; sellProfits is the function that uses it",
+      "snippets": []
+    },
+    {
+      "id": "H-23",
+      "severity": "High",
+      "title": "Lender can Sandwich a borrower to seize his collateral",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "borrow",
+        "setPool"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "frontrunnable_state_change",
+      "note": "lender changes auctionLength via setPool around the borrow; borrow takes no bound on auctionLength",
+      "snippets": []
+    },
+    {
+      "id": "H-24",
+      "severity": "High",
+      "title": "WETH staking rewards accumulated before the first staker deposits remain unutilized and stuck in the `Staking` contract",
+      "files": [
+        "src/Staking.sol"
+      ],
+      "functions": [
+        "update",
+        "updateFor",
+        "deposit"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": "reward_accounting_error",
+      "note": "WETH received while no TKN is staked is folded into index with no holder, so it stays stuck",
+      "snippets": [
+        {
+          "file": "src/Staking.sol",
+          "start": 92,
+          "end": 92
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 62,
+          "end": 62
+        }
+      ]
+    },
+    {
+      "id": "H-25",
+      "severity": "High",
+      "title": "WETH token balance is incorrectly updated when claiming staking rewards resulting in stuck WETH rewards",
+      "files": [
+        "src/Staking.sol"
+      ],
+      "functions": [
+        "claim"
+      ],
+      "category_id": "accounting_share_math",
+      "subcategory_id": "reward_accounting_error",
+      "note": "claim sets balance to the full WETH balance, dropping top-ups not yet indexed",
+      "snippets": [
+        {
+          "file": "src/Staking.sol",
+          "start": 57,
+          "end": 57
+        },
+        {
+          "file": "src/Staking.sol",
+          "start": 65,
+          "end": 65
+        }
+      ]
+    },
+    {
+      "id": "H-26",
+      "severity": "High",
+      "title": "The `borrow` and `refinance` functions can be front-run by the pool lender leading to collateral being seized in the next block",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "borrow",
+        "refinance"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "frontrunnable_state_change",
+      "note": "borrower cannot bound the pool auctionLength copied into the loan",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 259,
+          "end": 259
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 694,
+          "end": 694
+        }
+      ]
+    },
+    {
+      "id": "K-27",
+      "severity": "High",
+      "title": "The `borrow` and `refinance` functions can be front-run by the pool lender leading to collateral being seized in the next block",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "borrow",
+        "refinance"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "frontrunnable_state_change",
+      "note": "duplicate of H-26; the report has one H-26, so this key entry gets K-27",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 259,
+          "end": 259
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 694,
+          "end": 694
+        }
+      ]
+    },
+    {
+      "id": "M-1",
+      "severity": "Medium",
+      "title": "Precision loss allows users to giveLoans to pools with less collateral then required",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "_calculateInterest",
+        "giveLoan"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "precision_loss_division_before_multiplication",
+      "snippets": []
+    },
+    {
+      "id": "M-2",
+      "severity": "Medium",
+      "title": "The `borrow` and `refinance` functions can be front-run by the pool lender to set high interest rates",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "borrow",
+        "refinance"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "frontrunnable_state_change",
+      "note": "borrower cannot bound the pool interestRate copied into the loan",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 720,
+          "end": 720
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 256,
+          "end": 256
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 688,
+          "end": 688
+        }
+      ]
+    },
+    {
+      "id": "M-3",
+      "severity": "Medium",
+      "title": "If a borrower or lender got blacklisted by asset contract, their collateral or loan funds can be permanently frozen with the pool",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "repay",
+        "seizeLoan",
+        "removeFromPool"
+      ],
+      "category_id": "dos_griefing",
+      "subcategory_id": "external_call_revert_dos",
+      "note": "funds only ever go to msg.sender, so a blacklisted borrower/lender cannot redirect them",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 329,
+          "end": 329
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 565,
+          "end": 565
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 198,
+          "end": 198
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 292,
+          "end": 292
+        }
+      ]
+    },
+    {
+      "id": "M-4",
+      "severity": "Medium",
+      "title": "No expiration deadline leads to losing a lot of funds",
+      "files": [
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "sellProfits"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "missing_deadline",
+      "snippets": [
+        {
+          "file": "src/Fees.sol",
+          "start": 36,
+          "end": 36
+        }
+      ]
+    },
+    {
+      "id": "M-5",
+      "severity": "Medium",
+      "title": "Malicious lender can increment the loan interest using the auction process",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "giveLoan"
+      ],
+      "category_id": "business_logic_state_machine",
+      "subcategory_id": "invalid_state_transition",
+      "note": "giveLoan is allowed while the loan is in auction, letting the lender cancel/restart it to block buyers",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 437,
+          "end": 437
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 465,
+          "end": 465
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 355,
+          "end": 355
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 475,
+          "end": 475
+        }
+      ]
+    },
+    {
+      "id": "M-6",
+      "severity": "Medium",
+      "title": "Single-step process for critical ownership transfer is risky",
+      "files": [
+        "src/utils/Ownable.sol"
+      ],
+      "functions": [
+        "transferOwnership"
+      ],
+      "category_id": "access_control",
+      "subcategory_id": "role_management_flaw",
+      "snippets": []
+    },
+    {
+      "id": "M-7",
+      "severity": "Medium",
+      "title": "Lender contract can be drained by re-entrancy in `seizeLoan`",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "seizeLoan"
+      ],
+      "category_id": "reentrancy",
+      "subcategory_id": "single_function_reentrancy",
+      "note": "collateral transferred before the loan is deleted; exploited via a transfer-hook token",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 565,
+          "end": 565
+        }
+      ]
+    },
+    {
+      "id": "M-8",
+      "severity": "Medium",
+      "title": "Fixed fee level is used when swap tokens on Uniswap",
+      "files": [
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "sellProfits"
+      ],
+      "category_id": "external_call_token_integration",
+      "subcategory_id": "external_protocol_assumption",
+      "note": "hardcoded 0.3% Uniswap V3 fee tier",
+      "snippets": [
+        {
+          "file": "src/Fees.sol",
+          "start": 11,
+          "end": 11
+        },
+        {
+          "file": "src/Fees.sol",
+          "start": 26,
+          "end": 44
+        },
+        {
+          "file": "src/interfaces/ISwapRouter.sol",
+          "start": 5,
+          "end": 14
+        }
+      ]
+    },
+    {
+      "id": "M-9",
+      "severity": "Medium",
+      "title": "Pragma non-specification can lead to non-functional / corrupted contract when deployed on Arbitrum",
+      "files": [
+        "src/Beedle.sol",
+        "src/Fees.sol",
+        "src/Lender.sol",
+        "src/Staking.sol",
+        "src/utils/Errors.sol",
+        "src/utils/Ownable.sol",
+        "src/utils/Structs.sol",
+        "src/interfaces/IERC20.sol",
+        "src/interfaces/ISwapRouter.sol"
+      ],
+      "functions": [],
+      "category_id": "cross_chain_messaging",
+      "subcategory_id": "l2_specific_assumptions",
+      "note": "floating ^0.8.19 pragma allows >=0.8.20 (PUSH0) on Arbitrum; no function applies",
+      "snippets": []
+    },
+    {
+      "id": "M-10",
+      "severity": "Medium",
+      "title": "Frontrun can get the full reward, no staking time required",
+      "files": [
+        "src/Staking.sol"
+      ],
+      "functions": [
+        "deposit",
+        "claim"
+      ],
+      "category_id": "flash_loan_economic",
+      "subcategory_id": "instant_reward_or_snapshot_gaming",
+      "snippets": []
+    },
+    {
+      "id": "M-11",
+      "severity": "Medium",
+      "title": "Lender contract can be drained by re-entrancy in `refinance` (collateral)",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "refinance"
+      ],
+      "category_id": "reentrancy",
+      "subcategory_id": "single_function_reentrancy",
+      "note": "excess collateral transferred before loans[loanId].collateral is updated; exploited via a transfer-hook token",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 670,
+          "end": 670
+        }
+      ]
+    },
+    {
+      "id": "M-12",
+      "severity": "Medium",
+      "title": "Some ERC20 tokens would revert on zero value fee transfers.",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "repay"
+      ],
+      "category_id": "external_call_token_integration",
+      "subcategory_id": null,
+      "note": "revert-on-zero-value-transfer tokens break fee transfers; no subcategory covers weird-ERC20 zero-transfer reverts",
+      "snippets": []
+    },
+    {
+      "id": "M-13",
+      "severity": "Medium",
+      "title": "Rounding error leads to borrowing loans without paying interest",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "_calculateInterest"
+      ],
+      "category_id": "arithmetic_precision",
+      "subcategory_id": "precision_loss_division_before_multiplication",
+      "note": "interest truncates to zero for low-decimal loan tokens",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 724,
+          "end": 724
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 725,
+          "end": 725
+        }
+      ]
+    },
+    {
+      "id": "M-14",
+      "severity": "Medium",
+      "title": "Setting borrower fees to 0 permits the borrow functionality to be completely DoS",
+      "files": [
+        "src/Lender.sol"
+      ],
+      "functions": [
+        "borrow",
+        "repay"
+      ],
+      "category_id": "dos_griefing",
+      "subcategory_id": null,
+      "note": "with borrowerFee = 0 an attacker borrows all pool liquidity for free around victims' borrows; not a loop, revert, one-time-action, or strict-check DoS",
+      "snippets": [
+        {
+          "file": "src/Lender.sol",
+          "start": 264,
+          "end": 267
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 316,
+          "end": 327
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 296,
+          "end": 301
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 720,
+          "end": 727
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 268,
+          "end": 269
+        },
+        {
+          "file": "src/Lender.sol",
+          "start": 261,
+          "end": 263
+        }
+      ]
+    },
+    {
+      "id": "M-15",
+      "severity": "Medium",
+      "title": "The lack of a WETH-Profits Token pair upon calling sellProfits can expose it to malicious pool creation",
+      "files": [
+        "src/Fees.sol"
+      ],
+      "functions": [
+        "sellProfits"
+      ],
+      "category_id": "frontrunning_mev",
+      "subcategory_id": "missing_slippage_protection",
+      "note": "attacker creates a mispriced WETH pair pool; exploitable because amountOutMinimum is 0",
+      "snippets": []
+    }
+  ]
+}

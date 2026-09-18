@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_reth_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-rETH-3",
+  "source_hash": "49c9eef88727987d",
+  "description": "Unhandled revert when calling rETH burn() due to insufficient ether in RocketDepositPool",
+  "question": "The source file in `source` calls the RocketPool rETH `burn()` function to redeem ether without first checking that the RocketDepositPool has sufficient ether balance and without wrapping the call in a try/catch or other graceful-failure mechanism, so that a revert caused by insufficient pool liquidity propagates unhandled and can unexpectedly block redemption or user transactions, excluding implementations that verify available liquidity before calling burn() or that catch and gracefully handle the revert.",
+  "criteria": [
+    "A function directly calls rETH.burn(amount) to redeem ether with no prior check of RocketDepositPool's available balance",
+    "burn() is invoked in an external call chain without a try/catch or low-level call wrapper to intercept a possible revert",
+    "A withdrawal or redemption flow assumes burn() always succeeds and has no fallback path when the RocketDepositPool lacks sufficient ether",
+    "User-facing redeem logic reverts entirely on insufficient RocketDepositPool liquidity with no informative handling or retry mechanism"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "rETH"
+    ]
+  ]
+}

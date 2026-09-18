@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_payment_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Payment-7",
+  "source_hash": "88c71fcc331c794a",
+  "description": "Native ETH permanently locked in contract due to missing withdraw/forward mechanism",
+  "question": "The source file in `source` defines a payable function that accepts ETH via msg.value but does not forward, transfer, refund, or fully utilize all of it, and the file provides no withdraw or sweep function callable by any party to retrieve leftover ETH, causing ETH to become permanently locked in the contract; this excludes payable functions that fully forward or spend all msg.value, or contracts that already implement a withdraw/rescue function reachable by an owner or user.",
+  "criteria": [
+    "A payable function receives msg.value and stores or uses only part of it (e.g., a fee or fixed amount) while leaving the remainder in the contract with no way to reclaim it",
+    "A payable deposit-like function accepts ETH but the contract has no withdraw, sweep, or refund function anywhere in the file",
+    "A function forwards ETH via a low-level call that can fail silently, and on failure the ETH remains stuck in the contract with no fallback recovery path",
+    "A wrapper or proxy function passes along msg.value to an external call but does not track or allow recovery of excess ETH sent beyond what the callee consumes"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Payment"
+    ]
+  ]
+}

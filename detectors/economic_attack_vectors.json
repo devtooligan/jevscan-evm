@@ -1,0 +1,16 @@
+{
+  "name": "economic_attack_vectors",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/economic-attack-vectors/SKILL.md",
+  "source_hash": "31216f4cb7faf1a2",
+  "description": "ERC-4626-style vault share/price accounting vulnerable to donation-based inflation attack",
+  "question": "The source file in `source` implements share-based vault or pool accounting (a deposit/mint function that computes shares from total assets, or an exchange-rate/share-price function), and it computes total assets or the exchange rate directly from the token's balanceOf(address(this)) without virtual shares/assets, a minimum initial deposit check, or dead-share minting, allowing an attacker to donate tokens directly to the contract to inflate the share price and cause a subsequent depositor's shares to round down to zero, letting the attacker redeem and steal the victim's deposited assets.",
+  "criteria": [
+    "totalAssets() or getExchangeRate() returns IERC20(asset).balanceOf(address(this)) divided by totalSupply/totalShares with no offset",
+    "shares minted on deposit computed as assets * totalSupply / totalAssets with no virtual share/asset constants added",
+    "no check preventing or limiting the first deposit (e.g. no MIN_INITIAL_DEPOSIT revert when totalSupply()==0)",
+    "no dead-share minting or permanent minimum share lock on first deposit",
+    "no internal tracked variable (e.g. totalManagedAssets) used instead of balanceOf for accounting"
+  ],
+  "tags": []
+}

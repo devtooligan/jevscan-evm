@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_sybilattack_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-SybilAttack-1",
+  "source_hash": "771ae5ac85645376",
+  "description": "Sybil attack via mechanisms relying on unique-address counts for quorum or rewards",
+  "question": "The source file in `source` implements a quorum, voting threshold, reward multiplier, or eligibility mechanism that bases its outcome on the raw count of distinct addresses (e.g., number of voters, number of stakers, number of requesters) rather than on stake-weighted or otherwise sybil-resistant measures, allowing an attacker to split funds or actions across many self-controlled addresses (including via flashloans) to manipulate quorum, inflate rewards, or bypass per-user limits, and this does not apply to mechanisms that weight participation by locked stake, token balance, or another cost-imposing resource that cannot be freely duplicated.",
+  "criteria": [
+    "A withdrawal-request or leverage system counts the number of distinct requester addresses to compute a factor, letting an attacker split one large position into many addresses (optionally via flashloan) to manipulate the factor",
+    "A quorum or governance threshold is computed as a fraction of the number of unique voter addresses rather than their weighted stake, letting an attacker create many addresses to reach quorum cheaply",
+    "A reward or multiplier calculation is based on the count of participating addresses (e.g., number of overdue borrowers, number of stakers) rather than their individual stake/time, letting an attacker split funds into many wallets to gain the maximal multiplier",
+    "A per-user cap or vault-draining protection checks eligibility per address without any cost or stake requirement, so an attacker can create unlimited addresses to bypass the cap and drain the vault"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Sybil Attack"
+    ]
+  ]
+}

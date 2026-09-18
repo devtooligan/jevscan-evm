@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_chainlink_vrf_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-VRF-4",
+  "source_hash": "ea2ac33c00b52f9e",
+  "description": "VRF request front-running due to user interactions remaining open between randomness request and fulfillment",
+  "question": "The source file in `source` contains a function that calls a Chainlink VRF `requestRandomWords` (or equivalent randomness request) as part of a wager, lottery, raffle, or similar user-participation mechanism, and after that request is submitted, the code still allows users to join, bet, deposit, withdraw, or otherwise mutate the participant/outcome-relevant state before `fulfillRandomWords` is called, with no flag, lock, or snapshot that closes or freezes user interactions for that round once the VRF request has been made, allowing a user to observe the pending randomness fulfillment and act to bias or front-run the outcome. This excludes designs where entries/state are snapshotted or locked immediately before requesting randomness, or where no economically meaningful user action is possible between request and fulfillment.",
+  "criteria": [
+    "requestRandomWords() is called to start a lottery/raffle round while the join()/enter()/bet() function remains callable afterward with no round-closed or locked flag check",
+    "fulfillRandomWords() picks a winner from a participants array/mapping that can still be modified (push/withdraw) after the VRF request was sent and before fulfillment",
+    "A betting or wagering function accepts new stakes without checking a 'requestPending' or 'roundLocked' state variable that should block wagers once randomness has been requested",
+    "The contract requests randomness for a game outcome but only sets the closing/locking state variable inside fulfillRandomWords() instead of before or at the time of the request, leaving a window for interactions"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "VRF"
+    ]
+  ]
+}

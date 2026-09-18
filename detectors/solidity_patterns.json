@@ -1,0 +1,16 @@
+{
+  "name": "solidity_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/solidity-patterns/SKILL.md",
+  "source_hash": "56e32a6ac50149ff",
+  "description": "Reentrancy from violating checks-effects-interactions ordering",
+  "question": "The source file in `source` contains a function that performs an external call (e.g., `.call{value: ...}(...)`, `.send`, `.transfer`, or a call into another contract) using a caller's balance or state flag, and that external call occurs before the corresponding state variable (such as a balance mapping or a 'claimed'/'processed' flag) is updated to reflect the action, with no reentrancy guard protecting the function, such that a malicious callee can re-enter and repeat the withdrawal or action against stale state to drain funds or duplicate effects.",
+  "criteria": [
+    "External call (`.call{value:}`, `.send`, `.transfer`, or external contract invocation) appears before the state update in the same function",
+    "State variable (balance mapping, allowance, or boolean flag) is decremented/reset only after the external call",
+    "No `nonReentrant` modifier or reentrancy lock guarding the function",
+    "Function sends value or triggers a callback to an address derived from user input (e.g., msg.sender or a recipient parameter)",
+    "No checks-effects-interactions ordering enforced (checks and effects are interleaved with or follow interactions)"
+  ],
+  "tags": []
+}

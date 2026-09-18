@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_flashloan_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-FlashLoan-1",
+  "source_hash": "7feeeb6798fc7223",
+  "description": "Missing same-block withdrawal restriction enabling flashloan-based deposit/withdraw exploits",
+  "question": "The source file in `source` defines a deposit or loan-taking function and a withdraw or redeem function that operate on shared state such as balances, shares, or price/reserve calculations, and it allows a user to call withdraw or redeem in the same block or transaction immediately after depositing or borrowing without any timestamp, block-number, or delay check that blocks same-block withdrawal, allowing an attacker to flashloan funds, deposit, manipulate price/exchange-rate or reward calculations, withdraw, and repay the flashloan all within one transaction for profit. This excludes functions restricted to trusted admin roles and contracts that already enforce a minimum holding period, block-based cooldown, or explicit same-block deposit/withdraw guard.",
+  "criteria": [
+    "deposit() mints shares based on current pool reserves and withdraw() burns shares for underlying assets, with no check preventing withdraw() from being called in the same block as deposit()",
+    "flashLoan() allows borrowing and repaying within one transaction while a separate deposit()/withdraw() pair on the same vault can execute in that same transaction without any lastDepositBlock or lock-period check",
+    "a vault's exchangeRate or pricePerShare is computed from mutable reserve balances and withdraw() has no timestamp or block.number comparison against the user's last deposit time",
+    "stake() records a user's balance and unstake() immediately allows full withdrawal in the same block without any minimum staking duration or block delta check"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "FlashLoan"
+    ]
+  ]
+}

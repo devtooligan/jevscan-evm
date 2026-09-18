@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_fra_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-FrA-1",
+  "source_hash": "cfce817308b19648",
+  "description": "Front-runnable get-or-create resource pattern enabling price/condition manipulation",
+  "question": "The source file in `source` implements a get-or-create style function that atomically creates a resource (e.g., a pool, order, or account) if absent and then immediately interacts with it, using caller-supplied absolute parameters (such as price, ratio, or amount) without validating them against current state or without allowing safe behavior regardless of who created the resource, so an attacker can front-run the creation with different parameters to manipulate price or conditions and steal value from the victim's subsequent interaction, excluding designs where creation and interaction are separated into distinct transactions or where relative references or parameter validation make the outcome independent of creation timing.",
+  "criteria": [
+    "getOrCreatePoolAndAddLiquidity() creates a pool with attacker-chosen initial price/ratio if it doesn't exist, then adds liquidity in the same call using absolute amounts computed against that just-set price, letting a front-runner create the pool at an unfavorable price first",
+    "getOrCreateAccountAndDeposit() creates an account using caller-specified parameters (e.g., fee tier, owner permissions) if it doesn't exist, then immediately deposits funds into it in the same call, with no check that the account's parameters match what the depositor expected",
+    "getOrCreateOrderAndFill() creates a new order with caller-supplied limitPrice if none exists, then fills it in the same call using that price, allowing an attacker to front-run with a less favorable limitPrice before the victim's fill executes",
+    "getOrCreatePairAndSwap() creates a new trading pair with a caller-chosen initial exchange rate if absent, then executes a swap against it in the same call with no minimum-output check, letting a front-run pair creation set an unfavorable rate before the victim's swap"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Front-running Attack"
+    ]
+  ]
+}

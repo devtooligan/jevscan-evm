@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-8",
+  "source_hash": "45ed5688236ab6f2",
+  "description": "Solidity dirty-bytes-array-to-storage compiler bug from direct bytes copy to storage",
+  "question": "The source file in `source` is a Solidity file that targets a compiler version between 0.5.0 and 0.8.14 (inclusive) and contains a function that directly assigns a `bytes` array from memory or calldata to a storage `bytes` variable (e.g. `storageBytes = calldataBytes;` or `storageBytes = memoryBytes;`), without any code path that instead copies element-by-element with explicit masking/sanitization, so the assignment can leave dirty higher-order bits in storage and corrupt the stored bytes data. This does not apply if the pragma pins the compiler to >=0.8.15, if only fixed-size byte arrays (bytesN) or non-bytes types are copied, or if the copy target is memory/calldata rather than storage.",
+  "criteria": [
+    "A function parameter of type `bytes calldata data` is assigned directly to a state variable declared as `bytes public storedData` via `storedData = data;`",
+    "A `bytes memory` local variable built from user input is assigned directly to a storage `bytes` mapping value, e.g. `records[msg.sender] = tempBytes;`",
+    "A struct stored in storage has a `bytes` field that is overwritten by direct assignment from a `bytes memory` argument, e.g. `myStruct.data = memArg;`",
+    "An array of `bytes` in storage has an element replaced via `storageArray[i] = calldataArg;` where `calldataArg` is a `bytes calldata` parameter"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

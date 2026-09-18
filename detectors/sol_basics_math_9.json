@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-9",
+  "source_hash": "1eb5e2d162b0bedb",
+  "description": "Unchecked arithmetic block allows integer overflow/underflow without guarantee",
+  "question": "The source file in `source` contains a Solidity `unchecked{}` block that performs arithmetic (addition, subtraction, or multiplication) on a variable whose value is not provably bounded within safe limits beforehand, such that the operation can overflow or underflow silently inside the unchecked block, potentially corrupting balances, counters, or other critical state, and this is not excluded by prior explicit bounds-checking, loop-counter increments that are mathematically guaranteed safe, or trusted-only invocation contexts that make overflow impossible.",
+  "criteria": [
+    "balances[msg.sender] -= amount is performed inside unchecked{} without a prior require(balances[msg.sender] >= amount) check",
+    "totalSupply += mintAmount executes inside unchecked{} where mintAmount is user-supplied and unbounded",
+    "unchecked { a * b } computes a multiplication of two externally influenced uint256 values with no upper-bound validation",
+    "price = price + delta subtracts/adds inside unchecked{} where delta can make price wrap around zero without any range check"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_dosa_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-DOSA-3",
+  "source_hash": "25a6564d6abe2c3b",
+  "description": "Denial-of-service from blacklistable tokens blocking required push transfers",
+  "question": "The source file in `source` performs a required token transfer (such as repayment, distribution, redemption, or withdrawal) by pushing tokens directly to a stored recipient address via transfer/transferFrom, with no pull-based claim mechanism, try/catch isolation, or skip/redirect path for failed transfers, so that if the token (e.g., USDC-style) blacklists that recipient, the transfer reverts and blocks the function for all other unrelated users or for the whole protocol; this excludes cases where the transfer is wrapped in try/catch, uses a low-level call whose failure is tolerated, or always sends to msg.sender.",
+  "criteria": [
+    "repayToCreditor() calls token.transferFrom(borrower, creditor, amount) directly with no try/catch, so a blacklisted creditor blocks every future repayment attempt",
+    "distributeRewards() loops over an array of recipients calling token.transfer(recipient, amount) without isolating per-recipient failures, so one blacklisted recipient reverts the entire distribution",
+    "withdraw() sends the underlying token to a stored beneficiary via transfer() with no alternative pull/claim path, causing all withdrawals to permanently fail once the beneficiary is blacklisted",
+    "closePosition() force-transfers collateral to the position owner's address with no fallback, so a blacklisted owner prevents anyone from closing or liquidating the position"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Denial-Of-Service(DOS) Attack"
+    ]
+  ]
+}

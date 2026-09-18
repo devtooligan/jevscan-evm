@@ -1,0 +1,16 @@
+{
+  "name": "reentrancy_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/reentrancy-patterns/SKILL.md",
+  "source_hash": "83d42a147ecd2df5",
+  "description": "Reentrancy vulnerability from external call before state update in Solidity contracts",
+  "question": "The source file in `source` defines a Solidity function that makes an external call (e.g. `.call{value:...}`, `.send`, `.transfer`, or a token transfer/callback like ERC-777 `send`/ERC-1363 `transferAndCall`) and, after that call, updates a state variable (e.g. a balance mapping) that was checked or read before the call, without a reentrancy guard (no `nonReentrant`/mutex) and without following checks-effects-interactions ordering, such that an attacker's callback during the external call can re-enter and exploit the stale state before it is updated.",
+  "criteria": [
+    "External call (low-level call/send/transfer, or token callback such as ERC-777 send or ERC-1363 transferAndCall) occurs before a state variable it depends on is updated",
+    "State variable (e.g. balances[msg.sender]) is decremented/updated after the external call rather than before",
+    "Function lacks a reentrancy guard modifier (no nonReentrant, no mutex/lock check) and lacks CEI ordering",
+    "Multiple functions share the same state variable and at least one makes an external call before updating it, enabling cross-function reentrancy",
+    "No protocol-wide or per-function lock protects state shared across functions/contracts that is read/written around external calls"
+  ],
+  "tags": []
+}

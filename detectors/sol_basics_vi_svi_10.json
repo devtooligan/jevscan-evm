@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_svi_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-10",
+  "source_hash": "75edf6ba5e99854b",
+  "description": "ABI-reencoding of nested calldata arrays reads beyond calldatasize() due to missing size check",
+  "question": "The source file in `source` uses a Solidity compiler version between 0.5.8 and 0.8.13 (inclusive) and contains a function that ABI-encodes or passes a nested dynamic calldata array (e.g., array of dynamic arrays or array of structs containing dynamic arrays) directly to an external call or abi.encode/abi.encodeWithSelector, without upgrading to a patched compiler version (>=0.8.14) or otherwise avoiding re-encoding of nested calldata arrays, such that the compiler's improper size check could read memory or calldata beyond calldatasize(), potentially causing out-of-bounds reads or corrupted data. This excludes files that only handle single-dimensional dynamic arrays or that already specify a fixed compiler version >=0.8.14.",
+  "criteria": [
+    "A function parameter typed as a nested calldata array (e.g., uint256[][] calldata or MyStruct[] calldata where MyStruct contains a dynamic array) is directly forwarded via abi.encode or abi.encodeCall to another contract call",
+    "An external function accepts bytes[] calldata or similar nested dynamic array and re-encodes it via abi.encodeWithSelector before making a low-level call, under pragma solidity >=0.5.8 <0.8.14",
+    "A library or internal function re-ABI-encodes a calldata array of dynamic-length structs for cross-contract calls without any compiler version guard or check against calldatasize()"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

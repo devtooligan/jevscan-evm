@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-6",
+  "source_hash": "71e878e6da6d277a",
+  "description": "External call with hardcoded fixed gas amount causing out-of-gas failure/DoS",
+  "question": "The source file in `source` performs an external call (e.g. call{gas: <fixed_value>}(...) or .call{gas: <fixed_value>}) using a hardcoded, fixed gas stipend rather than forwarding all available gas or a dynamically computed amount, such that the call can run out of gas and revert or fail unexpectedly (e.g. due to future gas cost changes or a callee consuming more gas), causing denial of service or fund lock, excluding cases where the fixed low gas amount is intentionally used to limit gas to a trusted or simple recipient (e.g. 2300 gas transfer to prevent reentrancy) and any failure is properly handled or non-critical.",
+  "criteria": [
+    "A payment/refund loop iterates over multiple recipients using call{gas: 30000}(...) or similar fixed value, where a single recipient's failure or increased gas cost can halt distribution to all others",
+    "A fee/reward transfer to an externally-controlled or arbitrary address uses .call{value: amount, gas: fixedAmount}(\"\") with a hardcoded gas number, without fallback or gas re-estimation",
+    "A critical state-changing external call specifies a fixed gas cap (e.g. gas: 21000, gas: 50000) that does not account for callee logic complexity, causing reverts when the callee needs more gas",
+    "Code sends ETH/tokens via a low-level call with a static gas value and no retry/fallback mechanism if the call fails due to insufficient gas"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

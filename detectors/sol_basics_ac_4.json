@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_ac_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AC-4",
+  "source_hash": "f27ba02dcaf77a18",
+  "description": "Single-step ownership/privilege transfer without two-step accept confirmation",
+  "question": "The source file in `source` implements a function that transfers a critical privileged role (such as owner or admin) by directly overwriting the privileged address in storage upon a single call from the current privileged account, with no separate pending-transfer state and no subsequent acceptance or confirmation step required from the new address, so an accidental or malicious address change (e.g. typo or compromised key) immediately and irreversibly grants or loses control, and this excludes designs that first set a 'pending owner'/'pending admin' variable and require the new address to call a separate accept/claim function before the role actually changes.",
+  "criteria": [
+    "transferOwnership(address newOwner) sets owner = newOwner directly in one call with no pendingOwner staging variable",
+    "setAdmin(address newAdmin) overwrites admin storage variable immediately without requiring newAdmin to call acceptAdmin()",
+    "changeGovernor(address _governor) assigns governor = _governor in a single onlyGovernor-gated function with no confirmation step from the new governor",
+    "updateController(address newController) writes newController into storage and emits an event without any pending/claim mechanism"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Access Control"
+    ]
+  ]
+}

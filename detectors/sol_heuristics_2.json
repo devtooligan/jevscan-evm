@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-2",
+  "source_hash": "ff6e7994eef3b4f4",
+  "description": "Deleting nested struct/mapping leaves inner fields unreset, causing stale state",
+  "question": "The source file in `source` defines a struct containing a nested struct, array, or mapping and calls `delete` (or reassigns a default value) on the outer/top-level variable or a top-level struct field to clear it, relying on this to reset the nested fields, when in fact `delete` on a struct only zeroes its directly-declared value fields and does not recursively clear nested mappings or dynamically-sized nested structures, leaving stale nested data readable/usable afterward; this excludes cases where the code explicitly deletes or iterates and clears the nested fields before or after deleting the outer struct, or where the nested member is itself a simple value type with no independent storage to leak.",
+  "criteria": [
+    "A struct contains a nested mapping (e.g. `mapping(address=>uint) balances` inside `struct Account`), and the code does `delete accounts[user]` expecting `balances` to be cleared, but the mapping entries remain accessible",
+    "A struct contains a nested dynamic array, and `delete userStructs[id]` is called without first clearing or deleting the nested array elements, leaving old array data in storage",
+    "A struct containing another struct with a mapping is deleted via `delete outerStruct` without any prior loop or call to clear the nested struct's mapping fields",
+    "Resetting a record is done by setting the outer struct variable to `Struct(0,0,0)` or default literal, ignoring that a nested mapping/array field inside it retains its previous storage values"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

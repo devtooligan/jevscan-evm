@@ -1,0 +1,16 @@
+{
+  "name": "assembly_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/assembly-patterns/SKILL.md",
+  "source_hash": "9f6c1ac100cd3969",
+  "description": "Inline assembly memory corruption from failing to update the free memory pointer after manual allocation",
+  "question": "The source file in `source` contains a Solidity inline assembly block that obtains a memory pointer via `mload(0x40)`, writes data past that pointer using `mstore`, and then continues normal execution (i.e., does not immediately `revert` or `return`) without updating the free memory pointer via a subsequent `mstore(0x40, ...)`, thereby allowing later Solidity-level memory allocations to overwrite the written data and corrupt program state.",
+  "criteria": [
+    "assembly block reads `let ptr := mload(0x40)` to get the current free memory pointer",
+    "one or more `mstore(ptr, ...)` or `mstore(add(ptr, ...), ...)` writes beyond the original free memory boundary",
+    "no corresponding `mstore(0x40, <new_ptr>)` update after the writes",
+    "control flow proceeds to further Solidity code or additional memory allocations after the assembly block, rather than an immediate `revert(...)` or `return(...)` terminating execution",
+    "the allocated region is later relied upon (e.g., passed to `keccak256`, `call`, `return`, or read back) after other memory-using operations could have overwritten it"
+  ],
+  "tags": []
+}

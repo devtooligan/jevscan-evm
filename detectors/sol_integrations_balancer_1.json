@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_balancer_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Balancer-1",
+  "source_hash": "992ed7174232ea4b",
+  "description": "Balancer flash loan repayment omits protocol fee, causing insolvent repayment if fees are later enabled",
+  "question": "The source file in `source` implements a `receiveFlashLoan` (or equivalent Balancer flash loan callback) that repays only the borrowed principal amounts back to the vault and ignores or discards the `feeAmounts` parameter supplied by Balancer, so that if Balancer ever charges a nonzero flash loan fee the repayment transferred will be insufficient to cover principal plus fee, excluding implementations that explicitly add each corresponding feeAmounts[i] to the transferred repayment for every borrowed token.",
+  "criteria": [
+    "receiveFlashLoan transfers tokens[i] amounts[i] back to the vault without adding feeAmounts[i]",
+    "The callback function signature includes a feeAmounts array parameter that is never read or used in computing the repayment amount",
+    "Repayment logic hardcodes repayment as the original borrowed amount, ignoring any additional fee component from the vault"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Balancer"
+    ]
+  ]
+}

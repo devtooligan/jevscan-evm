@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_layerzero_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LayerZero-6",
+  "source_hash": "da6e75d2843e9a73",
+  "description": "LayerZero integration relies on default, upgradeable messaging library/config contracts instead of custom ones",
+  "question": "The source file in `source` integrates LayerZero cross-chain messaging (e.g., inherits OApp/OAppCore, calls the LayerZero endpoint, or configures send/receive libraries) but never explicitly sets a custom send library, receive library, DVN, or executor configuration, leaving the application relying on LayerZero's default contracts, which the LayerZero team can unilaterally upgrade or change, exposing the app to changes outside its control. This does not apply if the file merely references LayerZero types without performing any endpoint configuration, or if it explicitly calls setSendLibrary/setReceiveLibrary/setConfig with custom addresses to override the defaults.",
+  "criteria": [
+    "An OApp contract calls endpoint.send() or lzReceive logic but never calls setSendLibrary or setReceiveLibrary to override LayerZero's default messaging libraries",
+    "A deployment/initialization function wires up the LayerZero endpoint address without calling setConfig to specify custom DVNs or executors",
+    "A contract sets LayerZero configuration only for chain-agnostic defaults and omits any per-application override of the default send/receive library addresses",
+    "An OAppCore-derived contract's constructor/initializer sets the endpoint but leaves _libraryConfig or equivalent config storage at the LayerZero-provided default values"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LayerZero"
+    ]
+  ]
+}

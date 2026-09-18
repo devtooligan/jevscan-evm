@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_map_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Map-1",
+  "source_hash": "7fb27d0f9369c1d7",
+  "description": "Incomplete deletion of nested struct/mapping data leaving stale nested fields after delete",
+  "question": "The source file in `source` defines a mapping (or struct) containing a nested mapping, dynamic array, or nested struct field, and calls `delete` on the outer mapping entry or struct variable without first explicitly clearing the nested mapping/array/struct fields, so that the nested data remains stored and accessible/reusable even though the outer struct appears deleted, excluding cases where the struct contains only simple value types or where the code explicitly deletes/clears the inner fields before deleting the outer one.",
+  "criteria": [
+    "A struct with a nested mapping field is deleted via `delete structsMap[key];` without iterating or clearing the nested mapping first",
+    "A struct containing a dynamic array field is deleted via `delete` on the outer struct, leaving the array's underlying storage slots for its elements untouched",
+    "A mapping of structs where each struct holds another mapping is removed with `delete outer[id]`, leaving the inner mapping's key-value storage intact and reachable if the outer key is reused",
+    "Deleting an item from an array of structs (e.g., via swap-and-pop) where the struct has a nested mapping, without clearing the nested mapping's entries beforehand"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Map"
+    ]
+  ]
+}

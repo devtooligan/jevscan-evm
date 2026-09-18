@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_21",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-21",
+  "source_hash": "aa4e6bad9ac48e98",
+  "description": "Solidity 0.6.0-0.6.7 compiler bug reading invalid data from slices of dynamically-encoded array types",
+  "question": "The source file in `source` declares a pragma solidity version within the range 0.6.0 to 0.6.7 (inclusive) and performs an array slice operation (e.g., arr[start:end]) on a dynamic array whose base type is itself dynamically encoded, such as a multi-dimensional array, an array of bytes, or an array of strings, which can cause invalid data to be silently read due to a known compiler bug in that version range. This excludes slicing of arrays whose base type is statically-sized (e.g., uint256[], address[], bytes32[]), and excludes any code that specifies a pragma solidity version outside the 0.6.0-0.6.7 range, since those are not affected by this bug.",
+  "criteria": [
+    "A function declares pragma solidity ^0.6.4 and slices a calldata parameter `uint256[][] calldata arr` using `arr[1:3]`",
+    "Contract compiled with solidity 0.6.6 slices a `bytes[] calldata data` parameter with `data[2:5]`",
+    "Contract targeting solidity 0.6.2 slices a `string[] calldata names` parameter using `names[start:end]`",
+    "A function with pragma solidity >=0.6.0 <0.6.8 takes `uint256[][] calldata matrix` and returns `matrix[x:y]` for use in later computation"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

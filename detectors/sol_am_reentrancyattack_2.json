@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_reentrancyattack_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-ReentrancyAttack-2",
+  "source_hash": "a4f388e29e1c613c",
+  "description": "Reentrancy via state changes occurring after external call/interaction",
+  "question": "The source file in `source` contains a function that makes an external call or contract interaction (e.g., call, send, transfer, or invoking an untrusted contract) and then updates critical state (such as balances, ownership, or flags) after that call, without a reentrancy guard or checks-effects-interactions ordering, allowing the callee to re-enter and exploit stale state for effects like double withdrawals or out-of-order events; this excludes functions where all state updates occur strictly before any external interaction, or where a reentrancy guard/mutex effectively prevents reentrant calls.",
+  "criteria": [
+    "A withdraw-style function sends ETH via call{value:} or transfer to msg.sender before zeroing out the caller's balance mapping",
+    "A settlement/auction function transfers funds to an external/untrusted recipient and only afterward updates the auction or order state to mark it settled",
+    "A function calls an external token or callback (e.g., ERC721/ERC1155 safeTransfer, onERC721Received, royalty recipient) and then updates accounting variables like totalSupply or accrued fees afterward",
+    "A claim/reward function invokes an external contract to deliver funds and subsequently updates the user's claimed/paid flag or debt ledger"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Reentrancy Attack"
+    ]
+  ]
+}

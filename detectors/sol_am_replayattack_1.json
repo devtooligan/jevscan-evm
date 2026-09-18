@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_replayattack_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-ReplayAttack-1",
+  "source_hash": "43c182aa32e374f4",
+  "description": "Missing replay protection allows signed/failed transactions to be re-executed",
+  "question": "The source file in `source` implements a function that executes an action based on a signed message, meta-transaction, or transaction record (e.g., executeTransaction, permit, relay) and fails to permanently invalidate that message or transaction after it is processed or attempted, such as by never checking/incrementing a nonce or never marking a transaction hash as used, so the same signed payload or transaction can be resubmitted and replayed to re-trigger the action, excluding cases where a nonce or used-flag is correctly incremented/set before any external call or where the action's own state changes inherently make repetition impossible.",
+  "criteria": [
+    "executeTransaction verifies a signature against signer/threshold but never records or checks a used-transaction hash, allowing the same signed transaction to be replayed after it fails or succeeds",
+    "A meta-transaction relay function reads a nonce for signature verification but does not increment or store it anywhere, so the identical signed message can be submitted multiple times",
+    "A permit-style function validates an off-chain signature but never marks that signature/nonce as consumed, letting it be reused indefinitely",
+    "Nonce is incremented only after an external call that can revert and roll back the increment, letting a failed transaction be resubmitted with the same nonce and signature"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Replay Attack"
+    ]
+  ]
+}

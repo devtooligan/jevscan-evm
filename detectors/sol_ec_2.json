@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-2",
+  "source_hash": "ff3d429769418ca2",
+  "description": "Multicall function reuses msg.value across multiple internal calls, allowing value double-spending",
+  "question": "The source file in `source` defines a multicall or batch function that loops over multiple calls/orders and uses `msg.value` (or a value derived directly from it) inside each iteration as if it were the value for that individual call, without dividing, tracking consumed amounts, or otherwise ensuring `msg.value` is only counted once, so that a single ETH payment can be effectively reused across multiple loop iterations to inflate accounted deposits or payments; this excludes multicall implementations that explicitly forbid or revert on ETH-bearing calls, that require each sub-call to specify its own value paid separately from `msg.value`, or that only call functions which never rely on `msg.value` in a per-iteration accounting sense.",
+  "criteria": [
+    "A function loops over an array of orders/calls and credits each order with the full `msg.value` amount instead of a per-order value, letting one payment be counted multiple times",
+    "A batchDeposit or multicall function reads `msg.value` inside a for-loop body to determine each iteration's deposit amount without deducting already-used value",
+    "A delegatecall-based multicall executes multiple state-changing calls that each independently reference `msg.value` for accounting, with no mechanism to split or track the total consumed",
+    "A multi-order execution function assumes msg.value equals the sum needed but individually assigns the entire msg.value to each order rather than order.value"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

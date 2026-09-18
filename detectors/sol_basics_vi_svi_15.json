@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_svi_15",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-15",
+  "source_hash": "ad80793b0d9f6206",
+  "description": "Keccak-256 optimizer bug in inline assembly under vulnerable Solidity compiler versions",
+  "question": "The source file in `source` declares a pragma solidity version within the range affected by the known Keccak-256 optimizer bug (e.g. ~0.8.2, or more broadly 0.5.14 through 0.8.4) and contains an inline assembly block that computes a `keccak256` hash, without pinning or upgrading to a patched compiler version that fixes the incorrect reuse of previously evaluated Keccak-256 hashes, excluding files that only compute keccak256 via high-level Solidity code without inline assembly.",
+  "criteria": [
+    "A pragma statement such as `pragma solidity ^0.8.2;` or another version inside the vulnerable range (0.5.14\u20130.8.4) combined with an `assembly { ... keccak256(...) ... }` block computing a hash used for storage slot derivation or comparison",
+    "An assembly block calling `keccak256(add(ptr, 0x20), size)` multiple times with different memory pointers/data inside a contract compiled with an affected Solidity version, where the optimizer could incorrectly reuse a prior hash result",
+    "A hashing routine written in inline assembly (e.g. for mapping key computation or Merkle proof verification) under a pragma version in the affected range, with no compiler version pin excluding the buggy releases"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

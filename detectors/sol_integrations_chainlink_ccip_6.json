@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_chainlink_ccip_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-6",
+  "source_hash": "1f93c83ff572f0d0",
+  "description": "Missing router address verification in Chainlink CCIP ccipReceive allowing message spoofing",
+  "question": "The source file in `source` defines a ccipReceive function (implementing CCIPReceiver or handling CCIP messages) that processes incoming cross-chain messages without verifying that msg.sender equals the trusted CCIP router address, allowing any external address to spoof CCIP messages and compromise contract state or assets; this excludes implementations that check msg.sender against a stored/immutable router address or inherit from a base contract (e.g. CCIPReceiver) that already enforces this check.",
+  "criteria": [
+    "ccipReceive(Client.Any2EVMMessage memory message) processes message.data or transfers tokens without checking msg.sender against a trusted router address",
+    "A function overriding _ccipReceive or ccipReceive omits any onlyRouter or require(msg.sender == i_router) style modifier before acting on message contents",
+    "The contract handles cross-chain messages and uses the router-provided sourceChainSelector or sender fields for authorization instead of validating that msg.sender is the actual CCIP router"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "CCIP"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_inheritance_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Inheritance-1",
+  "source_hash": "4ccf0b13502ef182",
+  "description": "Unrestricted exposure of inherited parent contract's public/external functions",
+  "question": "The source file in `source` defines a contract that inherits from a parent contract whose public or external function exposes sensitive or unintended functionality, and the child contract fails to override, restrict, or remove that inherited function's visibility, leaving it callable by any external caller without any additional access control or exclusion for functions that are intentionally meant to remain publicly accessible.",
+  "criteria": [
+    "A contract inherits from a parent with a public setter or admin-like function (e.g. setOwner, mint, withdraw) that is never overridden or restricted in the child",
+    "A parent contract exposes an internal helper as public/external and the child contract inherits it unchanged, allowing external callers to invoke internal logic directly",
+    "A child contract inherits a parent's public function that reveals sensitive state or bypasses intended access checks, and does not override it with a more restrictive visibility or added modifier",
+    "A library or base contract's public utility function performing privileged operations is inherited without the child adding any onlyOwner or similar guard"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Inheritance"
+    ]
+  ]
+}

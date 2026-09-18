@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-4",
+  "source_hash": "1a4cfd96a46f0f43",
+  "description": "Precision loss from performing division before multiplication in arithmetic expressions",
+  "question": "The source file in `source` contains an arithmetic expression that performs a division operation on integer values before multiplying the result by another value, rather than multiplying first and dividing last, causing avoidable truncation and precision loss in the computed result, excluding cases where the division is exact with no remainder, where operands are floating-point types with sufficient precision, or where the divide-first order is required to prevent overflow and is explicitly documented as such.",
+  "criteria": [
+    "A fee or reward calculation computes 'amount / totalSupply * share' instead of 'amount * share / totalSupply', losing precision",
+    "An interest or price computation divides a rate by a scaling denominator first, then multiplies by principal, truncating fractional value",
+    "A pro-rata distribution formula divides balance by totalUsers before multiplying by weight, rounding down more than necessary",
+    "A conversion function computes '(value / decimalsFactor) * multiplier' instead of multiplying then dividing, discarding precision"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

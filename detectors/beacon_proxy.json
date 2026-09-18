@@ -1,0 +1,15 @@
+{
+  "name": "beacon_proxy",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/beacon-proxy/SKILL.md",
+  "source_hash": "47934e330cf85bd1",
+  "description": "Uninitialized beacon/proxy implementation contract due to missing _disableInitializers()",
+  "question": "The source file in `source` defines an upgradeable implementation contract that uses an Initializable base and exposes an external `initialize` function (guarded by an `initializer` modifier), intended to be deployed behind a BeaconProxy/UpgradeableBeacon, but its constructor does not call `_disableInitializers()`, so anyone can call `initialize` directly on the implementation contract to seize ownership or corrupt its storage before it is ever proxied.",
+  "criteria": [
+    "Contract inherits/imports Initializable and declares an `initialize(...)` function with the `initializer` modifier",
+    "Contract is clearly meant for beacon/proxy deployment (e.g. implements an IVault-style interface used by BeaconProxy/UpgradeableBeacon)",
+    "Constructor is empty or otherwise does not call `_disableInitializers()`",
+    "No alternate safeguard exists preventing direct external initialization of the implementation contract itself"
+  ],
+  "tags": []
+}

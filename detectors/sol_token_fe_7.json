@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-7",
+  "source_hash": "d6d45c6b7ff1478b",
+  "description": "Reentrancy via ERC777 transfer hooks in token integrations lacking reentrancy protection",
+  "question": "The source file in `source` defines a function that calls transfer or transferFrom on an arbitrary, caller-supplied, or unvalidated ERC20 token address as part of a state-changing operation (e.g., deposit, withdraw, swap) and updates critical state (balances, shares, rewards) after the token call, or omits a reentrancy guard, so that if the token is an ERC777 with transfer hooks, the hook can reenter and exploit inconsistent state. This excludes functions that only interact with a fixed, hardcoded, or explicitly whitelisted non-ERC777 token, and excludes functions that already apply the checks-effects-interactions pattern or a nonReentrant guard around the token call.",
+  "criteria": [
+    "withdraw() calls token.transfer(msg.sender, amount) before setting balances[msg.sender] = 0, with the token address configurable and no reentrancy guard",
+    "deposit() accepts an arbitrary ERC20 token address parameter and calls transferFrom before updating the user's recorded share balance",
+    "swap() calls transferFrom on a user-supplied token contract and updates pool reserves only after the external call completes, without a nonReentrant modifier",
+    "claimRewards() sends reward tokens via an external call to a token address stored in a mapping that admins or users can set, then updates the claimed amount afterward"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

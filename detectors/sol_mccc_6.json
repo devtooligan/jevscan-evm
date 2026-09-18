@@ -1,0 +1,19 @@
+{
+  "name": "sol_mccc_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-6",
+  "source_hash": "ee3337d59ab6776c",
+  "description": "Hardcoded ERC20 decimal assumptions causing cross-chain accounting errors",
+  "question": "The source file in `source` handles token amounts transferred or bridged between chains but hardcodes a fixed decimals value (e.g., 18) or omits calling the token's decimals() function when scaling/converting amounts, instead of dynamically reading and normalizing decimals per chain/token, causing incorrect amount calculations when the same token has different decimals on different chains, excluding single-chain-only logic or code that already calls decimals() or applies chain-specific decimal adjustment.",
+  "criteria": [
+    "Scales a bridged amount by a hardcoded 10**18 factor instead of querying the token's decimals()",
+    "Mints or credits a wrapped token assuming the source token always has 18 decimals regardless of actual chain-specific decimals",
+    "Decodes a cross-chain message amount and applies a constant decimal conversion constant without checking the destination token's decimals",
+    "Compares or sums token balances from different chains without normalizing for differing decimals values"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

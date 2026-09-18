@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_14",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-14",
+  "source_hash": "18d9d4328a8875fb",
+  "description": "Slippage check enforced on intermediate swap amount instead of final output transferred to user",
+  "question": "The source file in `source` implements a multi-step swap or AMM function that checks a minimum-output/slippage parameter against an intermediate swap result rather than against the final token amount actually transferred to the user, allowing the user to receive less than their specified minimum after later steps (e.g., fees, additional swaps, or rounding) reduce the output, excluding functions where the minOut check is performed on the exact final balance or amount right before the transfer to the user.",
+  "criteria": [
+    "A swap function checks amountOut >= minAmountOut immediately after the first swap in a multi-hop route, then performs additional swaps or fee deductions afterward before sending tokens to the user",
+    "A liquidity removal function validates slippage against the raw withdrawn token amounts before subtracting exit fees or performing a final conversion, then transfers the post-fee amount to the user",
+    "A router checks the minOutput parameter against an intermediate DEX call's return value in a multi-DEX aggregation path, but the final transferred amount comes from a subsequent swap whose output is unchecked",
+    "A vault redeem function verifies slippage on the calculated shares-to-assets conversion before applying withdrawal fees or additional transformations, then sends the reduced final amount to the user"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

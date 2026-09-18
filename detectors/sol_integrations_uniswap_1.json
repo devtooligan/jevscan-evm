@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-1",
+  "source_hash": "cb7412187b838408",
+  "description": "On-chain slippage/minimum-output calculation manipulable via price oracle or reserve manipulation",
+  "question": "The source file in `source` computes a swap or liquidity operation's minimum acceptable output (slippage tolerance) internally on-chain, by deriving an expected price or amount from current pool reserves, spot price, or a live on-chain oracle at execution time, rather than accepting a caller-supplied minimum-output/maximum-input amount calculated off-chain, so an attacker can manipulate the on-chain price/reserves (e.g., via a flash loan or sandwich trade) to widen the effective slippage and extract value; this does not apply if the function already requires an externally supplied minAmountOut/maxAmountIn parameter that is enforced without being overridden by an on-chain-derived value.",
+  "criteria": [
+    "swap() computes minOut = getReserves()-derived expected price * (1-slippageBps) inside the contract instead of accepting a user-supplied minOut",
+    "addLiquidity() derives minimum token amounts from the pool's current spot price fetched on-chain right before the trade executes",
+    "function ignores any passed-in minAmountOut parameter and instead recalculates the acceptable amount from a live on-chain oracle call",
+    "router wrapper computes acceptable slippage bounds using Uniswap pair's current reserves at call time and enforces those instead of caller-specified bounds"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

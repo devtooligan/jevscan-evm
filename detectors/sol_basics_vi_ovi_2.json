@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-2",
+  "source_hash": "d2f630a0f7ddf0f2",
+  "description": "OpenZeppelin GovernorCompatibilityBravo proposal calldata truncation via mismatched signatures/calldatas lengths",
+  "question": "The Solidity source file in `source` inherits or imports OpenZeppelin's GovernorCompatibilityBravo (version >=4.3.0 <4.8.3) and its propose() function accepts a signatures array and a calldatas array without enforcing that both arrays have equal length, so a proposal can be created where extra calldatas entries are silently ignored and later executed with empty calldata, while getActions() and the proposal parameters still appear to reflect the original intended calldata; this does not apply if the contract upgrades to a patched version (>=4.8.3) or explicitly validates signatures.length == calldatas.length before accepting the proposal.",
+  "criteria": [
+    "A propose() function in GovernorCompatibilityBravo builds an ExtendedProposal by zipping calldatas with signatures without checking calldatas.length == signatures.length",
+    "The contract encodes proposal actions using a signatures array that can be shorter than the calldatas array, causing the trailing calldatas entries to be dropped during execution",
+    "getActions() returns the original calldatas parameters while the actual execution path uses truncated/mismatched calldata derived from the shorter signatures array",
+    "The contract inherits GovernorCompatibilityBravo from an OpenZeppelin version between 4.3.0 and 4.8.3 without adding a length-equality check on proposal creation"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

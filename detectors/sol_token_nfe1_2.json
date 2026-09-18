@@ -1,0 +1,21 @@
+{
+  "name": "sol_token_nfe1_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-2",
+  "source_hash": "8187767db36f9bf4",
+  "description": "Reentrancy via ERC721/1155 receiver hooks during token minting or transfer",
+  "question": "The source file in `source` implements an ERC721 or ERC1155 token (or calls into one) that invokes the receiver hook (onERC721Received or onERC1155Received) via safeMint/safeTransfer or equivalent, and performs critical state updates (such as balance, supply, ownership, or accounting changes) after the external receiver callback, or otherwise lacks a reentrancy guard or checks-effects-interactions ordering around the hook, allowing a malicious receiver contract to reenter and exploit inconsistent state. This excludes cases where all state is finalized before the hook call, where a reentrancy guard protects the function, or where the hook target is guaranteed trusted/non-contract.",
+  "criteria": [
+    "mint() calls _safeMint which invokes onERC721Received before totalSupply or balances are updated, allowing reentrant minting",
+    "withdrawal or claim function calls safeTransferFrom (ERC721/1155) to an arbitrary receiver before marking the claim/withdrawal as completed",
+    "batch transfer function loops over token IDs and updates ownership mappings only after triggering onERC1155BatchReceived callback",
+    "public mint function has no nonReentrant modifier despite calling _safeMint that triggers external receiver hook",
+    "sale/auction contract sends NFT via safeTransferFrom before deleting the listing or updating price state, enabling reentrant re-purchase"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

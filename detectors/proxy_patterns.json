@@ -1,0 +1,16 @@
+{
+  "name": "proxy_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/proxy-patterns/SKILL.md",
+  "source_hash": "8c630036fb0d3c12",
+  "description": "Unprotected UUPS upgrade authorization allowing arbitrary implementation takeover",
+  "question": "The source file in `source` defines a contract that inherits from an upgradeable proxy base (e.g., UUPSUpgradeable) and overrides the `_authorizeUpgrade` function, but that function lacks any access-control check (such as an onlyOwner or role-based modifier) restricting who may call it, allowing any external caller to upgrade the proxy's implementation and take control of or corrupt the contract's logic and storage.",
+  "criteria": [
+    "Contract inherits UUPSUpgradeable (or similar upgradeable proxy base) and defines _authorizeUpgrade",
+    "_authorizeUpgrade body is empty or contains no access-control modifier/check",
+    "No onlyOwner, onlyRole, or equivalent permission check guards the upgrade function",
+    "No require/revert statement validating msg.sender identity before allowing upgrade",
+    "Upgrade function is reachable by external/public callers without restriction"
+  ],
+  "tags": []
+}

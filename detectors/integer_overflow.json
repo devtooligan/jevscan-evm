@@ -1,0 +1,17 @@
+{
+  "name": "integer_overflow",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/integer-overflow/SKILL.md",
+  "source_hash": "064c6b847e044847",
+  "description": "Unsafe unchecked arithmetic, silent truncation, or phantom overflow in Solidity integer math",
+  "question": "The source file in `source` contains a Solidity `unchecked { }` block performing arithmetic on user-controlled or multi-step values without a preceding bounds check, or contains a narrowing integer cast (e.g. uint256 to uint8/uint32/uint128) or a multiplication-then-division (mulDiv-style) operation without using SafeCast or an overflow-safe mulDiv library, such that the result can silently overflow, underflow, or truncate and corrupt balances, accounting, or access-control values.",
+  "criteria": [
+    "unchecked { } block containing addition/subtraction/multiplication on parameters or state derived from user input, with no prior validation guaranteeing safety",
+    "Explicit narrowing cast like uint8(x), uint32(x), uint96(x) applied to a uint256/larger value without SafeCast.toUintN or equivalent bounds check",
+    "Multiplication followed by division (a * b / c) on uint256 values without using a 512-bit-safe mulDiv implementation, risking phantom overflow",
+    "unchecked block lacking a comment or invariant proving overflow/underflow is impossible",
+    "Signed integer negation or division by -1 on a value that could equal type(intN).min without a guard",
+    "Accumulator variable incremented every call inside unchecked without any cap or overflow analysis"
+  ],
+  "tags": []
+}

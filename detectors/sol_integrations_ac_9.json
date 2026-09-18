@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_ac_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-9",
+  "source_hash": "e8cd014789e61258",
+  "description": "Missing check for AAVE siloed borrowing restriction before borrowing another asset",
+  "question": "The source file in `source` implements logic that calls AAVE's borrow function for a given asset, or lets users borrow multiple assets through AAVE, without first calling getSiloedBorrowing(address asset) or otherwise checking whether the asset is siloed, causing unexpected reverts or inability to borrow other assets after borrowing a siloed asset.",
+  "criteria": [
+    "A function calls pool.borrow(asset, ...) for a user-selected or protocol-selected asset without checking getSiloedBorrowing(asset) beforehand",
+    "A function that lets users open positions in multiple AAVE-borrowed assets sequentially never checks whether any previously borrowed asset is siloed, risking reverts on subsequent borrows",
+    "A strategy or vault contract borrows an asset from AAVE and later attempts to borrow a second, different asset without verifying siloed-borrowing status of the first asset"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

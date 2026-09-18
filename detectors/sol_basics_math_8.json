@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_math_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-8",
+  "source_hash": "2ddc5498587b83e2",
+  "description": "Unchecked unsigned integer subtraction that can underflow and revert unexpectedly",
+  "question": "The source file in `source` performs subtraction between unsigned integer values (e.g., `a - b` or `balance -= amount`) without first verifying that the minuend is greater than or equal to the subtrahend, so that when the subtrahend exceeds the minuend the operation underflows and causes an unintended revert or, on pre-0.8 Solidity without SafeMath, silently wraps to a huge value, leading to denial-of-service or incorrect accounting; this excludes subtractions already guarded by an explicit require/if check or a safe-math library call that validates operands beforehand.",
+  "criteria": [
+    "computes `a - b` on unsigned integers where b can exceed a, with no prior require(a >= b) or if-check",
+    "decrements a balance or counter via `balance -= amount` without first checking amount <= balance",
+    "subtracts a user-supplied or externally influenced uint from another uint inside a loop or formula without validating operand ordering",
+    "calculates a duration or difference like `block.timestamp - startTime` without ensuring startTime <= block.timestamp"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

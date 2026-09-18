@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-11",
+  "source_hash": "74be4a4689f6fa88",
+  "description": "Missing quorum-numerator checkpointing in OpenZeppelin GovernorVotesQuorumFraction (versions >=4.3.0 <4.7.2)",
+  "question": "The source file in `source` implements or inherits OpenZeppelin's GovernorVotesQuorumFraction governance extension and computes/updates the quorum numerator as a single current value rather than a value checkpointed per block, so that changing the quorum numerator retroactively alters the quorum required for past proposals, potentially letting proposals that previously failed for lack of quorum become passable, or vice versa; this excludes governance contracts that store quorum numerator changes in a per-block Checkpoints.History structure and look up the numerator at the proposal's snapshot block.",
+  "criteria": [
+    "updateQuorumNumerator(newQuorumNumerator) directly overwrites a single _quorumNumerator state variable without recording the change against a specific block number",
+    "quorum(blockNumber) multiplies token.getPastTotalSupply(blockNumber) by the current _quorumNumerator value rather than a numerator value historically checkpointed at blockNumber",
+    "GovernorVotesQuorumFraction-style contract stores the quorum numerator as a plain uint256 rather than a Checkpoints.History structure indexed by block number",
+    "quorumNumerator(blockNumber) function returns the latest numerator regardless of the blockNumber argument, ignoring any prior numerator that was in effect at that block"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_math_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-5",
+  "source_hash": "d4b1293b4acac5b4",
+  "description": "Incorrect rounding direction in share/asset conversion favors user over protocol",
+  "question": "The source file in `source` contains share-based accounting logic (e.g. converting between assets and shares, minting/burning shares, or computing withdrawal/deposit amounts) that rounds in favor of the user instead of the protocol, such as rounding up shares owed to the user or rounding down assets owed to the protocol, enabling value extraction or accounting drift over repeated operations, excluding cases where rounding is explicitly rounded in the protocol's favor or where the amounts are exact with no fractional remainder possible.",
+  "criteria": [
+    "convertToShares() or previewDeposit() rounds up when computing shares minted to the depositor",
+    "convertToAssets() or previewWithdraw() rounds up the assets returned to a withdrawing user instead of rounding down",
+    "a fee or interest calculation divides before multiplying, causing truncation that benefits the user at the protocol's expense",
+    "burn/redeem logic rounds down the shares burned relative to assets withdrawn, letting users withdraw more than their proportional share",
+    "repeated small deposits/withdrawals exploit consistent favorable rounding to drain value from the pool over time"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

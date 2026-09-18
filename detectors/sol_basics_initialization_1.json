@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_initialization_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Initialization-1",
+  "source_hash": "e9fd16eb8d2db92e",
+  "description": "Critical state variable left uninitialized, defaulting to zero/false and bypassing intended logic",
+  "question": "The source file in `source` declares an important state variable (e.g., a flag, threshold, timestamp, or address used in security-critical checks or calculations) that is used in a comparison or control-flow decision before it is ever explicitly set to a meaningful value in the constructor or an initializer function, so it silently retains its default value (0, false, or address(0)) and this default causes incorrect logic, bypassed restrictions, or broken calculations, excluding variables that are intentionally left at default because zero/false/address(0) is the correct and safe starting value, and excluding variables that are properly set in a constructor, initializer, or setter before any use.",
+  "criteria": [
+    "A boolean flag like `initialized` or `started` is checked with `if (!started)` to gate minting/inflation logic, but `started` is never set to true anywhere, or is only set after the vulnerable code path already executed",
+    "A timestamp variable like `startTime` is used in a calculation such as `block.timestamp - startTime` without ever being assigned a real value, causing it to default to 0 and produce an inflated or nonsensical duration",
+    "An address variable representing an admin, oracle, or token is used in `require(msg.sender == owner)` or transfer logic while `owner` is never assigned in the constructor, leaving it as address(0) and allowing calls to bypass the intended restriction",
+    "A numeric threshold or cap variable (e.g., `maxSupply`, `minCollateralRatio`) is left unset (default 0) and used directly in comparisons like `require(amount <= maxSupply)`, making the check always fail or always pass unexpectedly"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Initialization"
+    ]
+  ]
+}

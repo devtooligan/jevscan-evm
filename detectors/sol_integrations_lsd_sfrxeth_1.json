@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_sfrxeth_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-sfrxETH-1",
+  "source_hash": "f4efc034f7c602df",
+  "description": "Unvalidated reliance on sfrxETH/frxETH exchange rate that can be skewed by centralized reward-transfer control",
+  "question": "The source file in `source` integrates sfrxETH by directly consuming its reported exchange rate (e.g., pricePerShare(), convertToAssets(), convertToShares(), or a hardcoded frxETH:sfrxETH ratio) to value, convert, or settle frxETH amounts, without any staleness check, deviation bound, or sanity validation against the actual redeemable frxETH backing, so a centralized reward-transfer action (e.g., by the Frax multi-sig) that detaches sfrxETH's rate from its true frxETH backing can silently corrupt accounting, collateral valuation, or redemption amounts; this excludes code that validates the rate against bounds/oracles, uses only informational display values, or where the multi-sig action is the protocol's own trusted admin function being exercised as intended.",
+  "criteria": [
+    "Calls sfrxETH.pricePerShare() or convertToAssets()/convertToShares() and uses the raw returned value directly in collateral valuation, minting, or redemption math with no deviation/staleness check",
+    "Hardcodes or caches a fixed sfrxETH:frxETH conversion ratio used for settlement or accounting logic instead of querying live contract state or validating it",
+    "Computes user-owed frxETH amounts from sfrxETH balances using the vault's exchange rate without comparing it to a last-known-good value or acceptable range before applying it",
+    "Treats sfrxETH and frxETH as always 1:1 or permanently pegged in swap, wrapping, or accounting functions with no check for divergence"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "sfrxETH"
+    ]
+  ]
+}

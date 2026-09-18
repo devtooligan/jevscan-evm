@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lsd_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-7",
+  "source_hash": "d91c34bc5433ea93",
+  "description": "Unbounded on-chain iteration over operator/validator set causing gas-limit denial of service",
+  "question": "The source file in `source` defines a liquid-staking-derivative function that loops over the entire operator or validator set (e.g., a storage array or mapping enumerated by count) to perform per-operator/validator logic such as reward distribution, balance updates, or selection, where the set size can grow unbounded because operators or validators can be added permissionlessly or without a hard cap, so the loop's gas cost scales with set size and can exceed the block gas limit, causing the function to revert and denial of service, and this is not limited to a fixed small trusted set or an off-chain/admin-only rarely-invoked maintenance operation.",
+  "criteria": [
+    "A function loops through all registered operators/validators in a storage array to update rewards or balances every call, with no cap on how many can register",
+    "A rebalancing or distribution routine uses `for (uint i = 0; i < operatorCount; i++)` over an operator list that grows via a permissionless registration function",
+    "Validator selection logic iterates the full validator list each staking/withdrawal call to compute totals or eligibility, with the list size unbounded by any admin-controlled limit",
+    "A withdrawal or slashing function sums or updates state across every operator/validator in storage without pagination, batching, or a maximum-size enforcement mechanism"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

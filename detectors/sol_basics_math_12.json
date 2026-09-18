@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_math_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Math-12",
+  "source_hash": "11414b63119172a4",
+  "description": "Unhandled min/max boundary values causing incorrect or unsafe arithmetic results",
+  "question": "The source file in `source` contains a multi-term calculation (e.g., combining several inputs via addition, subtraction, multiplication, or division) that does not validate or bound the minimum or maximum possible values of its terms, so that supplying extreme (very small or very large) input values causes overflow, underflow, division-by-zero, truncation, or another unexpected numeric outcome affecting a security-relevant result such as balances, prices, or shares, excluding cases where the language/runtime enforces checked arithmetic reverts or the code explicitly clamps or validates min/max ranges before the calculation.",
+  "criteria": [
+    "A function multiplies a user-supplied amount by a price or rate without checking that the amount's maximum value cannot overflow the product",
+    "A fee or interest calculation subtracts two values without verifying the minuend is always >= subtrahend, allowing underflow when inputs are at minimum edge values",
+    "A division operation uses a denominator derived from user input without checking for the zero or near-zero minimum edge case",
+    "A loop or aggregation sums many terms without bounding each term's maximum contribution, allowing cumulative overflow when all terms are at their maximum",
+    "A rounding or truncation step in a calculation is not verified against the smallest possible input, producing zero or a disproportionate result for minimal values"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Math"
+    ]
+  ]
+}

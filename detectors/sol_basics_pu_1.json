@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_pu_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-1",
+  "source_hash": "639fb02f5771a234",
+  "description": "Constructor used in an upgradeable/proxied contract instead of initializer function",
+  "question": "The source file in `source` defines a contract intended to be deployed behind a proxy (e.g. inherits upgradeable base contracts, uses initializer patterns, or is paired with a proxy) and contains a constructor that sets state variables or performs setup logic, rather than relying solely on an external initialize-style function, meaning that logic executed in the constructor will not run against the proxy's storage and any state it sets will be lost or unreachable when called through the proxy, excluding cases where the constructor is empty, only disables initializers (e.g. `_disableInitializers()`), or sets only immutable variables.",
+  "criteria": [
+    "A contract inheriting from an upgradeable base (e.g. Initializable, UUPSUpgradeable) has a constructor that assigns to a mutable state variable such as `owner = msg.sender`",
+    "A contract meant to be deployed via a proxy has a constructor that calls internal setup logic like `_setup(params)` instead of exposing an `initialize()` function",
+    "A contract has both a constructor performing state initialization and a separate `initialize()` function, showing constructor logic was not fully migrated to the initializer",
+    "A contract intended for proxy deployment sets configuration values (fees, addresses, limits) inside the constructor rather than in an `initialize` function guarded by `initializer` modifier"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

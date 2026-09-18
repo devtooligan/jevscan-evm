@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_al_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-13",
+  "source_hash": "31123bb36cf9fcb1",
+  "description": "Loop break/continue causes skipped state updates or premature exit, corrupting processing of array elements",
+  "question": "The source file in `source` contains a loop (for/while) with a `break` or `continue` statement that causes required per-iteration logic (such as a state update, balance change, transfer, or validation check) to be skipped or the loop to exit before processing all elements, while the surrounding code still treats the operation as fully and correctly completed for every element, excluding cases where the break/continue is used purely for an intentional short-circuit optimization that does not skip any required side effect or leaves the resulting state consistent.",
+  "criteria": [
+    "a for loop over an array where a `continue` is placed before a required balance, allowance, or accounting update, causing that update to be silently skipped for the current element",
+    "a for loop that `break`s out early once some condition is met, but the function afterward emits a success event or return value implying all elements were processed",
+    "a loop where `continue` skips incrementing an index or counter variable, leading to the same element being reprocessed or the loop never terminating correctly",
+    "a loop over pending withdrawals/claims where `continue` skips marking the current item as processed, allowing it to be reprocessed or double-counted later",
+    "a loop that uses `break` to stop iterating over recipients mid-way through a payout, leaving remaining recipients unpaid while the transaction still commits as successful"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_payment_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Payment-6",
+  "source_hash": "84cf933851c8dec4",
+  "description": "Use of transfer()/send() for ETH transfers, risking failure due to fixed 2300 gas stipend",
+  "question": "The source file in `source` sends ETH to an address using `.transfer()` or `.send()` with the fixed 2300 gas stipend, rather than using `.call{value: ...}()`, potentially causing transfers to unexpectedly fail or brick contract functionality if the recipient's fallback logic or future gas cost changes exceed 2300 gas, and this is not limited to trusted addresses known to have no fallback logic or minimal gas usage guarantees.",
+  "criteria": [
+    "A payable address calls `.transfer(amount)` to send ETH to a user-supplied or contract recipient address",
+    "A payable address calls `.send(amount)` to send ETH and only checks the boolean return value without using call",
+    "A withdrawal or refund function uses `recipient.transfer(balance)` instead of a low-level call with gas forwarding",
+    "A loop distributing ETH to multiple recipients uses `.transfer()` for each payout instead of `.call{value:}()`"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Payment"
+    ]
+  ]
+}

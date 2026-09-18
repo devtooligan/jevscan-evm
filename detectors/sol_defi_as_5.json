@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-5",
+  "source_hash": "72329938b14b637e",
+  "description": "Rounding errors in constant-product AMM math causing value leakage or invariant violation",
+  "question": "The source file in `source` implements a constant-product AMM (e.g., x*y=k) with functions computing swap output amounts, liquidity minting, or liquidity burning using integer arithmetic, and at least one of these computations rounds in a direction that benefits the caller or violates the invariant (e.g., truncated division inflates swap output, overcredits minted LP shares, or under-charges input/over-pays output), enabling value extraction or pool insolvency over repeated operations, excluding cases where rounding is explicitly directed to favor the protocol/pool (safe floor/ceiling choice) or where the rounding error is bounded and cannot be exploited for net gain.",
+  "criteria": [
+    "getAmountOut computes numerator/denominator with integer division that rounds in favor of the trader, allowing more output tokens than the invariant permits",
+    "mint() computes liquidity shares via sqrt(reserve0 * reserve1) using floor division that overcredits the depositor due to truncation, diluting existing LPs",
+    "swap() applies the fee via integer division that rounds down the effective input amount, allowing the invariant check to pass with less value provided than required",
+    "burn() calculates the token amounts owed to an LP via proportional division that rounds up, paying out more tokens than the LP's share represents and causing pool insolvency over repeated redemptions"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

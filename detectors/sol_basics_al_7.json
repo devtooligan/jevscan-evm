@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_al_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-7",
+  "source_hash": "f99c131a91ace4b7",
+  "description": "Missing uniqueness validation on user-supplied array allows duplicate entries to be processed",
+  "question": "The source file in `source` defines a function that accepts an array (often user- or caller-supplied) and iterates over it performing state-changing operations such as accumulating balances, applying rewards, transferring funds, or removing/whitelisting items per element, without validating that the array elements are unique, so a caller can pass duplicate entries to cause unintended double-processing, inflated totals, double payouts, or bypass of limits, excluding arrays whose semantics inherently tolerate or require duplicates and arrays that are already deduplicated or validated for uniqueness before use.",
+  "criteria": [
+    "distributeRewards(address[] calldata recipients) loops over recipients and adds reward amount per entry without checking for duplicate addresses, allowing a duplicated address to receive multiple rewards",
+    "batchTransfer(address[] memory to, uint256[] memory amounts) sends tokens to each address in the array without verifying uniqueness, letting a repeated address receive multiple transfers from a single call",
+    "addLiquidityForPools(uint256[] calldata poolIds) increments a counter or updates state for each poolId without checking poolIds for duplicates, letting a repeated poolId inflate the counter or state improperly",
+    "removeWhitelist(address[] calldata users) or similar bulk-update function processes each entry and updates a mapping/count without deduplicating the input, allowing repeated entries to double-decrement or corrupt shared counters"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

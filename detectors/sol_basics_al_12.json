@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_al_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-12",
+  "source_hash": "32b9aa51ee80e454",
+  "description": "Batch fund transfer by shares leaves residual dust unallocated due to rounding in loop",
+  "question": "The source file in `source` contains a loop that distributes funds to multiple recipients proportionally based on shares (e.g., dividing a total amount by each recipient's share ratio), where each iteration computes and transfers a rounded-down proportional amount without the final iteration or a separate step reconciling the leftover 'dust' balance caused by integer division, so residual funds remain stuck or unaccounted for in the contract, excluding loops where the last transfer explicitly sends the full remaining balance or where amounts are guaranteed to divide evenly with no rounding loss.",
+  "criteria": [
+    "A for/while loop transfers token.balance * shares[i] / totalShares to each recipient without adjusting the final recipient's amount to consume the remainder",
+    "A payout loop iterates over an array of shareholders computing amount = totalAmount / numShareholders, leaving totalAmount % numShareholders permanently trapped in the contract",
+    "A withdrawal loop distributes ETH proportionally to each user's stake fraction using integer division and never reconciles the sum of transfers against the original balance",
+    "A batch airdrop function computes per-recipient token amounts via division inside a loop and does not transfer any leftover tokens after the loop completes"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-3",
+  "source_hash": "760a8f8f5bfd3262",
+  "description": "Incorrect balance/state update when source and destination addresses are identical",
+  "question": "The source file in `source` implements a transfer, swap, or move-like function that updates balances or state for a source and destination address using separate sequential read/write or subtract-then-add operations, without any check or special-case handling for src==dst (or caller==receiver), such that when the same address is both source and destination the sequential updates corrupt the balance or state (e.g., funds are duplicated, lost, or an intermediate stale value is overwritten), excluding functions where the same operations are mathematically safe or idempotent when src==dst, and excluding cases where an explicit require or branch already handles src==dst correctly.",
+  "criteria": [
+    "transfer(address src, address dst, uint amount) does balances[src] -= amount; balances[dst] += amount; without checking src != dst, so self-transfers can inflate or corrupt balances[src] due to intermediate storage reads",
+    "swap function reads reserve0 and reserve1 into local variables, computes output based on stale reserves, and updates both reserves assuming sender and recipient differ, causing incorrect accounting when the swapper is also the recipient of the same token",
+    "a liquidation or repay function subtracts debt from borrower and adds collateral to liquidator using separate storage writes, with no check for borrower == liquidator, allowing the same address to receive collateral while its debt update is computed from a stale pre-write value",
+    "a token bridge or vault function burns from src and mints to dst in two separate calls without validating src != dst, letting a user who sets themselves as both source and destination double their balance because burn and mint operate on stale snapshots"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

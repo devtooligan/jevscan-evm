@@ -1,0 +1,16 @@
+{
+  "name": "cctp_bridging",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/cctp-bridging/SKILL.md",
+  "source_hash": "ae72c14813c3eb28",
+  "description": "Missing reentrancy protection in CCTP V2 hook receiver contracts after USDC mint",
+  "question": "The source file in `source` defines a contract that receives CCTP V2 minted USDC and executes hook calldata (e.g., logic invoked after MessageTransmitter.receiveMessage/receiveMessageWithCaller delivers a mint plus hookData) that performs external calls such as approvals, transfers, or calls into a vault/DEX using that hook data, but the function executing the hook lacks a reentrancy guard (no nonReentrant modifier or mutex) and updates or relies on contract state after the external call, allowing an attacker to reenter and manipulate balances or state during hook execution.",
+  "criteria": [
+    "Function processes hookData/calldata delivered alongside a CCTP mint (e.g., from depositForBurnWithHook or a destination hook receiver)",
+    "Function makes an external call (transfer, approve, low-level call, or call to vault/DEX) using the decoded hook data",
+    "No nonReentrant modifier, reentrancy guard, or mutex flag protects the hook-executing function",
+    "State variables (balances, accounting, minted amounts) are read or written after the external call",
+    "No check-effects-interactions ordering enforced around the hook execution"
+  ],
+  "tags": []
+}

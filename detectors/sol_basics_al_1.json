@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_al_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-1",
+  "source_hash": "10dc1d768aeeaca4",
+  "description": "Loop logic mishandles first/last iteration boundary conditions",
+  "question": "The source file in `source` contains a loop where the first or last iteration requires different handling than the interior iterations (e.g., initialization, accumulation, pairwise indexing, or finalization logic) but the code applies the same logic uniformly, causing incorrect results such as out-of-bounds access, skipped/double-processed elements, wrong accumulator values, or incorrect finalization, and this is not a case where the uniform logic is actually correct for all iterations.",
+  "criteria": [
+    "a loop reads array[i-1] or array[i+1] for comparison/difference without special-casing i==0 or i==length-1, causing out-of-bounds access",
+    "a loop accumulates a sum or running value inside the loop without initializing/resetting it before the first iteration, corrupting the result",
+    "a loop applies per-iteration transfer/settlement logic identically to the last element that should instead trigger finalization or a different payout calculation, causing incorrect state",
+    "a loop skips or double-counts the first or last array element due to incorrect start or end bounds in the iteration range"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

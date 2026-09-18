@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_23",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-23",
+  "source_hash": "405be9fd5ade0071",
+  "description": "Solidity memory array creation overflow causing memory corruption (compiler versions 0.2.0-0.6.4)",
+  "question": "The source file in `source` targets a Solidity compiler version between 0.2.0 and 0.6.4 (inclusive) and contains code that allocates a memory array whose length is derived from user-controlled or otherwise unbounded input (e.g., `new T[](n)` or similar dynamic memory array creation) without any bound or sanity check on that length, exposing the contract to the known compiler memory-creation overflow bug where large lengths can wrap and cause overlapping memory regions. This excludes contracts that pin a fixed, small, hardcoded array size, or that already use a compiler version 0.6.5 or later where the bug is fixed.",
+  "criteria": [
+    "A function declares `new bytes[](userSuppliedLength)` or `new uint256[](n)` where `n` comes directly from a function parameter or external call return value with no upper-bound check",
+    "Code computes an array length via arithmetic on user input (e.g., `n = a * b`) and then calls `new T[](n)` without checking for overflow or an absolute maximum",
+    "A loop or recursive function repeatedly grows a memory array size based on external input before allocating it with `new`",
+    "Decoding external call data with `abi.decode` into a dynamically sized memory array whose length is taken from untrusted calldata without validation"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

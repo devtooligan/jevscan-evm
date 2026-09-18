@@ -1,0 +1,19 @@
+{
+  "name": "sol_hmt_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-HMT-1",
+  "source_hash": "289c7992b5d864c5",
+  "description": "Merkle root update front-runnable, letting attackers exploit stale/new proof window before impact",
+  "question": "The source file in `source` defines a function that sets or updates a Merkle root used for proof verification (e.g., claims, whitelist, airdrop) such that between the transaction submitting the new root and its confirmation, users or attackers can observe the pending root/proof and front-run the update to claim, exploit stale eligibility, or extract value based on knowledge of the new or old root, with no safeguard such as a commit-reveal scheme, delay plus cutoff, or invalidation of in-flight claims tied to the old root. This excludes Merkle root updates that are restricted to a trusted admin only for legitimate configuration changes where front-running has no exploitable financial impact, or designs that already implement a timelock, pending-root reveal, or root-versioning mechanism preventing race exploitation.",
+  "criteria": [
+    "setMerkleRoot() lets anyone claim() immediately after root update with no delay, allowing attacker to front-run using the new root before eligible users act",
+    "updateRoot() changes root directly in same tx as reward distribution, letting an attacker see the mempool tx and submit a competing claim first to drain funds",
+    "claim() checks proof against a root that can be changed by admin in the same block without invalidating pending claims, enabling double-claim across old and new root",
+    "Merkle-based airdrop allows claiming with old root proof even after root update tx is pending, letting user front-run the update to claim twice"
+  ],
+  "tags": [
+    [
+      "Hash / Merkle Tree"
+    ]
+  ]
+}

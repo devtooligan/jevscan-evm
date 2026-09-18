@@ -1,0 +1,21 @@
+{
+  "name": "sol_defi_lsd_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-6",
+  "source_hash": "ba704afabeb6c30e",
+  "description": "Corruption of inter-related operator/validator storage via unsynchronized index updates",
+  "question": "The source file in `source` maintains multiple inter-related storage structures (e.g., separate mappings/arrays for operators and validators that reference each other via stored indices) and contains an update function (such as add, remove, or swap logic) that modifies one structure without correspondingly updating or validating the matching index/reference in the other structure, allowing the cross-references between operator and validator records to become corrupted or point to the wrong entry; this excludes cases where a single flat structure is used with no cross-indexing, or where every update path atomically re-synchronizes all affected indices/references (e.g., a correct swap-and-pop that also rewrites the moved element's stored index).",
+  "criteria": [
+    "A removeOperator or removeValidator function deletes an array element via swap-and-pop but never updates the stored index field of the swapped-in element in the corresponding mapping",
+    "An addValidator function pushes a new struct into an array and records its index in a separate mapping, but a later removal from the array shifts other elements without updating their recorded indices",
+    "A function updates operatorId or validatorIndex fields in one mapping while a related mapping/array still references the old index, causing lookups to resolve to a stale or incorrect operator/validator",
+    "Two structures store cross-references to each other (operator -> validator index, validator -> operator id) and only one side is updated inside a single function, leaving the other side stale",
+    "A batch update function reassigns positions in an array representing validators without updating the corresponding operator struct's stored pointer/index to that array position"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

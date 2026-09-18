@@ -1,0 +1,16 @@
+{
+  "name": "delegate_call_risks",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/delegate-call-risks/SKILL.md",
+  "source_hash": "aff570588e97c37a",
+  "description": "Delegatecall to a user-controlled/untrusted target address in Solidity contracts",
+  "question": "The source file in `source` contains a Solidity function that performs `.delegatecall(...)` on an address parameter or other user-supplied/external variable (not a fixed, owner-set, or whitelisted implementation address), allowing an external caller to make the contract delegatecall into an arbitrary attacker-controlled contract that can overwrite the caller's storage, hijack msg.sender context, or execute arbitrary logic with the calling contract's privileges.",
+  "criteria": [
+    "Function accepts an address parameter (e.g. `target`, `implementation`, `to`) that is passed directly into `.delegatecall(...)`",
+    "No check restricting the delegatecall target to an admin-set, immutable, or whitelist-approved address (e.g. missing `approvedImplementations[target]` check)",
+    "The delegatecall target originates from calldata, a public/external function argument, or other untrusted user input",
+    "Access control modifiers like `onlyOwner`/`onlyAdmin` are absent from the function performing the delegatecall",
+    "The delegatecall is not restricted to a fixed, previously verified implementation address set only through a controlled upgrade mechanism"
+  ],
+  "tags": []
+}

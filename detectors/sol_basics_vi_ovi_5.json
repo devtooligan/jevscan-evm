@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-5",
+  "source_hash": "485af5bdb0ee41ec",
+  "description": "OpenZeppelin MerkleProof multiproof forgery vulnerability (CVE-2023-34459)",
+  "question": "The source file in `source` calls OpenZeppelin's MerkleProof multiproof functions verifyMultiProof, verifyMultiProofCalldata, processMultiProof, or processMultiProofCalldata to verify or process a set of leaves against a merkle root, without any additional custom validation of the proof/leaf structure and without pinning to a patched OpenZeppelin version (>=4.9.2), allowing an attacker to forge a valid multiproof for an arbitrary, attacker-chosen set of leaves not actually included in the tree. This excludes files that only use the single-leaf MerkleProof.verify or MerkleProof.verifyCalldata functions, and excludes files that explicitly use or import a patched OpenZeppelin Contracts version.",
+  "criteria": [
+    "calls MerkleProof.verifyMultiProof(proof, proofFlags, root, leaves) directly on user-supplied leaves and proof/proofFlags arrays to authorize a batch claim or whitelist check",
+    "calls MerkleProof.verifyMultiProofCalldata(proof, proofFlags, root, leaves) to validate multiple leaves in a single external call without any extra structural checks on proofFlags",
+    "calls MerkleProof.processMultiProof(proof, proofFlags, leaves) to compute a root from attacker-supplied leaves and flags and compares it to a stored root",
+    "calls MerkleProof.processMultiProofCalldata(proof, proofFlags, leaves) as part of an airdrop or access-control check with no version pin excluding the vulnerable range"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

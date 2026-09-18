@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-4",
+  "source_hash": "6d68dd5ae614f35b",
+  "description": "Reentrancy via stale state in custom _beforeTokenTransfer hook in vulnerable OpenZeppelin ERC777",
+  "question": "The source file in `source` extends OpenZeppelin's ERC777 contract (version <3.4.0-rc.0) with a custom override of _beforeTokenTransfer that tracks or relies on token balances or total supply, while the ERC777 _burn/_send logic invokes _beforeTokenTransfer and then calls the external tokensToSend/tokensReceived hook before token balances and total supply are actually updated, allowing a reentrant call during that hook to observe or act on stale state recorded by _beforeTokenTransfer. This excludes contracts using OpenZeppelin ERC777 version 3.4.0-rc.0 or later, and contracts that do not override _beforeTokenTransfer with balance- or supply-dependent logic.",
+  "criteria": [
+    "A custom _beforeTokenTransfer override caches or updates internal accounting (e.g., snapshot balances, checkpoints, voting power) based on ERC777 balances before the actual transfer/burn/mint completes",
+    "The overridden _beforeTokenTransfer is called from ERC777's _burn function prior to the external call to the token holder's tokensToSend hook, before totalSupply and balances are decremented",
+    "The overridden _beforeTokenTransfer is called from ERC777's _send function prior to the external tokensToSend/tokensReceived hooks, before sender/recipient balances are updated",
+    "Custom logic in _beforeTokenTransfer performs state-dependent calculations (e.g., reward accrual, price computation) using balances that will change later in the same transfer, enabling a reentrant call from the hook to exploit the inconsistency"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

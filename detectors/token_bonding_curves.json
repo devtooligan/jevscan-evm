@@ -1,0 +1,16 @@
+{
+  "name": "token_bonding_curves",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/token-bonding-curves/SKILL.md",
+  "source_hash": "c87ac95c3f5b1526",
+  "description": "Missing slippage protection in bonding-curve buy/sell functions enabling front-running/sandwich attacks",
+  "question": "The source file in `source` implements a bonding-curve token contract with buy and/or sell functions that compute cost or proceeds from a supply-dependent price curve and transfer ETH/tokens, but at least one of these functions executes the trade without a caller-supplied slippage bound (e.g., no maximum acceptable cost on buy or minimum acceptable proceeds on sell) checked against the curve-computed value before minting/burning and transferring funds, allowing an attacker to front-run or sandwich the trade to profit at the trader's expense.",
+  "criteria": [
+    "buy() computes getBuyCost/priceAtSupply and mints tokens without a maxCost or maxPayment parameter bounding acceptable price impact",
+    "sell() computes getSellProceeds and burns tokens/transfers ETH without a minProceeds or minReturn parameter",
+    "No require() comparing the curve-computed cost/proceeds against a caller-provided bound before executing mint/burn and transfer",
+    "Function parameter intended for slippage control (e.g., minTokens) is instead used as the exact trade amount rather than a bound check",
+    "Bonding curve buy/sell logic present with no commit-reveal or slippage-tolerance mechanism anywhere in the file"
+  ],
+  "tags": []
+}

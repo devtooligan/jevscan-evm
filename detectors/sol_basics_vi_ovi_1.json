@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_ovi_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-OVI-1",
+  "source_hash": "99909bab406d0c0a",
+  "description": "ERC2771Context._msgData() DoS/revert on short calldata in vulnerable OpenZeppelin versions",
+  "question": "The source file in `source` imports or inherits OpenZeppelin's `ERC2771Context` (directly or via a trusted-forwarder pattern) using an OpenZeppelin Contracts version >=4.0.0 and <4.9.3, and relies on or reimplements `_msgData()` in a way that reverts or behaves incorrectly whenever `msg.data.length < 20`, instead of safely returning the full `msg.data` in that case, creating a denial-of-service path for calls with short calldata; this excludes files using OpenZeppelin >=4.9.3 or a patched/overridden `_msgData()` that explicitly handles `msg.data.length < 20`, and excludes files that do not use `ERC2771Context` at all.",
+  "criteria": [
+    "A contract inherits `ERC2771Context` from an OpenZeppelin Contracts version between 4.0.0 and 4.9.2, as shown by an explicit version comment, import path, or package.json dependency",
+    "The `_msgData()` function slices `msg.data[:msg.data.length - 20]` to strip the appended forwarder address without first checking that `msg.data.length >= 20`",
+    "The contract calls `_msgData()` (inherited from `ERC2771Context`) in a code path reachable with calldata shorter than 20 bytes, causing a revert instead of returning the raw `msg.data`",
+    "The contract overrides `_msgSender()`/`_msgData()` for meta-transaction support but copies the vulnerable OpenZeppelin 4.x logic verbatim without adding a length guard for short calldata"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "OpenZeppelin Version Issues"
+    ]
+  ]
+}

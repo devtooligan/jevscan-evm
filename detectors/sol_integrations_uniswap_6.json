@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-6",
+  "source_hash": "6bb507fad5e6155b",
+  "description": "Direct call to Uniswap pool.swap() bypassing Router safety checks (slippage/deadline validation)",
+  "question": "The source file in `source` contains a function that calls a Uniswap pool's swap() method directly on the pair/pool contract (rather than through the official Uniswap Router or a Router-equivalent wrapper), performing the swap without the Router's built-in slippage, deadline, or input validation checks, exposing callers to sandwich attacks, unfavorable pricing, or malformed swap parameters, and this does not apply if the swap is instead performed via a Router contract, a periphery library that itself calls the Router, or the direct pool.swap() call is followed by explicit equivalent slippage and deadline checks implemented in the same function.",
+  "criteria": [
+    "A function calls pair.swap(amount0Out, amount1Out, to, data) directly on the Uniswap V2 pair contract without computing or checking a minimum output amount",
+    "A function invokes pool.swap(recipient, zeroForOne, amountSpecified, sqrtPriceLimitX96, data) on a Uniswap V3 pool directly with no slippage bound derived from an oracle or minAmountOut parameter",
+    "Code retrieves the pair/pool address via factory.getPair() or similar and calls swap() on it directly instead of routing the call through the Router contract's swapExactTokensForTokens or equivalent function",
+    "A swap function omits any deadline parameter or timestamp check before executing the direct pool.swap() call"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

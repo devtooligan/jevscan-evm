@@ -1,0 +1,16 @@
+{
+  "name": "compound_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/compound-patterns/SKILL.md",
+  "source_hash": "5ecc8c5a5e729226",
+  "description": "Missing access control on Comet borrow/withdraw function enabling fund drain",
+  "question": "The source file in `source` contains a contract that integrates with a Compound V3 Comet market by calling comet.withdraw() to borrow the base asset and then transfers the withdrawn tokens to msg.sender, but the function lacks any access control, ownership check, or per-user debt/balance accounting, allowing any external caller to withdraw against the contract's pooled collateral or supplied balance and drain funds to themselves.",
+  "criteria": [
+    "A function calls comet.withdraw(baseToken/asset, amount) and then IERC20.transfer(msg.sender, amount) with no onlyOwner/onlyAuthorized modifier",
+    "No mapping or storage tracking which user is entitled to withdraw how much before calling comet.withdraw",
+    "No check that msg.sender matches a recorded depositor/borrower before performing the withdrawal",
+    "The contract pools multiple users' supplied collateral/base asset in a single Comet account without isolating individual claims",
+    "No call to comet.isBorrowCollateralized or isLiquidatable restricting the withdrawal to safe, authorized amounts"
+  ],
+  "tags": []
+}

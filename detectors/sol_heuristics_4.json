@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-4",
+  "source_hash": "133e88c70dd27759",
+  "description": "Reentrancy guard modifier not applied first, allowing reentrancy via other modifiers",
+  "question": "The source file in `source` defines a function that uses the `nonReentrant` modifier together with at least one other modifier, and `nonReentrant` is not listed as the first modifier in the function's modifier list, allowing code in the other modifier(s) to execute before the reentrancy lock is set and thereby enabling reentrant calls during that window. This excludes functions where `nonReentrant` is the only modifier, functions where it is already listed first, and cases where the other modifiers are simple access-control checks with no external calls or state reads/writes that could be exploited via reentrancy.",
+  "criteria": [
+    "function withdraw() external onlyOwner nonReentrant { ... } where onlyOwner modifier makes an external call or reads mutable state before nonReentrant lock is applied",
+    "function claim() public updateReward(msg.sender) nonReentrant { ... } where updateReward modifier performs external calls/state updates prior to the reentrancy lock",
+    "modifier updateReward(address account) { ...calls external price oracle or token contract... } used as the first modifier ahead of nonReentrant on a state-changing function",
+    "function mint() external whenNotPaused nonReentrant { ... } where whenNotPaused itself triggers a callback (e.g., via ERC777 hooks) before nonReentrant takes effect"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

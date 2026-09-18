@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-9",
+  "source_hash": "59e82067c4f2c5cc",
+  "description": "Unsafe support for arbitrary/non-standard ERC20 tokens (fee-on-transfer, rebasing) without whitelisting",
+  "question": "The source file in `source` allows callers to pass in arbitrary, non-whitelisted ERC20 token addresses for deposits, transfers, or collateral, and for such tokens either credits or debits internal balances using the nominal amount parameter passed to transfer/transferFrom rather than the actual measured balance change, or computes rewards/collateral/shares from stored token amounts without accounting for rebasing supply changes, so fee-on-transfer or rebasing tokens can desynchronize accounting and cause insolvency or fund loss; this excludes code restricted to a fixed, pre-vetted set of tokens or that verifies transfers via before/after balanceOf comparisons.",
+  "criteria": [
+    "deposit(address token, uint256 amount) accepts any token address with no allowlist check, calls IERC20(token).transferFrom(msg.sender, address(this), amount), and then sets balances[msg.sender] += amount without comparing balanceOf before and after the call",
+    "a generic swap/stake function takes an arbitrary ERC20 token parameter with no restriction to approved tokens and records the user's deposited amount as the requested transfer amount instead of the token's actual received balance, so a fee-on-transfer token leaves the contract short of funds",
+    "withdraw(address token, uint256 amount) lets a user withdraw any unvetted token and reduces the user's tracked balance by the exact requested amount while sending that same amount out via transfer, ignoring that a fee-on-transfer token deducts a fee on the outbound leg, silently draining other users' funds",
+    "a vault or lending pool accepts arbitrary, non-whitelisted ERC20 tokens as collateral and calculates a user's collateral value or shares from the raw amount originally deposited rather than the token's current balanceOf(address(this)), so a rebasing token's supply changes are never reflected and can undercollateralize or insolvent the pool"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

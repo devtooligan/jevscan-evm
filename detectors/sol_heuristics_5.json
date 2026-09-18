@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-5",
+  "source_hash": "017c8adc4281d8ca",
+  "description": "try/catch external call may fail from insufficient gas, causing unhandled or unsafe fallback behavior",
+  "question": "The source file in `source` contains a Solidity try/catch block wrapping an external call or contract creation that does not explicitly forward or reserve sufficient gas (e.g. no gas() specified or no check that remaining gas exceeds the callee's requirement), so that under low-gas conditions the call can fail via the catch branch and trigger unsafe fallback logic, silently skip critical state updates, or be exploited by an attacker who forces an out-of-gas failure, excluding try/catch blocks that explicitly specify a safe minimum gas stipend or whose catch branch performs only benign no-op handling.",
+  "criteria": [
+    "A try/catch wraps an external call without specifying {gas: ...}, and the catch block silently continues execution assuming success-equivalent state, ignoring that failure may be due to insufficient gas rather than a legitimate revert",
+    "A try/catch around a low-level call or contract creation forwards all remaining gas with no explicit reservation, and the catch branch marks an operation as 'failed permanently' without distinguishing an out-of-gas failure from a genuine revert",
+    "A loop iterates over multiple try/catch external calls with no per-call gas allocation or check, allowing gas exhaustion partway through to cause inconsistent partial state updates across iterations",
+    "A try/catch used for a critical fund transfer or callback treats any catch trigger as equivalent to a legitimate failure and proceeds to alter accounting or refund logic without verifying enough gas was actually supplied to the callee"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

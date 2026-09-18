@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_cbeth_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-cbETH-1",
+  "source_hash": "92886f4c826f0244",
+  "description": "Centralized single-oracle control over cbETH/ETH exchange rate enabling manipulation",
+  "question": "The source file in `source` defines a function that sets or updates the cbETH/ETH exchange rate and restricts it with an `onlyOracle` (or equivalent single-role) modifier, allowing one or a few privileged addresses to set the rate value arbitrarily with no bounds checking, no deviation limit against a prior rate, and no aggregation across multiple independent price sources, thereby letting a single actor manipulate the rate used elsewhere in the contract for conversions, collateral valuation, or payouts.",
+  "criteria": [
+    "A function like setRate(uint256 newRate) or updateExchangeRate(uint256 rate) is guarded only by onlyOracle and directly overwrites the stored cbETH/ETH rate variable with the caller-supplied value",
+    "The onlyOracle modifier checks msg.sender against a single stored oracle address with no multisig, DAO, or committee requirement, and the rate-setting function performs no sanity check on the new value",
+    "The rate update function accepts any uint256 value from the oracle role without comparing it to the previous rate or enforcing a maximum percentage change per update",
+    "The contract exposes a public setter for the conversion rate that can be called repeatedly by the oracle role with no time-lock, cooldown, or on-chain price feed cross-validation"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "cbETH"
+    ]
+  ]
+}

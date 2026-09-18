@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-6",
+  "source_hash": "40b2273d2153e18d",
+  "description": "Liquidation can be blocked by front-running with a minimal collateral top-up or partial repay",
+  "question": "The source file in `source` implements a liquidation function that checks a position's current health factor or collateral ratio against a liquidation threshold, and also exposes a collateral-deposit or debt-repay function that a borrower can call at any time, in any amount, with no cooldown, fee, minimum increment, or snapshot of state prior to the liquidation call, so that a borrower can observe a pending liquidation transaction and front-run it with a trivial collateral increase or partial repayment to push the health factor just above the threshold and block the liquidation, excluding designs where liquidation eligibility is fixed at transaction submission, uses a commit-reveal or snapshot mechanism, or where top-ups/repays are subject to a cooldown, minimum size, or penalty that prevents this griefing.",
+  "criteria": [
+    "liquidate() reverts if healthFactor(user) >= LIQUIDATION_THRESHOLD, while addCollateral()/deposit() lets anyone top up any amount at any time with no cooldown or fee, letting a borrower front-run a pending liquidation with a tiny deposit",
+    "repay() allows a partial repayment of any size at any time with no penalty or restriction, letting a borrower watch the mempool and repay just enough debt to push their ratio back above the liquidation threshold right before the liquidator's transaction lands",
+    "isLiquidatable() recomputes collateral and debt from live storage at call time with no minimum top-up size or time-lock on deposits, so a 1-wei collateral addition submitted with higher gas can invalidate a liquidator's transaction",
+    "the contract exposes a public function that increases collateral or decreases debt and can be called in the same block or immediately before liquidate(), with no fee, delay, or floor on the amount, allowing repeated cheap griefing of liquidators"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_hmt_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-HMT-3",
+  "source_hash": "098d2a1250e687e0",
+  "description": "Merkle proof/tree functions accept a zero hash leaf or node without rejecting it, enabling forged proofs",
+  "question": "The source file in `source` implements Merkle tree or Merkle proof verification logic (e.g., leaf hashing, proof verification, or tree construction) that accepts or processes a zero hash (bytes32(0) or equivalent empty/default hash value) as a valid leaf, node, or root without explicit checks rejecting it, allowing an attacker to craft or exploit zero-initialized storage slots or default values to satisfy the Merkle proof check or corrupt tree state, excluding cases where the code explicitly validates against zero hash inputs or where zero hash cannot arise from any reachable leaf/node computation.",
+  "criteria": [
+    "verify(bytes32[] proof, bytes32 root, bytes32 leaf) computes the proof path and accepts leaf == bytes32(0) as valid without rejecting it",
+    "A Merkle tree insertion function stores or hashes a node equal to bytes32(0) without checking for zero value, allowing unset storage slots to pass as valid leaves",
+    "computeRoot() or a tree-building function treats a zero hash as a legitimate placeholder node, letting proofs be validated against unintended empty branches",
+    "A whitelist/airdrop claim function hashes user data to derive a leaf and does not check that the resulting hash is nonzero before calling the Merkle proof verifier"
+  ],
+  "tags": [
+    [
+      "Hash / Merkle Tree"
+    ]
+  ]
+}

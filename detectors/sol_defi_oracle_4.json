@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-4",
+  "source_hash": "83c2a80834d92ade",
+  "description": "Missing L2 sequencer uptime check when consuming Chainlink price feeds",
+  "question": "The source file in `source` reads a Chainlink oracle price feed (e.g., via latestRoundData) for use in financial logic such as valuations, liquidations, or swaps on an L2/rollup, but does not query or validate a sequencer uptime feed (such as Chainlink's sequencer uptime feed) to confirm the sequencer is online and has been up for a sufficient grace period before trusting the price, allowing stale or invalid prices to be used if the sequencer goes offline; this does not apply to code that only runs on L1, that already checks the sequencer uptime feed's answer and startedAt/grace period, or that does not consume any price oracle.",
+  "criteria": [
+    "A function calls priceFeed.latestRoundData() to fetch a price and uses it directly for calculations without first calling a sequencer uptime feed's latestRoundData()",
+    "Oracle price consumption logic checks staleness via updatedAt timestamp but never checks whether the L2 sequencer is up via a separate uptime feed",
+    "Code deployed for an L2 rollup fetches Chainlink price data for liquidation or collateral valuation with no reference to a sequencer status/uptime feed anywhere in the contract",
+    "A price-fetching function has a TODO or missing branch where sequencer uptime validation should occur, proceeding to use the price regardless of sequencer state"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

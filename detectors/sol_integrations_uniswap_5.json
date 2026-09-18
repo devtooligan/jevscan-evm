@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_uniswap_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-5",
+  "source_hash": "856840e0dc5be03b",
+  "description": "Using manipulable Uniswap pool reserves/spot price for critical pricing or logic",
+  "question": "The source file in `source` reads a Uniswap (or similar AMM) pool's current reserves or spot price (e.g., via getReserves(), balanceOf on the pair, or slot0) and directly uses that value to compute prices, valuations, collateral ratios, or swap amounts for a sensitive operation such as minting, borrowing, liquidation, or payout, without using a time-weighted average price oracle, external price feed, or other manipulation-resistant safeguard, allowing an attacker to manipulate the reserves within a single transaction (e.g., via flashloan) to distort the result to their benefit. This does not apply if the reserve/price read is only used for non-critical display, off-chain analytics, or is already protected by a TWAP, oracle cross-check, or slippage/deviation bound.",
+  "criteria": [
+    "getPrice() computes price = reserve0 / reserve1 from pair.getReserves() and uses it directly to value collateral for a lending function",
+    "A liquidation or borrow function reads pair.balanceOf(address(this)) as the token price input with no TWAP or oracle cross-check",
+    "swapExactTokensForTokens-based valuation logic uses the pool's instantaneous slot0 price to determine mint amount for a vault, with no time-weighting",
+    "A function computes collateral ratio using current reserves fetched in the same call, with no minimum observation window or oracle fallback"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

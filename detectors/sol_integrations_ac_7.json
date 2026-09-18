@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_ac_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-7",
+  "source_hash": "18a3111e840c9cac",
+  "description": "Incorrect implementation of AAVE/Compound reward claim logic causes users to receive wrong rewards.",
+  "question": "The source file in `source` integrates with AAVE or Compound and implements a reward-claiming function (e.g. claiming COMP/AAVE incentives) whose logic incorrectly computes, tracks, or distributes accrued rewards, such as claiming into the wrong recipient, using stale/incorrect accrual amounts, failing to update per-user reward accounting after a claim, or omitting a call to claim rewards where required, causing users to receive incorrect (too much, too little, or no) rewards; this excludes protocols that do not integrate AAVE/Compound reward mechanisms at all, and excludes admin-only reward sweep/rescue functions intentionally restricted to a trusted owner.",
+  "criteria": [
+    "claimRewards() sends the claimed AAVE/COMP tokens to a hardcoded or incorrect address instead of the user who accrued them",
+    "Reward accrual mapping (e.g. userRewards[msg.sender]) is not reset or updated after transferring rewards, allowing repeated claims of the same amount",
+    "Reward index/exchange rate used to compute a user's claimable amount is read before updating global accrual state, resulting in stale reward calculations",
+    "Wrapper contract collects AAVE/COMP rewards for pooled deposits but never forwards or exposes a function letting individual depositors claim their share",
+    "claimRewards() uses total contract balance instead of the per-user accrued amount when calculating the payout"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

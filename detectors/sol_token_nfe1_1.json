@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_nfe1_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-NfE1-1",
+  "source_hash": "559bef8e44af979c",
+  "description": "Use of unsafe mint/transfer functions for ERC721/1155 tokens risking permanent token loss",
+  "question": "The source file in `source` mints or transfers ERC721/1155 tokens using non-safe functions such as `_mint`, `transferFrom`, or `_transfer` instead of `_safeMint`, `safeTransferFrom`, or `_safeTransfer`, allowing tokens to be sent to contracts that cannot handle them and permanently lost, excluding cases where the recipient is guaranteed to be an externally owned account or the code already uses the safe variants exclusively.",
+  "criteria": [
+    "ERC721 contract calls `_mint(to, tokenId)` instead of `_safeMint(to, tokenId)` when minting new tokens to a user-supplied address",
+    "ERC721 transfer function calls `transferFrom(from, to, tokenId)` instead of `safeTransferFrom(from, to, tokenId)` for arbitrary recipient addresses",
+    "ERC1155 contract calls `_mint(to, id, amount, data)` instead of `_safeMint`-equivalent safe minting logic that checks receiver acceptance",
+    "Custom transfer logic manually moves NFT ownership/balances without calling `onERC721Received` or `onERC1155Received` checks on the recipient contract"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Non-fungible : ERC721/1155"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_mccc_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-9",
+  "source_hash": "1eb186b0f4ca1254",
+  "description": "Missing whitelist validation of source/destination chain IDs in cross-chain messaging",
+  "question": "The source file in `source` processes incoming cross-chain messages or dispatches outgoing cross-chain messages using a chain identifier without validating that identifier against a whitelist or allow-list of supported chains, so messages from or to unsupported/arbitrary chains can be accepted or sent, leading to unpredictable behavior or fund loss; this excludes code that checks the chain ID against a stored mapping, enum, or allowed-list before processing, and excludes purely local/single-chain logic with no cross-chain messaging.",
+  "criteria": [
+    "receiveMessage(uint256 srcChainId, ...) processes the payload immediately without checking srcChainId against any allowed set of chains",
+    "sendMessage(uint256 dstChainId, ...) forwards funds or calls to dstChainId without verifying it is in a supported chains list",
+    "A cross-chain handler decodes and executes an incoming message keyed only by sender address, ignoring the origin chain ID entirely",
+    "The contract maintains no mapping/array of supported chain IDs, yet accepts a chainId parameter from the relayer and trusts it directly for routing logic"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

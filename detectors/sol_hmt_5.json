@@ -1,0 +1,18 @@
+{
+  "name": "sol_hmt_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-HMT-5",
+  "source_hash": "1ab6e659475b7689",
+  "description": "Merkle tree leaf hashing omits claimable address, allowing arbitrary claim of others' allocations",
+  "question": "The source file in `source` defines Merkle tree leaves used for claim verification (e.g. airdrop or vesting claims) whose hash preimage is computed only from data such as amount or index but does not include the claimant's address, so any caller can submit a valid proof for a leaf and claim funds intended for a different address, and this excludes leaves that already incorporate the recipient address or msg.sender into the hashed preimage.",
+  "criteria": [
+    "leaf = keccak256(abi.encodePacked(index, amount)) is verified against the Merkle root without including the claimant address in the hash",
+    "claim(uint256 amount, bytes32[] proof) checks MerkleProof.verify(proof, root, keccak256(abi.encode(amount))) and then transfers amount to msg.sender",
+    "_leaf hashing function combines only amount and a nonce, letting any address supply the same leaf/proof pair to receive the payout"
+  ],
+  "tags": [
+    [
+      "Hash / Merkle Tree"
+    ]
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_reth_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-rETH-2",
+  "source_hash": "6b02e5d43c2574b1",
+  "description": "Incorrect accounting for rETH staking rewards due to hardcoded or stale ETH conversion rate",
+  "question": "The source file in `source` integrates Rocket Pool's rETH token and converts between rETH and ETH amounts (e.g., for valuation, redemption, or collateral calculations) using a fixed or hardcoded 1:1 exchange rate or a cached/stale rate instead of querying rETH's live exchange rate mechanism (such as getExchangeRate() or getEthValue()/getRethValue()), so that ETH staking rewards accrued to rETH holders are not reflected, causing systematic under- or over-valuation of rETH balances; this excludes code that correctly calls the current rETH exchange-rate or value-conversion functions on every relevant computation.",
+  "criteria": [
+    "A function converts a user's rETH balance to ETH by multiplying by 1 (or an implied 1:1 ratio) instead of calling rocketTokenRETH.getExchangeRate() or getEthValue()",
+    "Collateral or share valuation logic caches the rETH/ETH exchange rate at deposit time and reuses that stale value for later withdrawals or liquidations instead of refetching it",
+    "A rewards or interest accrual mechanism for rETH-based positions assumes zero yield and never increases position value over time despite rETH's underlying rebasing/appreciating exchange rate",
+    "Conversion between rETH and ETH is implemented via a manually set constant rate that is never updated from the RocketTokenRETH contract's live rate"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "rETH"
+    ]
+  ]
+}

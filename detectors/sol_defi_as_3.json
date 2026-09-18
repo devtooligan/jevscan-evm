@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-3",
+  "source_hash": "b95089a72eafa8c4",
+  "description": "Missing validation that protocol reserves aren't over-lent, risking insolvency",
+  "question": "The source file in `source` contains a lending/borrowing function that transfers or lends out protocol funds without checking that the amount does not exceed available reserves (e.g., total assets minus already-borrowed/committed amounts), allowing the protocol to lend out more than its actual reserves and become insolvent, excluding cases where reserve sufficiency is explicitly validated before the transfer or where the function is restricted to trusted admin roles operating on non-user funds.",
+  "criteria": [
+    "A borrow() or lend() function calls token.transfer(borrower, amount) without checking amount <= reserves or availableLiquidity",
+    "A function reduces internal reserve/liquidity accounting only after transferring funds out, allowing borrows exceeding actual balance",
+    "A withdrawal or lending function uses totalSupply or totalAssets without subtracting outstanding borrowed amounts before permitting further lending",
+    "A vault or pool contract permits utilization to exceed 100% by allowing new borrows even when cash reserves are already fully committed"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

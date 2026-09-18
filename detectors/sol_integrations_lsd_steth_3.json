@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_steth_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-stETH-3",
+  "source_hash": "2e53cca93e51cb42",
+  "description": "Incorrect stETH/wstETH conversion ignoring stETH rebasing, causing wrong balances/amounts",
+  "question": "The source file in `source` converts between stETH and wstETH (e.g., computing wstETH amounts from stETH balances or vice versa) using a fixed or stale exchange rate, raw balance value, or 1:1 assumption instead of calling stETH/wstETH's getSharesByPooledEth, getPooledEthByShares, or equivalent live conversion functions, causing incorrect share/token accounting due to stETH's rebasing balance mechanics. This excludes code that already correctly queries the current stETH/wstETH exchange rate or share conversion functions at the time of conversion, and excludes logic that intentionally operates on wstETH share amounts throughout without needing conversion.",
+  "criteria": [
+    "A function converts a stETH balance to wstETH by multiplying/dividing with a hardcoded or cached exchange rate instead of calling wstETH's getWstETHByStETH or stETH's getSharesByPooledEth",
+    "Code treats stETH amounts as directly equal to wstETH amounts (1:1) when transferring or accounting, ignoring the rebasing conversion",
+    "A deposit/withdraw function records a user's stETH balance at deposit time and reuses that raw number later without accounting for rebase-driven balance changes",
+    "Reward or yield calculations subtract raw stETH balances before and after a period without converting through shares, producing incorrect results due to rebasing"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "stETH"
+    ]
+  ]
+}

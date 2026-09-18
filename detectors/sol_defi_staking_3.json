@@ -1,0 +1,21 @@
+{
+  "name": "sol_defi_staking_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Staking-3",
+  "source_hash": "1af3a42e08cfd1ac",
+  "description": "Stale reward accounting from missing reward-update call before stake/withdraw/claim operations",
+  "question": "The source file in `source` implements a staking contract with per-user reward accounting (e.g. rewardPerTokenStored, userRewardPerTokenPaid, or a rewards mapping) and a reward-update function/modifier (e.g. updateReward), but at least one state-changing function such as stake, withdraw, exit, or getReward modifies balances or transfers reward/staked tokens without first calling the reward-update logic for the affected user, causing rewards to be computed on stale data and allowing users to gain or lose rewards incorrectly. This excludes purely administrative functions (e.g. setRewardsDuration, notifyRewardAmount) or read-only view functions that do not need reward synchronization.",
+  "criteria": [
+    "stake() increases balances[msg.sender] and totalSupply and transfers staking tokens in, but never calls updateReward(msg.sender) before or during the balance change",
+    "withdraw() decreases balances[msg.sender] and transfers staking tokens out without calling updateReward(msg.sender) first, so rewardPerTokenStored is not refreshed before the balance shrinks",
+    "getReward() reads rewards[msg.sender], resets it to zero, and transfers reward tokens without first calling updateReward(msg.sender) to sync the latest rewardPerToken value",
+    "exit() calls withdraw(balance) and getReward() sequentially but the update-reward modifier/call is omitted entirely from both, so the combined operation uses outdated reward state",
+    "a custom stakeFor(address user, uint amount) mutates balances[user] directly but calls updateReward(msg.sender) instead of updateReward(user), leaving the actual staker's reward state unsynchronized"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Staking"
+    ]
+  ]
+}

@@ -1,0 +1,3 @@
+# The Sherlock contest's scope list (contest 1212, commit b36e9ef).
+[files]
+paths = ["src/Coin.sol", "src/Factory.sol", "src/InterestModel.sol", "src/Lender.sol", "src/Lens.sol", "src/Vault.sol"]

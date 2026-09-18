@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_payment_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Payment-1",
+  "source_hash": "02f2d25c7eb3993f",
+  "description": "Payment logic vulnerable to receiver-triggered denial of service (blocked funds transfer)",
+  "question": "The source file in `source` sends ETH or tokens to an externally-controlled or arbitrary receiver address using `transfer`, `send`, or a low-level call whose success is required, inside a function that processes multiple recipients or is otherwise critical to core protocol flow (e.g., withdrawals, refunds, distributions, auctions), without a try-catch, pull-payment pattern, or fallback handler, such that a malicious receiver's fallback function reverting can block or permanently deny the transaction for that call or for other unrelated participants, excluding cases where only the receiver's own funds are at stake with no effect on others, or where failures are isolated via try-catch or asynchronous claim/pull mechanisms.",
+  "criteria": [
+    "A loop that pays out multiple recipients uses recipient.transfer(amount) or recipient.send(amount) inside the loop, so one reverting recipient blocks payouts to all other recipients",
+    "A refund or cancellation function calls payable(user).transfer(refundAmount) directly on a user-supplied or externally-controlled address, causing the whole transaction (including unrelated state updates) to revert if that address's fallback reverts",
+    "An auction or bidding contract refunds the previous highest bidder via call{value: amount}(\"\") or transfer and requires success before allowing a new bid, letting a malicious bidder's contract block all future bids by reverting on receipt",
+    "A withdrawal function immediately forwards funds to a stored beneficiary/receiver address via a call requiring success, with no try-catch or pull-based claim mechanism, so a beneficiary contract that reverts on receive can permanently freeze funds for itself or others"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Payment"
+    ]
+  ]
+}

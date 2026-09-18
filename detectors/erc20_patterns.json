@@ -1,0 +1,17 @@
+{
+  "name": "erc20_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/erc20-patterns/SKILL.md",
+  "source_hash": "ff125543230aa6bb",
+  "description": "Unsafe ERC-20 token integration without SafeERC20 or received-amount accounting",
+  "question": "The source file in `source` contains code that calls an external ERC-20 token's transfer, transferFrom, or approve function directly (not via SafeERC20's safeTransfer/safeTransferFrom/forceApprove) and/or assumes the amount sent equals the amount received without measuring balances before and after, such that non-standard tokens (e.g., USDT-style no-return-value tokens, fee-on-transfer tokens, or rebasing tokens) can cause silent failures, reverts, or accounting errors that lead to fund loss or miscalculated balances.",
+  "criteria": [
+    "Direct use of IERC20(token).transfer/transferFrom/approve without SafeERC20 wrapper",
+    "No balanceOf before/after check when crediting received token amounts after a transferFrom",
+    "Use of raw approve() instead of forceApprove() or safeApprove() for changing an existing non-zero allowance",
+    "Code that assumes decimals() == 18 or that decimals() always exists",
+    "Integration logic that stores/trusts raw token balances for rebasing tokens instead of shares",
+    "Missing check that token address is a contract before making calls to it"
+  ],
+  "tags": []
+}

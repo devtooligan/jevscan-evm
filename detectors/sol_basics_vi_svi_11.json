@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-11",
+  "source_hash": "c6ccf058ac82fac6",
+  "description": "Solidity 0.8.11\u20130.8.12 abi.encodeCall bug misencodes fixed-length bytes literal arguments",
+  "question": "The source file in `source` declares pragma solidity version 0.8.11 or 0.8.12 and calls abi.encodeCall passing a fixed-length bytes literal (e.g. bytes4 or bytes32 literal) directly as one of the function arguments, rather than passing a variable, which triggers the compiler bug that incorrectly encodes such literals and corrupts the resulting calldata used for a low-level call.",
+  "criteria": [
+    "pragma solidity 0.8.11; ... abi.encodeCall(Target.selectorFunc, (bytes4(0x12345678)))",
+    "pragma solidity ^0.8.12; ... abi.encodeCall(IToken.transfer, (to, bytes32(0xabc...)))",
+    "pragma solidity 0.8.11; ... target.call(abi.encodeCall(ISig.verify, (0x11223344)))",
+    "pragma solidity 0.8.12; ... abi.encodeCall(IVault.setId, (bytes8(0x0001020304050607)))"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

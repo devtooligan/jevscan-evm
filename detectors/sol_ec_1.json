@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-1",
+  "source_hash": "be41a1ea444c7de2",
+  "description": "Cross-function/read-only reentrancy from external calls before state updates",
+  "question": "The source file in `source` contains a function that makes an external call (e.g., ETH transfer, token transfer, or callback) before finalizing state updates such as balances or reserves, allowing reentrancy into a different state-reading function (including a view function) that returns stale or inconsistent data, or into another state-changing function that exploits the intermediate state, without a reentrancy guard or effects-before-interactions ordering, excluding cases where all state is fully updated before the external call or a nonReentrant modifier protects both the calling and reentered functions.",
+  "criteria": [
+    "A withdraw or liquidation function calls an external contract or sends ETH via call before updating balances or debt mappings, enabling reentry into a view function like getPrice() or totalAssets() that reads the pre-update state",
+    "A function that updates reserves/pool balances performs an external token transfer or hook call before updating the reserve variables, allowing a callback to read stale reserve values via a public getter",
+    "An AMM or vault function computes and returns share price or exchange rate using state that hasn't been updated yet because an external call earlier in the same transaction can trigger a reentrant read of that state",
+    "A function calls a user-controlled external contract (e.g., ERC721/ERC777 hook, ERC20 with callback) mid-execution and only updates critical accounting state after the call returns, with no reentrancy guard applied to the getter function used elsewhere in the protocol"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

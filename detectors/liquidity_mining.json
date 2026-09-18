@@ -1,0 +1,16 @@
+{
+  "name": "liquidity_mining",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/liquidity-mining/SKILL.md",
+  "source_hash": "0e8da1d8fdcf421b",
+  "description": "Missing duplicate-LP-token check in MasterChef-style pool creation enabling reward-accounting manipulation",
+  "question": "The source file in `source` implements a MasterChef-style liquidity mining contract containing a function that adds new staking pools (each holding an LP token address and allocation weight), and that function does not verify the LP token being added is not already used by an existing pool, so the same LP token can back multiple pools; because each pool's reward accrual reads the token's total balanceOf(this) as its lpSupply, this lets an attacker or bug cause reward shares to be double-counted across pools, inflating accRewardPerShare and letting users drain more reward tokens than they are entitled to.",
+  "criteria": [
+    "A poolInfo array or mapping is populated by a function like addPool()/add() that pushes a new pool struct containing an lpToken address",
+    "No loop, mapping, or require statement checks whether the given lpToken already exists in poolInfo before adding it",
+    "Pool reward accrual (accRewardPerShare) is computed using pool.lpToken.balanceOf(address(this)) as lpSupply",
+    "Multiple pools could reference the identical lpToken contract address without reverting",
+    "No unique-LP-token tracking data structure (e.g., mapping(address => bool) lpTokenExists) is used or enforced"
+  ],
+  "tags": []
+}

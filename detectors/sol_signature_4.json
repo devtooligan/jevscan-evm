@@ -1,0 +1,19 @@
+{
+  "name": "sol_signature_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Signature-4",
+  "source_hash": "cc4676e90b651581",
+  "description": "Signature verification missing check that signer is the expected authorized entity",
+  "question": "The source file in `source` recovers or verifies a signature over some message/action but never checks that the recovered signer (or the address used in the verification) equals the specific authorized/expected entity (such as a designated owner, oracle, or role holder) before trusting the signature and executing the associated privileged or sensitive action, allowing any validly-signed message from an arbitrary key to be accepted; this excludes code that explicitly compares the recovered address against a stored authorized address, role, or allowlist before proceeding.",
+  "criteria": [
+    "ecrecover(hash, v, r, s) result is used directly to authorize a withdrawal or state change without comparing it to any stored owner/signer address",
+    "A function verifies a signature is valid (non-zero recovered address) but omits any check that the address equals msg.sender, owner, or an allowlisted signer",
+    "Signature verification checks only that the signature matches the message hash but never checks which specific address produced it against an expected role",
+    "Multi-step approval logic accepts any signature recovered from the message without matching it to a per-user or per-role expected signer set"
+  ],
+  "tags": [
+    [
+      "Signature"
+    ]
+  ]
+}

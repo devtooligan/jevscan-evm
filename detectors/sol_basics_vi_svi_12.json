@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-12",
+  "source_hash": "ed037b7ed82107a6",
+  "description": "Solidity 0.8.8 user-defined value type with sub-32-byte underlying type causes storage layout corruption",
+  "question": "The source file in `source` targets exactly Solidity version 0.8.8 (via pragma solidity =0.8.8 or 0.8.8) and defines a user-defined value type with `type X is Y` where Y is an underlying type shorter than 32 bytes (e.g. uint8, uint16, uint128, bytes1-bytes31, address, bool), which under the compiler's known bug caused incorrect storage slot packing and wasted or corrupted storage layout for state variables using that type, excluding files that pin a different compiler version or only define user-defined value types over full 32-byte types like uint256 or bytes32.",
+  "criteria": [
+    "pragma solidity =0.8.8; combined with `type Wrapped is uint128;` used as a state variable's type",
+    "pragma solidity 0.8.8; combined with `type Percentage is uint8;` declared and stored in a struct alongside other state variables",
+    "A file pinned to 0.8.8 defines `type Addr is address;` and packs it with other short state variables in storage",
+    "A file pinned to 0.8.8 defines `type Flag is bool;` used as a state variable expected to be packed with adjacent variables"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_layerzero_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LayerZero-1",
+  "source_hash": "d93cf6ad9ecdac05",
+  "description": "Missing ownership/permission checks in ONFT `_debitFrom` allowing unauthorized NFT transfers",
+  "question": "The source file in `source` defines a `_debitFrom` function (or equivalent LayerZero ONFT bridging function) that transfers or burns a tokenId without verifying that the specified `_from` address actually owns that tokenId and without checking that `msg.sender` is the owner, an approved operator, or otherwise authorized to move it, allowing an attacker to bridge or burn NFTs they do not own.",
+  "criteria": [
+    "_debitFrom burns or transfers the NFT with tokenId using _from without checking ownerOf(tokenId) == _from",
+    "_debitFrom moves the token without verifying msg.sender is _from, an approved address, or an approved operator for the token",
+    "_debitFrom calls _burn(tokenId) or _transfer(_from, address(this), tokenId) directly based on caller-supplied _from with no isApprovedOrOwner-style check"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LayerZero"
+    ]
+  ]
+}

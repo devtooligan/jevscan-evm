@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-7",
+  "source_hash": "10d0a6c08ed50b02",
+  "description": "Missing staleness/heartbeat check on price oracle data, allowing use of stale prices",
+  "question": "The source file in `source` retrieves a price from an oracle (e.g., via latestRoundData or a similar price-feed call) and uses that price in on-chain calculations without checking the returned update timestamp against any staleness threshold or heartbeat, so a stale or outdated price can be used, excluding code that compares the feed's updatedAt (or equivalent) timestamp against a defined maximum age before using the price.",
+  "criteria": [
+    "Calls latestRoundData() (or equivalent) and immediately uses the returned price/answer in a calculation without reading or checking the updatedAt/timestamp field",
+    "Reads updatedAt from the oracle response but never compares it against any staleness threshold or heartbeat value before using the price",
+    "Caches or stores a previously fetched oracle price in a state variable and reuses it in later calculations with no check on how long ago it was last updated",
+    "Falls back to a hardcoded or previously stored price when the oracle call fails or reverts, and uses that fallback price in calculations without any freshness or timestamp validation"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

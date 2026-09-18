@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-5",
+  "source_hash": "dd847e84633e4ad9",
+  "description": "Hardcoded 1:1 peg assumption between assets without validating real-time exchange rate or depeg",
+  "question": "The source file in `source` converts or values one token in terms of a supposedly pegged asset using a hardcoded fixed ratio (e.g., treating 1 unit of tokenA as always equal to 1 unit of tokenB) instead of querying an oracle or pool price, and contains no check, fallback, or safeguard to detect or handle the case where the two assets' market price diverges from that fixed ratio, allowing incorrect accounting, minting, redemption, or liquidation math if the peg breaks; this excludes code that already reads live price data or explicitly validates the ratio against an oracle before use.",
+  "criteria": [
+    "A vault or AMM function computes swap output or shares using `amountB = amountA` or a hardcoded constant ratio between two assets assumed to be pegged, with no price oracle call",
+    "A collateral/liquidation module values a pegged collateral token at 1:1 with the debt/base asset without reading its market price, risking undercollateralized positions if it depegs",
+    "A redemption function returns the underlying asset assuming its price always equals the wrapped/pegged token's price, with no deviation check or circuit breaker",
+    "A staking/rebase contract mints or burns shares assuming the staked derivative token trades exactly at par with the underlying, without any peg-deviation guard"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

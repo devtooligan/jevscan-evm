@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_14",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-14",
+  "source_hash": "77562ded1ccdc071",
+  "description": "Unconditional max-value ERC20 approval breaks on tokens that reject type(uint256).max amounts",
+  "question": "The source file in `source` calls an ERC20 token's approve (or safeApprove) function with a fixed amount of type(uint256).max for an arbitrary or external token address, without any fallback, try/catch, or alternative lower-amount approval path for tokens that revert on max-value approvals, excluding cases where the token is a known, verified-compliant token or the code already falls back to a smaller approval amount if the max approval fails.",
+  "criteria": [
+    "A function calls token.approve(spender, type(uint256).max) directly on an externally supplied or arbitrary token address with no handling for revert",
+    "A helper like universalApprove or safeApproveMax sets the approval amount to type(uint256).max for any token without checking compatibility",
+    "Approval logic assumes success of a max-value approve call and proceeds with transferFrom relying on that approval, with no retry using a smaller amount on failure",
+    "A vault or router grants max approval to a spender for every listed token in a loop without any token-specific compatibility check or try/catch"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

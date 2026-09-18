@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lending_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Lending-4",
+  "source_hash": "6bc87f4abe93c108",
+  "description": "Users can be liquidated during a pause that blocks them from adding collateral or repaying debt.",
+  "question": "The source file in `source` implements a lending/collateral system where deposit, collateral-addition, or repayment functions can be halted by a pause flag or paused modifier, while the liquidate() or liquidation-triggering function contains no corresponding pause check, so users can be liquidated for undercollateralization during the exact period they are blocked from depositing more collateral or repaying to avoid liquidation, excluding designs where liquidation is also paused whenever deposits/collateral additions are paused, or where pausing only affects unrelated functionality such as new borrowing or withdrawals.",
+  "criteria": [
+    "deposit() or addCollateral() is guarded by whenNotPaused or an equivalent paused check that reverts while the protocol is paused",
+    "repay() is guarded by a paused/whenNotPaused check that blocks debt repayment during a pause",
+    "liquidate() or liquidatePosition() has no paused/whenNotPaused check and executes normally even when deposits are paused",
+    "the pause flag used to block collateral top-ups is a different or independently-settable flag from any pause check applied to liquidation, allowing liquidation to remain active while deposits are frozen"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Lending"
+    ]
+  ]
+}

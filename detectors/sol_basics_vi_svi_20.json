@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_20",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-20",
+  "source_hash": "fde2d19df38109bb",
+  "description": "Solidity compiler bug: double-backslash string literals misencoded with ABIEncoderV2 enabled",
+  "question": "The source file in `source` declares a Solidity pragma version between 0.5.14 and 0.6.7 inclusive, enables ABIEncoderV2 (via pragma experimental ABIEncoderV2 or default), and contains a string literal with a double backslash sequence passed directly as an argument to an external function call or to an ABI encoding function such as abi.encode, abi.encodePacked, abi.encodeWithSignature, or abi.encodeWithSelector, without first assigning the literal to an intermediate variable or upgrading past the affected compiler range.",
+  "criteria": [
+    "A string literal containing \\\\ is passed directly as an argument in an external contract function call",
+    "A string literal containing \\\\ is passed directly into abi.encode(...) or abi.encodePacked(...)",
+    "A string literal containing \\\\ is passed directly into abi.encodeWithSignature(...) or abi.encodeWithSelector(...)",
+    "A string literal containing \\\\ is passed directly as a function call argument that gets ABI-encoded under ABIEncoderV2"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

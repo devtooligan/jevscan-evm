@@ -1,0 +1,8 @@
+[submodule "sources/audit-checklist"]
+	path = sources/audit-checklist
+	url = https://github.com/Cyfrin/audit-checklist.git
+	branch = main
+[submodule "sources/evm-cortex"]
+	path = sources/evm-cortex
+	url = https://github.com/ccashwell/evm-cortex.git
+	branch = main

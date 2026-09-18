@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lsd_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-8",
+  "source_hash": "cb5ce1bcac4ccf87",
+  "description": "Missing staleness check on Proof of Reserves oracle data in liquid staking protocol",
+  "question": "The source file in `source` reads a Proof of Reserves Oracle's reserve value (e.g. via a latestAnswer/latestRoundData-style call) and uses it directly in protocol logic (such as minting, redemption, or reserve accounting) without checking the timestamp of the last update against the oracle's heartbeat or any staleness threshold, and without reverting when the data is outdated, allowing stale reserve data to be treated as current and potentially manipulate share pricing or solvency checks; this excludes oracle reads that already compare returned timestamps against a max age and revert on staleness, and excludes code that does not consume a Proof of Reserves style oracle at all.",
+  "criteria": [
+    "A function calls a Proof of Reserves oracle's getReserves()/latestAnswer() to fetch ETH reserves and uses the returned value directly in minting/redemption math without checking updatedAt/timestamp",
+    "Code retrieves latestRoundData() from a reserves oracle and only reads the price/answer field, ignoring the updatedAt field entirely before using it in calculations",
+    "A view function computes exchange rate or backing ratio from an external reserve oracle call with no comparison of the data's age to a max staleness window",
+    "An oracle wrapper contract exposes reserve data to consumers without ever validating or exposing the last-update timestamp, enabling stale data to pass through unchecked"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

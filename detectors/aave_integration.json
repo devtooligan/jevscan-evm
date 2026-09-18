@@ -1,0 +1,16 @@
+{
+  "name": "aave_integration",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/aave-integration/SKILL.md",
+  "source_hash": "be2f67cf4179f66c",
+  "description": "Aave flash loan callback missing sender/initiator validation, enabling unauthorized invocation",
+  "question": "The source file in `source` defines a function named `executeOperation` (or `executeOperation` with the multi-asset Aave IFlashLoanReceiver signature) intended to handle an Aave flash loan callback, and this function does not verify that `msg.sender` equals the Aave Pool address and/or that the `initiator` parameter equals the contract's own address, allowing any external account to invoke the callback logic directly or trigger it via an arbitrary flash loan initiator, potentially manipulating contract state or draining approved/held funds.",
+  "criteria": [
+    "Function named executeOperation implementing IFlashLoanReceiver or IFlashLoanSimpleReceiver",
+    "No require/if-revert check comparing msg.sender to the Pool/lending pool address",
+    "No require/if-revert check comparing the initiator parameter to address(this)",
+    "Callback performs sensitive actions (token approvals, transfers, state changes) without these guards",
+    "Function is external/public and reachable without prior authorization"
+  ],
+  "tags": []
+}

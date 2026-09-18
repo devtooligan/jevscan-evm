@@ -1,0 +1,20 @@
+{
+  "name": "sol_am_dosa_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-AM-DOSA-4",
+  "source_hash": "63d0ff013ea7996b",
+  "description": "Unbounded/unrestricted queue processing enables denial-of-service via spam entries",
+  "question": "The source file in `source` implements a queue (e.g., withdrawal, deposit, or task queue) whose entries can be added by any user with no minimum size, fee, or rate limit, and whose processing logic iterates over the entire queue or requires strict in-order processing, or where processing cost grows unbounded with queue length, allowing an attacker to spam many low-value entries and cause processing to run out of gas or block legitimate users from having their entries processed, and this is not mitigated by per-entry gas limits, batching with attacker-independent bounds, or access restrictions on who can enqueue.",
+  "criteria": [
+    "A withdrawal queue lets any address push a dust-sized withdrawal request with no minimum amount, and the processing function loops over all queued entries in a single transaction",
+    "A task/request queue processes entries strictly in FIFO order and a stuck or reverting entry (e.g., one requiring a value that never becomes true) blocks all later entries from ever being processed",
+    "An enqueue function has no fee, deposit, or rate limit, letting an attacker cheaply add thousands of entries that make the processing transaction exceed the block gas limit",
+    "A slashing or settlement queue must fully drain before new operations are allowed, and an attacker can flood it with low-value entries to permanently stall the system"
+  ],
+  "tags": [
+    [
+      "Attacker's Mindset",
+      "Denial-Of-Service(DOS) Attack"
+    ]
+  ]
+}

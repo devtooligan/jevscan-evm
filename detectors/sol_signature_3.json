@@ -1,0 +1,19 @@
+{
+  "name": "sol_signature_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Signature-3",
+  "source_hash": "b62da022890016eb",
+  "description": "Missing check that recovered signer key matches expected signer after signature verification",
+  "question": "The source file in `source` recovers a signer address or public key from a signature (e.g. via ecrecover or an equivalent signature-recovery routine) and then authorizes an action or grants access based on that recovery, without comparing the recovered key/address to the specific expected or authorized signer, so that a signature from any arbitrary key (other than a zero-address check) is accepted as valid. This excludes code that explicitly compares the recovered address/public key against a stored owner, allowlist, or expected signer before proceeding, and excludes designs that intentionally accept any signer from a defined multisig set with proper membership checks.",
+  "criteria": [
+    "Calls ecrecover(hash, v, r, s) and immediately transfers funds or grants a role using the recovered address, with no comparison of that address to any stored expected signer or owner variable",
+    "Passes the recovered address straight into a require(recovered != address(0)) check and then proceeds to execute a privileged withdrawal or approval, never comparing it to the intended signer",
+    "Defines a verifySignature() helper that returns the recovered signer address, and the caller stores or logs it but never checks equality with an expected signer before executing the requested action",
+    "Recovers a public key from a signature payload and uses it directly as the identity for a permit-style approval or unlock operation without validating it matches the token owner's registered key"
+  ],
+  "tags": [
+    [
+      "Signature"
+    ]
+  ]
+}

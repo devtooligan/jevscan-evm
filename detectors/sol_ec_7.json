@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-7",
+  "source_hash": "8a5409ec2254c50e",
+  "description": "External call without gas limit enabling gas-exhaustion denial-of-service",
+  "question": "The source file in `source` contains a function that performs an external call (e.g., to a fee receiver, order counterparty, or callback/hook) using call() or similarly low-level call without specifying a gas limit or fixed gas stipend, and has critical follow-up logic (state updates, payouts to other parties, or continued loop execution) that executes after that call, such that a malicious or malfunctioning callee can consume all forwarded gas to prevent that follow-up logic from completing, causing a denial of service; this excludes calls restricted to trusted/immutable admin addresses, calls wrapped with an explicit fixed gas limit or try/catch gas cap, and calls with no dependent logic afterward.",
+  "criteria": [
+    "A function loops over multiple external addresses (e.g., fee receivers) calling each with call() without a per-call gas limit, so one malicious receiver can consume all gas and block payment to the remaining recipients",
+    "An external call forwards all remaining gas to an untrusted callback or order-fill target with no gas stipend or gas cap specified, and subsequent state-finalizing code depends on that call returning promptly",
+    "A function executes an external call to an arbitrary or user-supplied address using call{value: ...}() without any gas argument, followed by required bookkeeping (e.g., marking an order filled or updating balances) that never runs if the callee consumes all gas",
+    "A batch-processing function calls out to each item's handler via low-level call without limiting the gas passed, allowing a single poisoned item to exhaust gas and halt processing of the rest of the batch"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

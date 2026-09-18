@@ -1,0 +1,19 @@
+{
+  "name": "sol_ll_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-LL-3",
+  "source_hash": "fc4355a94f3f8072",
+  "description": "Low-level call to address without checking it has deployed code",
+  "question": "The source file in `source` performs a low-level call, staticcall, or delegatecall to an address without verifying that the target address contains deployed code, such that a call to an empty or non-existent address silently returns success, potentially causing the calling logic to incorrectly assume the operation succeeded; this excludes cases where the target is a known trusted contract address that is guaranteed to have code, or where the return value handling does not rely on call success alone.",
+  "criteria": [
+    "A function makes a low-level call() to a user-supplied or configurable address and treats the call as successful based only on the boolean success return value, without checking address.code.length > 0 or extcodesize before the call",
+    "A function performs a delegatecall to an address parameter without first verifying the target has deployed code, allowing a call to an empty address to appear successful",
+    "A function performs a staticcall to an address to read data without checking that the address has code, treating an empty return as valid data instead of reverting",
+    "A token transfer or external interaction pattern manually implements call() to send funds or invoke a function on an address without any code-existence check before or after the call"
+  ],
+  "tags": [
+    [
+      "Low Level"
+    ]
+  ]
+}

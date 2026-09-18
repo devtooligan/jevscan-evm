@@ -1,0 +1,19 @@
+{
+  "name": "sol_mccc_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-McCc-1",
+  "source_hash": "fc60e1b64ec4652f",
+  "description": "Cross-chain code assumes block.number/block.timestamp consistency across different chains",
+  "question": "The source file in `source` contains cross-chain logic (e.g., bridge, L1/L2 messaging, or multi-chain state comparison) that directly compares or relies on block.number or block.timestamp values originating from two or more different chains as if they progress consistently, without accounting for differing block times or clock drift between chains, potentially causing incorrect timing decisions, premature/late unlocks, or invalid deadline checks; this excludes code that only uses block.number/block.timestamp for comparisons within a single chain's own local context.",
+  "criteria": [
+    "A bridge contract stores a timestamp or block number recorded on one chain and later compares it directly against block.timestamp or block.number read on a different chain to determine expiry or validity",
+    "A cross-chain message handler computes elapsed time by subtracting a source-chain timestamp from the destination chain's block.timestamp without adjusting for differing chain clock rates",
+    "A function enforces a delay or cooldown by comparing a deadline set using one chain's block.number against the current block.number on another chain",
+    "L1 and L2 contracts share or forward block.timestamp values between each other and use them interchangeably to gate logic such as unlocks, rate limits, or oracle staleness checks"
+  ],
+  "tags": [
+    [
+      "Multi-chain/Cross-chain"
+    ]
+  ]
+}

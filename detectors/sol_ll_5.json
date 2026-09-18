@@ -1,0 +1,19 @@
+{
+  "name": "sol_ll_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-LL-5",
+  "source_hash": "aacffd76a51a4a35",
+  "description": "Missing zero-denominator check before division/modulo in low-level (assembly/Yul) arithmetic",
+  "question": "The source file in `source` contains inline assembly or Yul code that performs a `div` or `mod` operation on a denominator whose value is not first checked to be non-zero, so a zero denominator silently yields 0 instead of reverting, potentially causing incorrect downstream calculations; this excludes ordinary Solidity `/` or `%` operators (which already revert with Panic(18) on zero) and cases where the denominator is a compile-time non-zero constant or is already validated non-zero earlier in the same code path.",
+  "criteria": [
+    "Yul/inline assembly block computes `div(x, y)` where y comes from user input or external call with no prior check that y != 0",
+    "Yul/inline assembly block computes `mod(x, y)` where y is a caller-supplied divisor and no zero check precedes the operation",
+    "A custom fixed-point math helper written in assembly divides by a denominator parameter without validating it is nonzero before the `div` opcode",
+    "A `mulDiv`-style low-level function performs `div(mul(a,b), denominator)` without asserting `denominator != 0` beforehand"
+  ],
+  "tags": [
+    [
+      "Low Level"
+    ]
+  ]
+}

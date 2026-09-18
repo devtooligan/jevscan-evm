@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_general_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-General-7",
+  "source_hash": "26da25cb82cd13fe",
+  "description": "Unhandled edge case when pool reserve/shares reduce to 1 wei, causing division errors or share-price manipulation",
+  "question": "The source file in `source` implements a pool/vault contract that computes share or asset amounts via a ratio such as amount * totalSupply / totalAssets (or equivalent) without any minimum-liquidity floor or check for near-zero reserves, so that when the pool's tracked balance or total supply can shrink to 1 wei, a division-by-zero revert, extreme rounding, or attacker-inflated share price can lock funds or corrupt accounting, excluding cases where a minimum liquidity/deposit amount, virtual offset, or dead-shares mechanism already prevents the ratio from reaching such degenerate values.",
+  "criteria": [
+    "A deposit/mint function computes shares = amount * totalSupply / totalAssets with no check preventing totalAssets from being reduced to 1 wei before the division",
+    "A withdraw/redeem function divides by the pool's current balance variable without guarding against that balance being 1 wei, risking division-by-zero revert or locked withdrawal",
+    "An attacker can donate or manipulate the pool so totalSupply or totalAssets equals 1 wei, letting a subsequent deposit mint a hugely disproportionate number of shares",
+    "The contract lacks a minimum liquidity threshold or virtual shares/assets offset that would prevent the share-to-asset ratio from collapsing to an extreme value at 1 wei reserve"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "General"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-13",
+  "source_hash": "34764355bf4a1efc",
+  "description": "Reentrancy from violating checks-effects-interactions pattern",
+  "question": "The source file in `source` contains a function that makes an external call (e.g., sending ETH via `call`/`transfer`, or invoking an external contract/token) before updating the contract's own state variables (such as balances, ownership, or order status) that track the effects of that call, and the function has no reentrancy guard, allowing the callee to re-enter and exploit the stale state to drain funds or duplicate effects; this excludes cases where state is updated before the external call, the call target is trusted/immutable with no attacker-controlled code, or a reentrancy guard/mutex is applied to the function.",
+  "criteria": [
+    "withdraw() sends ETH to msg.sender via call{value: amount} before setting balances[msg.sender] = 0, with no reentrancy guard",
+    "A settleAuction() function transfers auction proceeds to the seller via external call before marking the auction as settled or clearing the auction struct",
+    "A claimReward() function calls token.transfer(user, reward) before decrementing the user's pending reward balance",
+    "A buy/sell order function pays out royalties or fees to an external recipient address before updating internal order state or inventory counts"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

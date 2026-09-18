@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-8",
+  "source_hash": "503564ae3b4890a3",
+  "description": "Unbounded data passed to untrusted address enabling griefing/DoS",
+  "question": "The source file in `source` contains a function that forwards caller-supplied data (such as an address-like parameter, payload, or bytes buffer) of unbounded or unchecked length to an external call, cross-chain message, or unknown/untrusted address, without validating or capping its size, allowing an attacker to craft oversized data that breaks downstream processing or griefs the recipient, excluding cases where the data length is validated, fixed-size, or the destination is a trusted, access-controlled address.",
+  "criteria": [
+    "A function accepts a user-supplied '_toAddress' or similar bytes parameter and passes it directly into a cross-chain send/message call without checking its length matches the expected address size",
+    "An external call forwards an arbitrary-length payload/data parameter supplied by the caller to an unknown or attacker-controlled address with no maximum size check",
+    "A low-level call or delegatecall passes a caller-controlled 'data' argument of unrestricted length to an external, non-trusted contract address",
+    "A messaging/relay function encodes and forwards user-controlled data to another chain or contract without truncating or bounding the payload size before sending"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

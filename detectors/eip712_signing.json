@@ -1,0 +1,17 @@
+{
+  "name": "eip712_signing",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/eip712-signing/SKILL.md",
+  "source_hash": "3257ac4cbe687304",
+  "description": "Missing replay/expiry protection or signer validation in EIP-712/EIP-2612 signature verification",
+  "question": "The source file in `source` implements an EIP-712 typed-data signature verification function (e.g., a permit-like function that builds a domain separator/struct hash and recovers a signer via ecrecover or ECDSA.recover), and it is missing one or more required safeguards: it does not track/consume a per-signer nonce (allowing the same signature to be replayed), or does not check the signature deadline against the current timestamp before acting on it, or does not verify the recovered signer matches the expected owner and is not the zero address, or the domain separator omits chainId or verifyingContract, allowing signature replay, expired-signature reuse, forged zero-address signatures, or cross-chain/cross-contract replay.",
+  "criteria": [
+    "Function recovers a signer from an EIP-712 digest via ecrecover or ECDSA.recover for authorization (e.g., permit, meta-tx, order fill)",
+    "No nonce parameter or nonce-increment/consumption logic is included in the struct hash or verification flow, permitting signature reuse",
+    "No check that block.timestamp <= deadline (or equivalent expiry check) before executing the signed action",
+    "Recovered address is not compared to the expected signer/owner, or is not checked against address(0)",
+    "Domain separator construction omits block.chainid or verifyingContract, enabling replay across chains or contracts",
+    "DOMAIN_SEPARATOR is hardcoded/cached without recomputation on chain ID change (fork replay)"
+  ],
+  "tags": []
+}

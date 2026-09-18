@@ -1,0 +1,16 @@
+{
+  "name": "create2_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/create2-patterns/SKILL.md",
+  "source_hash": "e255360ba51d7501",
+  "description": "Unrestricted CREATE2 factory allowing salt front-running/address squatting",
+  "question": "The source file in `source` defines a CREATE2 (or CREATE3) factory function that deploys a contract to a deterministic address using a caller-supplied salt and creation code, and this function is externally/publicly callable without binding the salt to msg.sender or otherwise restricting who may use a given salt, so that any third party can observe a pending deployment and front-run it with the same salt and creation code to claim or squat the predicted address first, causing denial-of-service or hijacking of the intended deployment address.",
+  "criteria": [
+    "External or public function performs create2 (assembly or high-level) using a salt parameter supplied directly by the caller",
+    "No mixing of msg.sender (or other caller-specific binding) into the salt or an access-control check restricting which addresses can deploy with a given salt",
+    "Function accepts arbitrary creationCode/initCode as a parameter with no allowlist or hash-commitment restricting what can be deployed",
+    "No commit-reveal, reservation, or msg.sender-derived salt scheme protecting the intended deployer from front-running",
+    "Deployment address is fully predictable off-chain from public inputs (salt, creation code hash, factory address) enabling an attacker to precompute and race the transaction"
+  ],
+  "tags": []
+}

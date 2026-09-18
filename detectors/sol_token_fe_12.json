@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-12",
+  "source_hash": "ccbec00370e401f7",
+  "description": "Missing handling for blacklistable/blocking ERC20 tokens causing denial of service",
+  "question": "The source file in `source` sends or transfers ERC20 tokens to a user-supplied or stored recipient address (e.g. via transfer/transferFrom) as part of a shared operation (like distribution, refund, or withdrawal loop) without any fallback, pull-payment mechanism, or try/catch to handle a transfer revert caused by that recipient being blacklisted or restricted by the token, such that one blocked address can permanently block or brick the operation for all other unrelated users, excluding cases where only the blocked user's own single, isolated action is affected.",
+  "criteria": [
+    "A distribution or airdrop loop calls token.transfer(recipient, amount) for each user in an array, and a single revert from one blacklisted recipient reverts the entire loop for all other users",
+    "A refund or withdrawal function sends tokens directly to a stored beneficiary address with no pull-based claim option, so a blacklisted beneficiary permanently locks the funds and blocks subsequent state updates for others",
+    "A liquidation or settlement function transfers the underlying token to the liquidated user before finalizing shared accounting, with no try/catch, causing the whole settlement to revert and block other participants if that user is blacklisted",
+    "A batch payment function iterates over multiple payees calling transferFrom in sequence without isolating failures, so one restricted payee's revert halts payments to all remaining payees in the same transaction"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

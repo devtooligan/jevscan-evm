@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_chainlink_ccip_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-7",
+  "source_hash": "9d7943d262747819",
+  "description": "Hardcoded (non-upgradeable) extraArgs in Chainlink CCIP cross-chain messages",
+  "question": "The source file in `source` constructs a Chainlink CCIP `Client.EVM2AnyMessage` (or similar cross-chain message) whose `extraArgs` field is built from a hardcoded literal gas limit or version tag directly in the message-sending function, with no state variable, setter, or admin-configurable mechanism to update extraArgs after deployment, so the contract cannot adapt to future CCIP gas requirement or protocol version changes without a full redeploy.",
+  "criteria": [
+    "A function builds Client.EVM2AnyMessage with extraArgs: Client._argsToBytes(Client.EVMExtraArgsV1({gasLimit: 200_000})) using a literal constant gasLimit inline in the call",
+    "extraArgs bytes are hardcoded as a fixed constant or immutable set only in the constructor with no setter function to change it later",
+    "The contract sends CCIP messages using a hardcoded extraArgs value and provides no owner/admin function to update the gas limit or extraArgs version"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "CCIP"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-13",
+  "source_hash": "ef8fc2212413be5a",
+  "description": "ERC20 approve() called directly to non-zero value without resetting allowance to zero first",
+  "question": "The source file in `source` calls an ERC20 token's approve() (or IERC20.approve, not safeApprove/safeIncreaseAllowance) to set a non-zero allowance for a spender without first setting the allowance to zero when the spender's current allowance may already be non-zero, causing reverts or failures on tokens like USDT that require zero-allowance before changing it, excluding cases that first call approve(spender, 0) or use increaseAllowance/safeIncreaseAllowance/forceApprove or only approve when the allowance is already known to be zero.",
+  "criteria": [
+    "token.approve(spender, amount) is called directly with a nonzero amount without resetting the allowance to 0 beforehand",
+    "IERC20(token).approve(spender, newAmount) is invoked to update an existing nonzero allowance to another nonzero value with no prior approve(spender, 0) call",
+    "A function re-approves a router/vault for a new nonzero amount by calling approve() directly, without checking or clearing the previous allowance first",
+    "Code performs approve(spender, type(uint256).max) after a prior nonzero approval without zeroing it out, relying on token behavior that may revert like USDT"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

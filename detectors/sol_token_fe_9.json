@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-9",
+  "source_hash": "2018d6573775412a",
+  "description": "Unrestricted flash-mint functionality enabling temporary supply inflation abuse",
+  "question": "The source file in `source` implements a flash-mint function that mints an arbitrary or uncapped amount of tokens to a borrower for use within the same transaction, without enforcing that the minted tokens are burned or repaid by the end of the transaction, or without any cap/fee limiting the mintable amount, or without a reentrancy guard around the mint-callback-burn sequence, allowing the temporary supply spike to be exploited (e.g., for governance or price-oracle manipulation), excluding flash-mint logic that is restricted to a trusted admin-only caller or that already enforces repayment, caps, and reentrancy protection.",
+  "criteria": [
+    "flashLoan()/flashMint() mints tokens to the receiver and calls an external callback, then checks balance only after the call without verifying the exact minted amount was burned or returned",
+    "flashMint() has no maximum-amount cap, allowing the caller to mint an amount large enough to manipulate a price or voting-power snapshot within the same transaction",
+    "flashMint() executes the external callback and burn/repayment logic without a reentrancy guard, allowing reentrant calls to mint additional tokens before the original mint is settled",
+    "flashMint() burns only a previously recorded balance rather than re-checking totalSupply post-callback, allowing the borrower to keep part of the minted tokens uncollected"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-10",
+  "source_hash": "a7cbd4faa68e805c",
+  "description": "Oracle price update front-running enabling MEV extraction or unfair liquidation/trade execution",
+  "question": "The source file in `source` contains a function that consumes or triggers an on-chain oracle price update and immediately allows a dependent state-changing action (such as a trade, mint/redeem, or liquidation) to execute using that same updated price within the same transaction or block, with no delay, commit-reveal step, or minimum-block-gap enforced between the price update and its use, allowing an attacker to front-run or back-run the update to profit; this excludes cases where prices are only read from an already-settled external feed without the contract itself triggering the update, or where a time delay, TWAP, or block-gap check already prevents same-block exploitation.",
+  "criteria": [
+    "A function calls updatePrice() or similar on an oracle and then in the same call immediately executes a liquidation or trade using the freshly updated price with no delay check",
+    "A public function that anyone can call to push a new oracle price also permits, in the very next line or same transaction, minting/redeeming/borrowing at that new price",
+    "A liquidation function reads oracle.getLatestPrice() and liquidates immediately after a permissionless price push transaction with no minimum elapsed-block requirement",
+    "Swap or lending logic uses the spot price returned by an oracle update function without checking that at least N blocks have passed since the last price change"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

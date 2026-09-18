@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-3",
+  "source_hash": "e8006df28a14b1ba",
+  "description": "Missing staleness check on oracle price feed timestamp allows use of outdated prices",
+  "question": "The source file in `source` reads a price feed (e.g., Chainlink or similar oracle) and uses the returned price value without checking the returned update timestamp (e.g., updatedAt) against a maximum allowed delay (MAX_DELAY/heartbeat), so stale or outdated prices can be used in financial calculations such as collateral valuation, liquidation, or swaps; this excludes code that does compare the timestamp to a defined staleness threshold and reverts or handles the stale case, and excludes non-price-related timestamp usage.",
+  "criteria": [
+    "Calls latestRoundData() or similar and uses the price return value in calculations without reading or checking the updatedAt/timestamp field",
+    "Reads a price feed's timestamp but never compares it to any MAX_DELAY, heartbeat, or staleness threshold before using the price",
+    "Retrieves an oracle price and immediately uses it for minting, liquidation, or swap math with no revert or fallback path for outdated data",
+    "Compares block.timestamp minus updatedAt against a staleness threshold using an inverted or always-true condition (e.g., checking `<` where `>` is required), so stale prices pass the check and are used in price calculations"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

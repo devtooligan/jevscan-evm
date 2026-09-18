@@ -1,0 +1,17 @@
+{
+  "name": "chainlink_oracles",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/chainlink-oracles/SKILL.md",
+  "source_hash": "1b6f4c8eb494e8a4",
+  "description": "Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks",
+  "question": "The source file in `source` calls a Chainlink AggregatorV3Interface's `latestRoundData()` (or equivalent price feed read) to obtain a price used in financial logic, but fails to validate the result: it does not check that the returned answer is positive, does not compare `updatedAt` against a staleness threshold, does not verify `answeredInRound >= roundId`, and/or (for an L2 deployment) does not check the sequencer uptime feed and grace period, allowing stale, zero/negative, or sequencer-down price data to be used unsafely.",
+  "criteria": [
+    "Calls priceFeed.latestRoundData() and uses the returned answer directly without checking answer > 0",
+    "No comparison of block.timestamp - updatedAt against any maxStaleness/heartbeat threshold",
+    "No check that answeredInRound >= roundId (or equivalent round-completeness check)",
+    "On L2-targeted code, no call to a sequencer uptime feed or no grace-period check after sequencer restart",
+    "Price used directly in calculations (e.g., collateral valuation, liquidation, swap pricing) without any of the above validations",
+    "Missing decimals()-based normalization leading to raw answer misuse is not required but absence of staleness/validity checks alone qualifies"
+  ],
+  "tags": []
+}

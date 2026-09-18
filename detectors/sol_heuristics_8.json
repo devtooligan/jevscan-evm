@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_8",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-8",
+  "source_hash": "943b426bc0e8fa88",
+  "description": "Incorrect use of logical/comparison operators (==, !=, &&, ||, !) causing wrong control flow",
+  "question": "The source file in `source` contains a conditional expression using a logical or comparison operator (==, !=, &&, ||, !) that is logically incorrect for its intended purpose, such as an inverted negation, a wrong equality check, or a misused && where || is required (or vice versa), causing the code to allow, block, or branch on the wrong condition and produce a security-relevant control-flow error, excluding cases where the operator usage is correct but merely unconventional or stylistically confusing.",
+  "criteria": [
+    "A require or if statement uses != where == was intended (or vice versa), causing validation to pass when it should fail",
+    "A guard uses && to combine two conditions that should be combined with ||, so the check is bypassed unless both conditions hold simultaneously",
+    "A negation operator ! is missing or misplaced on a boolean flag, inverting the intended access-control or state check",
+    "A condition meant to reject invalid input instead accepts it because the comparison operator's logic is inverted from the documented intent"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

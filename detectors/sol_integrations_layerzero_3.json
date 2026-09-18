@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_layerzero_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LayerZero-3",
+  "source_hash": "c1a785e0152713a0",
+  "description": "Inaccurate/hardcoded gas estimation for LayerZero cross-chain messages causing message execution failures",
+  "question": "The source file in `source` sends LayerZero cross-chain messages (e.g., via _lzSend, lzSend, or endpoint.send) using a hardcoded or unadjustable gas limit for destination execution, without calling estimateFees/quote or providing any per-chain or caller-configurable gas parameter, so that lzReceive execution on the destination chain can run out of gas and the message can fail or be stuck; this excludes implementations that dynamically compute or allow admin/caller configuration of the gas limit per destination chain, or that call an estimation function before dispatching the message.",
+  "criteria": [
+    "_lzSend() encodes adapterParams with a hardcoded gas limit constant instead of using an estimateFees() call or caller-supplied value",
+    "sendMessage() applies a single fixed gas limit for lzReceive execution across all destination chains with no per-chain configuration",
+    "The contract submits cross-chain messages via _lzSend without first calling estimateFees or quote to compute the required destination gas/fees",
+    "A hardcoded gas value is passed directly into the LayerZero adapter parameters with no owner-settable function to adjust it after deployment"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LayerZero"
+    ]
+  ]
+}

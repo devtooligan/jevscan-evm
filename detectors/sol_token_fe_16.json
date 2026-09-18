@@ -1,0 +1,20 @@
+{
+  "name": "sol_token_fe_16",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Token-FE-16",
+  "source_hash": "27c828d924ef5f26",
+  "description": "ERC20 transferFrom() incorrectly decreases allowance when caller is the token owner (sender)",
+  "question": "The source file in `source` implements a transferFrom(sender, recipient, amount) function that unconditionally reduces the caller's or sender's allowance mapping even when msg.sender equals sender, causing the owner's own allowance to be needlessly consumed or underflow/revert when transferring their own tokens, and this statement excludes implementations that explicitly skip or bypass the allowance decrease when msg.sender == sender.",
+  "criteria": [
+    "transferFrom(sender, recipient, amount) calls _approve(sender, msg.sender, allowance[sender][msg.sender] - amount) or similar without first checking if msg.sender == sender",
+    "transferFrom deducts from allowance[msg.sender][msg.sender] or allowance[sender][msg.sender] regardless of whether sender is the caller, leading to unnecessary allowance depletion",
+    "transferFrom reverts due to allowance underflow when sender calls transferFrom on their own address with amount exceeding their self-set allowance (which may be zero)",
+    "the allowance decrement logic in transferFrom lacks a branch or early return that skips decreasing allowance when sender == msg.sender"
+  ],
+  "tags": [
+    [
+      "Token",
+      "Fungible : ERC20"
+    ]
+  ]
+}

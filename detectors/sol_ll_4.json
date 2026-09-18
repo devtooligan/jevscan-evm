@@ -1,0 +1,19 @@
+{
+  "name": "sol_ll_4",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-LL-4",
+  "source_hash": "aa347f5b498d732c",
+  "description": "Missing returndatasize check when calling precompiled contracts",
+  "question": "The source file in `source` contains a low-level call (e.g., staticcall or call) to a precompiled contract address (such as 0x1-0x9, e.g., ecrecover, modexp, ecadd, ecmul, ecpairing, or blake2f), and it determines success solely by checking the boolean success return value of the call without verifying that the returned data size (returndatasize) is nonzero, so a failed precompile call that still returns success=true with empty return data is silently treated as a valid result, leading to incorrect computation or bypassed validation, unless the code separately checks returndatasize() or the length of the returned bytes before consuming the return data.",
+  "criteria": [
+    "A staticcall to the ecrecover precompile at address 0x1 checks only the boolean success flag and then decodes the return data without checking that returndatasize() is 32",
+    "A call to the modexp precompile at address 0x5 uses the success boolean alone to decide whether the operation succeeded, ignoring that a failed call returns zero-length data",
+    "A call to the bn256Pairing/ecpairing precompile at address 0x8 assumes success implies valid output without verifying returndatasize() equals the expected output length",
+    "Code performs a low-level call to a hardcoded precompile address and proceeds to use the returned bytes without any check on the length of returndata"
+  ],
+  "tags": [
+    [
+      "Low Level"
+    ]
+  ]
+}

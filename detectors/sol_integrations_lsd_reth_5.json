@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_lsd_reth_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-LSD-rETH-5",
+  "source_hash": "bc819be2ac30ca05",
+  "description": "Hardcoded or stale ETH/rETH conversion rate ignoring accruing staking rewards",
+  "question": "The source file in `source` contains code that converts between ETH and rETH amounts using a fixed or hardcoded exchange rate (such as a 1:1 ratio or a constant stored at deployment) instead of querying RocketPool's live exchange-rate mechanism (e.g. getExchangeRate, getEthValue, getRethValue), so the conversion becomes inaccurate as staking rewards accrue over time, causing mispriced deposits, withdrawals, or collateral valuations; this excludes code that calls RocketPool's current rate/oracle functions on each conversion or otherwise dynamically updates the rate to reflect accrued rewards.",
+  "criteria": [
+    "A function computes rETH-to-ETH or ETH-to-rETH value by multiplying/dividing with a constant ratio defined in the contract instead of calling the RocketPool exchange rate contract",
+    "Conversion logic assumes rETH and ETH are always equivalent 1:1 and never adjusts for staking reward accrual",
+    "A cached exchange rate value is stored once at initialization and reused for all later conversions without refreshing from RocketPool",
+    "Deposit or withdrawal accounting uses a locally tracked conversion rate updated only manually/off-chain rather than fetching RocketPool's live getExchangeRate() or equivalent"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "LSD",
+      "rETH"
+    ]
+  ]
+}

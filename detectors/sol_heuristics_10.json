@@ -1,0 +1,19 @@
+{
+  "name": "sol_heuristics_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Heuristics-10",
+  "source_hash": "ed8e846480344f3e",
+  "description": "Rounding errors in arithmetic that can be amplified via repeated or strategic invocation",
+  "question": "The source file in `source` performs a financial calculation (such as interest, fees, share conversion, or reward distribution) using integer division or truncation that consistently rounds in one direction, and the affected function can be invoked repeatedly or under attacker-chosen conditions such that the rounding error accumulates into a significant loss for the protocol or other users, with no minimum-amount check, precision scaling, or remainder-correction logic preventing the accumulation, and excluding cases where the rounding error is provably negligible or already bounded/corrected.",
+  "criteria": [
+    "calculateInterest() divides accumulated debt by totalSupply with plain integer division and no minimum call-size check, letting an attacker repeatedly call it with tiny amounts so the truncated remainder is dropped each time in their favor",
+    "convertToShares() truncates via integer division on every deposit, always rounding the user's shares down and the protocol's balance up, so many small deposits accumulate a material discrepancy over time",
+    "distributeRewards() computes rewardPerUser = totalReward / userCount using integer division inside a loop or per-block call, so the truncated remainder compounds into a growing shortfall for the pool",
+    "withdraw() computes withdrawAmount = shares * totalAssets / totalSupply with no rounding-up protection, allowing repeated small withdrawals to each round in the withdrawer's favor and drain excess assets over many calls"
+  ],
+  "tags": [
+    [
+      "Heuristics"
+    ]
+  ]
+}

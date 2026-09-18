@@ -1,0 +1,1082 @@
+{
+  "categories": [
+    {
+      "id": "access_control",
+      "name": "Access control and privilege",
+      "description": "Privileged state changes or fund movements reachable by callers who should not have that power.",
+      "question": "The source file in `source` contains an access-control vulnerability: a function that moves funds, mints or burns tokens, changes critical parameters, or grants roles can be called by an unauthorized address, because an authorization check is missing, wrong, or bypassable, or roles are assigned incorrectly. The flaw lets an attacker steal or freeze assets or take over the protocol. Centralization risk from an honest, correctly-gated admin does not count.",
+      "sources": [
+        "OWASP SC01:2025",
+        "OWASP SC01:2026",
+        "SWC-105",
+        "SWC-106",
+        "SWC-100",
+        "DASP-2",
+        "Solodit: Access Control",
+        "Immunefi: direct theft / protocol takeover"
+      ],
+      "subcategories": [
+        {
+          "id": "missing_auth_on_privileged_function",
+          "name": "Missing authorization on privileged function",
+          "description": "External/public function that changes critical state or moves funds has no caller check.",
+          "question": "The source file in `source` contains a missing-authorization bug: an external or public function that transfers funds, mints, burns, sets critical parameters, changes owners/roles, or withdraws protocol assets has no effective caller restriction (no modifier, require, or role check), so any address can call it and steal funds or seize control.",
+          "code_patterns": [
+            "external/public setter or withdraw/mint/sweep with no onlyOwner/onlyRole/require(msg.sender==...)",
+            "internal-intended helper accidentally declared public/external",
+            "callback entry point (e.g. onFlashLoan, uniswapV3SwapCallback) that does not verify msg.sender or initiator",
+            "emergency/rescue function without access modifier"
+          ]
+        },
+        {
+          "id": "incorrect_auth_logic",
+          "name": "Incorrect authorization logic",
+          "description": "An authorization check exists but is wrong: inverted, wrong variable, wrong role, or OR instead of AND.",
+          "question": "The source file in `source` contains a flawed authorization check: a guard on a privileged function checks the wrong address, wrong role, wrong mapping key, uses || where && is required, is inverted, or is only applied on some code paths, so an unauthorized caller passes the check and can perform the privileged action to steal funds or change critical state.",
+          "code_patterns": [
+            "require(msg.sender == owner || ...) with an attacker-satisfiable second clause",
+            "modifier checks a parameter address instead of msg.sender",
+            "role check against wrong role constant",
+            "check applied in one overload/entry point but not a sibling that reaches the same state"
+          ]
+        },
+        {
+          "id": "arbitrary_from_or_on_behalf_of",
+          "name": "Acting on behalf of arbitrary accounts",
+          "description": "Function takes an address or id selecting another party's funds or position and acts on it without verifying the caller owns it or is approved.",
+          "question": "The source file in `source` contains an on-behalf-of authorization bug: a function takes a parameter that selects another party's funds or position (an owner, account, or `from` address, or the id of a pool, vault, position, loan, order, or deposit) and spends, withdraws, transfers, lends from, borrows against, or reassigns those funds or that position without checking that msg.sender is its owner or an approved delegate, so an attacker can use or drain other users' approved tokens, balances, or positions.",
+          "code_patterns": [
+            "transferFrom(from, ...) where `from` is a caller-supplied parameter and msg.sender is never compared to it",
+            "withdraw(owner, receiver, amount) with no allowance or approval check for msg.sender",
+            "function that debits balances[id] or pools[id] for a caller-supplied id without require(ownerOf[id] == msg.sender)",
+            "router or zap that pulls funds from a user-specified address",
+            "operator or delegate mapping that exists but is never consulted"
+          ]
+        },
+        {
+          "id": "role_management_flaw",
+          "name": "Role and ownership management flaw",
+          "description": "Role grant/revoke, ownership transfer, or admin-role hierarchy lets roles be escalated or lost.",
+          "question": "The source file in `source` contains a role-management bug: role granting, revocation, or ownership transfer logic lets an unprivileged or lower-privileged account grant itself a higher role, prevents revocation of a compromised role, or transfers ownership to an unverified address in a way that lets an attacker gain control of privileged functions.",
+          "code_patterns": [
+            "custom grantRole without admin-role check",
+            "role admin set to a role that anyone can hold",
+            "ownership set in a callable function other than constructor/initializer",
+            "renounce/transfer that leaves stale privileged address still authorized"
+          ]
+        },
+        {
+          "id": "unprotected_initializer",
+          "name": "Unprotected or re-callable initializer",
+          "description": "An initialize function can be called by anyone or more than once.",
+          "question": "The source file in `source` contains an unprotected initializer: an initialize or setup function that sets owner, admin, key addresses, or critical parameters is externally callable by anyone before the deployer calls it, or can be called again after initialization, letting an attacker set themselves as owner or overwrite critical configuration.",
+          "code_patterns": [
+            "initialize() without initializer modifier or initialized flag",
+            "init flag set after external calls or never set",
+            "reinitializer version reused or missing on upgrade init",
+            "setup function guarded only by a check that is true in the uninitialized state"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proxy_upgradeability",
+      "name": "Proxy, upgradeability, and storage layout",
+      "description": "Proxy, clone, and upgrade patterns whose storage, initialization, or upgrade authority can be abused.",
+      "question": "The source file in `source` contains a proxy or upgradeability vulnerability: the proxy, implementation, clone, or upgrade logic lets an attacker take over or destroy the implementation, upgrade to arbitrary code, or corrupt storage through layout collisions, leading to theft of funds or permanent loss of the protocol.",
+      "sources": [
+        "OWASP SC10:2026",
+        "SWC-109",
+        "SWC-112",
+        "SWC-124",
+        "Consensys: upgradeability",
+        "Trail of Bits: not-so-smart-contracts (delegatecall)",
+        "Solodit: Proxy/Upgradeable"
+      ],
+      "subcategories": [
+        {
+          "id": "uninitialized_implementation",
+          "name": "Uninitialized implementation or proxy",
+          "description": "Implementation contract left initializable, or proxy deployed and initialized in separate transactions.",
+          "question": "The source file in `source` contains an uninitialized-implementation bug: an upgradeable implementation contract does not disable initializers in its constructor (or equivalent), or a proxy is deployed without atomic initialization, so an attacker can initialize it, become owner, and upgrade, selfdestruct, or otherwise take control of funds held or routed through it.",
+          "code_patterns": [
+            "upgradeable contract with no constructor calling _disableInitializers()",
+            "ERC1967Proxy deployed with empty init data then initialized later",
+            "UUPS implementation whose initialize grants UPGRADER role to caller"
+          ]
+        },
+        {
+          "id": "unprotected_upgrade",
+          "name": "Unprotected upgrade path",
+          "description": "upgradeTo / _authorizeUpgrade / beacon upgrade without proper authorization.",
+          "question": "The source file in `source` contains an unprotected upgrade function: `_authorizeUpgrade`, `upgradeTo`, `upgradeToAndCall`, a beacon `upgrade`, or a custom implementation setter is callable without correct authorization, letting an attacker point the proxy to malicious code and steal all funds.",
+          "code_patterns": [
+            "_authorizeUpgrade with empty body or no modifier",
+            "custom setImplementation without access control",
+            "UUPS implementation missing upgrade function entirely (bricks future upgrades)",
+            "beacon owner is a contract with its own unprotected call path"
+          ]
+        },
+        {
+          "id": "storage_layout_collision",
+          "name": "Storage layout collision",
+          "description": "Proxy and implementation or versions of an implementation disagree on storage slots.",
+          "question": "The source file in `source` contains a storage-collision bug: the proxy and implementation, or old and new implementation versions, place different variables in the same storage slot (non-EIP-1967 admin/implementation slots, reordered or inserted state variables, missing gaps in inherited upgradeable bases), so upgrades or normal operation overwrite ownership, balances, or accounting state.",
+          "code_patterns": [
+            "proxy storing implementation/admin in slot 0 or declared state variables",
+            "upgradeable base contracts with state vars and no __gap",
+            "new variables inserted before existing ones",
+            "diamond facets sharing storage without namespaced structs"
+          ]
+        },
+        {
+          "id": "delegatecall_context_misuse",
+          "name": "Delegatecall context misuse",
+          "description": "Implementation or library code assumes its own storage/context while running under delegatecall.",
+          "question": "The source file in `source` contains a delegatecall-context bug: code executed via delegatecall (implementation, facet, library, or module) reads or writes storage, uses address(this), msg.value, or immutables in a way that is wrong in the caller's context, or can be delegatecalled directly to selfdestruct or corrupt state, causing loss or corruption of funds.",
+          "code_patterns": [
+            "implementation with selfdestruct or delegatecall reachable on the logic contract itself",
+            "immutable used in logic that must differ per proxy",
+            "multicall that delegatecalls self and reuses msg.value per call",
+            "library storing to slots assumed free in the caller"
+          ]
+        },
+        {
+          "id": "clone_and_factory_flaw",
+          "name": "Clone and factory deployment flaw",
+          "description": "Minimal-proxy clones or CREATE2 factories that can be front-run, hijacked, or deployed with wrong params.",
+          "question": "The source file in `source` contains a clone or factory deployment bug: a factory deploys clones or CREATE2 contracts whose address, salt, or initialization can be front-run or influenced by an attacker, or leaves deployed instances uninitialized, so the attacker can take ownership of the instance or of funds sent to the predicted address.",
+          "code_patterns": [
+            "Clones.clone then separate initialize call in a different transaction",
+            "CREATE2 salt not bound to msg.sender or init params",
+            "funds sent to a counterfactual address before deployment",
+            "factory trusting any address that claims to be its clone"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oracle_price_manipulation",
+      "name": "Oracle and price manipulation",
+      "description": "Prices or exchange rates that attackers can manipulate or that are consumed without validation.",
+      "question": "The source file in `source` contains a price-oracle vulnerability: the file derives asset prices, exchange rates, or collateral values from a source an attacker can move within a transaction (spot reserves, balances, thin pools), or consumes an external oracle without validating staleness, bounds, decimals, or failure, so an attacker can borrow, mint, liquidate, or redeem at a wrong price and extract funds.",
+      "sources": [
+        "OWASP SC02:2025",
+        "OWASP SC03:2026",
+        "DASP-7 (front-running, partial)",
+        "Immunefi: price manipulation",
+        "Solodit: Oracle",
+        "rekt.news / DefiLlama hacks: oracle manipulation"
+      ],
+      "subcategories": [
+        {
+          "id": "spot_price_dependency",
+          "name": "Spot price or reserve-based pricing",
+          "description": "Price computed from current AMM reserves, pool balances, or slot0 price.",
+          "question": "The source file in `source` contains a spot-price dependency: prices, collateral values, or exchange rates are computed from current AMM reserves, `getReserves`, Uniswap V3 `slot0`, token balanceOf of a pool, or a single-block quote that an attacker can move with a large or flash-loaned trade in the same transaction, enabling mispriced borrowing, minting, or redemption.",
+          "code_patterns": [
+            "getReserves() ratio used as price",
+            "slot0().sqrtPriceX96 used for valuation",
+            "balanceOf(pool) based pricing",
+            "router.getAmountsOut used as oracle"
+          ]
+        },
+        {
+          "id": "chainlink_validation_missing",
+          "name": "Missing external-oracle validation",
+          "description": "Chainlink or similar feed consumed without staleness, round, bounds, or sequencer checks.",
+          "question": "The source file in `source` contains an unvalidated external-oracle read: a Chainlink or similar feed answer is used without checking staleness (updatedAt vs heartbeat), non-positive answers, round completeness, min/max circuit-breaker bounds, or L2 sequencer uptime, so stale or wrong prices let users borrow, liquidate, or redeem at incorrect values.",
+          "code_patterns": [
+            "latestRoundData() with ignored updatedAt/answer checks",
+            "latestAnswer() usage",
+            "no sequencer uptime feed on L2 deployments",
+            "answer cast to uint without > 0 check",
+            "single heartbeat constant for all feeds"
+          ]
+        },
+        {
+          "id": "oracle_decimals_and_units",
+          "name": "Oracle decimals or unit mismatch",
+          "description": "Oracle outputs combined with wrong decimals, inverted pairs, or wrong denomination.",
+          "question": "The source file in `source` contains an oracle unit bug: oracle prices are scaled with wrong or hardcoded decimals, an inverted pair (A/B vs B/A) is used, or a price denominated in one asset (ETH, USD, a wrapped/staked derivative) is treated as another, producing valuations off by large factors that let users borrow or redeem far more than their collateral is worth.",
+          "code_patterns": [
+            "hardcoded 1e8 or 1e18 for feed decimals",
+            "feed.decimals() not read or not combined with token decimals",
+            "ETH-denominated feed multiplied as if USD",
+            "stETH/wstETH or LST rate assumed 1:1 with ETH"
+          ]
+        },
+        {
+          "id": "manipulable_twap_or_custom_oracle",
+          "name": "Weak TWAP or custom oracle",
+          "description": "TWAP window too short, observation cardinality too low, or custom oracle updatable by users.",
+          "question": "The source file in `source` contains a weak TWAP or custom oracle: the file's TWAP uses a window or observation count short enough to be manipulated within one or few blocks, or a custom price oracle can be updated by untrusted callers or from manipulable inputs, letting an attacker set a price that extracts funds from dependent logic.",
+          "code_patterns": [
+            "observe() with seconds window of a few seconds",
+            "custom setPrice callable by keeper without bounds",
+            "cumulative price read without enough elapsed time",
+            "oracle update pulling from spot then storing"
+          ]
+        },
+        {
+          "id": "vault_share_price_as_oracle",
+          "name": "Donatable exchange rate used as price",
+          "description": "ERC4626 share price, LP token price, or balance-derived rate used as collateral price.",
+          "question": "The source file in `source` contains a donatable exchange-rate oracle: collateral or asset value is derived from an ERC4626 `convertToAssets`/`pricePerShare`, an LP token's reserves-over-supply, or another rate that anyone can inflate by donating tokens or manipulating underlying pools, enabling over-borrowing or unfair redemption against the protocol.",
+          "code_patterns": [
+            "convertToAssets(1e18) used as collateral price",
+            "LP price = (r0*p0 + r1*p1)/totalSupply without fair-reserve math",
+            "rate = token.balanceOf(this)/totalShares",
+            "Curve get_virtual_price read during a read-only reentrancy window"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "flash_loan_economic",
+      "name": "Flash-loan and economic attacks",
+      "description": "Economic mechanisms whose assumptions break when an attacker has large transient capital or multi-step control.",
+      "question": "The source file in `source` contains an economically exploitable design flaw: an attacker with large transient capital (flash loan) or by sequencing deposits, votes, claims, and withdrawals within one transaction or block can gain voting power, rewards, collateral value, or liquidation profit they are not entitled to, extracting value from the protocol or its users.",
+      "sources": [
+        "OWASP SC07:2025",
+        "OWASP SC04:2026",
+        "Immunefi: flash loan / economic attack",
+        "Solodit: Flash Loan",
+        "DeFi attack vectors surveys (Halborn Top 100 DeFi Hacks 2025)"
+      ],
+      "subcategories": [
+        {
+          "id": "flash_loan_governance",
+          "name": "Flash-loanable governance power",
+          "description": "Voting power, proposals, or quorum measured at current balance instead of a past snapshot.",
+          "question": "The source file in `source` contains flash-loanable governance: voting power, proposal thresholds, or quorum use current token balances or a snapshot at the current block, so an attacker can borrow tokens, pass or execute a malicious proposal, and repay within one transaction, taking control of treasury or protocol parameters.",
+          "code_patterns": [
+            "getVotes(account) using balanceOf instead of getPastVotes",
+            "snapshot at block.number rather than earlier block",
+            "propose and execute in the same block/no timelock",
+            "emergency governance with no delay"
+          ]
+        },
+        {
+          "id": "instant_reward_or_snapshot_gaming",
+          "name": "Reward or snapshot gaming",
+          "description": "Rewards, airdrops, or distributions claimable by deposit-claim-withdraw in one transaction.",
+          "question": "The source file in `source` contains a reward-gaming flaw: rewards, fees, airdrops, or distributions are computed from balances at the moment of claim or on a snapshot an attacker can join just before it, so depositing (possibly with a flash loan), claiming, and withdrawing within one transaction or block captures rewards meant for long-term participants.",
+          "code_patterns": [
+            "reward = balanceOf(user) * rate at claim time",
+            "notifyRewardAmount then deposit/claim same block",
+            "no minimum staking duration or checkpointing",
+            "distribution uses totalSupply snapshot taken on demand"
+          ]
+        },
+        {
+          "id": "liquidation_incentive_abuse",
+          "name": "Liquidation mechanism abuse",
+          "description": "Liquidation bonus, self-liquidation, or partial liquidation logic that yields risk-free profit or bad debt.",
+          "question": "The source file in `source` contains an abusable liquidation mechanism: liquidation bonus, close factor, or self-liquidation rules let an attacker profit by manipulating a position into liquidation, liquidating themselves at a discount, or leaving undercollateralized bad debt, draining the protocol or other lenders.",
+          "code_patterns": [
+            "liquidator == borrower not prevented where it yields profit",
+            "bonus paid even when collateral < debt (creates bad debt)",
+            "partial liquidation leaving dust positions unliquidatable",
+            "health factor worsens after liquidation"
+          ]
+        },
+        {
+          "id": "atomic_arbitrage_of_protocol_pricing",
+          "name": "Atomic arbitrage of protocol pricing",
+          "description": "Mint/redeem, swap, or deposit/withdraw paths priced inconsistently so a round trip yields profit.",
+          "question": "The source file in `source` contains an atomic-arbitrage flaw: two protocol paths (mint vs redeem, deposit vs withdraw, internal swap vs external market, or two price functions) value the same assets differently, so an attacker can loop them within one transaction, possibly with a flash loan, and extract a profit paid by the protocol or its depositors.",
+          "code_patterns": [
+            "mint uses oracle price but redeem uses NAV (or vice versa)",
+            "deposit and withdraw use different fee/rate rounding",
+            "virtual price updated lazily between steps",
+            "sandwichable rebalance/harvest function"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reentrancy",
+      "name": "Reentrancy",
+      "description": "External calls that let an attacker re-enter before state is consistent.",
+      "question": "The source file in `source` contains a reentrancy vulnerability: the file makes an external call (ETH transfer, token transfer with hooks, callback, or call to an untrusted contract) before finishing updates to balances or accounting, without an effective reentrancy guard, so an attacker can re-enter the same or another function, or a view relied on by others, and withdraw funds multiple times or act on stale state.",
+      "sources": [
+        "OWASP SC05:2025",
+        "OWASP SC08:2026",
+        "SWC-107",
+        "DASP-1",
+        "Consensys known attacks: reentrancy",
+        "Trail of Bits: not-so-smart-contracts (reentrancy)",
+        "Solodit: Reentrancy"
+      ],
+      "subcategories": [
+        {
+          "id": "single_function_reentrancy",
+          "name": "Single-function reentrancy",
+          "description": "An external call or token transfer happens before the same function writes the state it depends on.",
+          "question": "The source file in `source` contains a single-function reentrancy bug: a function makes an external call that can reach attacker-controlled code (sending ETH to msg.sender or a caller-supplied address, calling transfer, transferFrom, safeTransfer, or safeTransferFrom on a token a user chose or on a token with transfer hooks such as ERC777, or calling a caller-supplied address) before it writes the storage that records the effect of that operation (a balance, share, debt, pool or loan record, or claimed flag), and the function has no reentrancy guard, so the called code can re-enter the same function while that storage is stale and collect the same payout or credit again.",
+          "code_patterns": [
+            "token.transfer(msg.sender, amount) or msg.sender.call{value: amount}(\"\") before balances[msg.sender] = 0 or delete positions[id]",
+            "transferFrom(msg.sender, address(this), amount) on a caller-chosen token before the record for that deposit or repayment is written",
+            "loop that pays out each item and marks the item settled only after its transfer",
+            "withdraw, claim, repay, or redeem function without nonReentrant that transfers before updating state"
+          ]
+        },
+        {
+          "id": "cross_function_reentrancy",
+          "name": "Cross-function reentrancy",
+          "description": "Re-entry into a different function that shares state not yet updated.",
+          "question": "The source file in `source` contains a cross-function reentrancy bug: during an external call in one function, shared state (balances, debt, shares, locks) is not yet updated, and a different unguarded function (or one guarded by a separate lock) can be re-entered to act on that stale state, letting an attacker double-spend or withdraw more than owed.",
+          "code_patterns": [
+            "nonReentrant on withdraw but not on transfer/borrow sharing the same balance",
+            "multiple contracts in a system each with their own guard",
+            "external call in the middle of a multi-step state update"
+          ]
+        },
+        {
+          "id": "read_only_reentrancy",
+          "name": "Read-only reentrancy",
+          "description": "View function exposes inconsistent state during an external call, and other protocols read it.",
+          "question": "The source file in `source` contains a read-only reentrancy bug: a view function (price, exchange rate, totalAssets, balances) returns inconsistent values while the contract is mid-execution after an external call, or the file consumes such a view from Curve, Balancer, or similar pools without a reentrancy check, letting an attacker manipulate prices used by dependent protocols.",
+          "code_patterns": [
+            "get_virtual_price / getRate read without checking pool reentrancy lock",
+            "totalAssets computed from state partially updated before ETH refund",
+            "view functions not guarded by the same lock as mutating functions"
+          ]
+        },
+        {
+          "id": "token_hook_reentrancy",
+          "name": "Token hook reentrancy",
+          "description": "ERC777, ERC721/1155 receiver hooks or ERC4626/permit callbacks enabling re-entry.",
+          "question": "The source file in `source` contains a token-hook reentrancy bug: the file transfers or mints ERC777, ERC721, ERC1155 or other hook-bearing tokens, or calls receiver callbacks, before completing state updates, so a malicious recipient or sender hook re-enters and exploits stale accounting to steal funds.",
+          "code_patterns": [
+            "_safeMint / safeTransferFrom before state updates",
+            "ERC777 tokensReceived/tokensToSend not considered for arbitrary ERC20",
+            "onERC1155Received callback executed mid-accounting",
+            "arbitrary token accepted where hooks are possible"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "accounting_share_math",
+      "name": "Accounting and share math",
+      "description": "Internal bookkeeping of deposits, shares, debt, fees, and rewards that diverges from reality.",
+      "question": "The source file in `source` contains an accounting vulnerability: balances, shares, debt, fees, rewards, or total-asset tracking are computed or updated incorrectly (wrong order of updates, missing updates, donation-sensitive totals, double counting), so an attacker can mint unbacked shares, withdraw more than deposited, steal other users' yield, or make the protocol insolvent.",
+      "sources": [
+        "OWASP SC02:2026 (business logic)",
+        "OWASP SC03:2025",
+        "Immunefi: protocol insolvency / theft of unclaimed yield",
+        "Solodit: ERC4626, Share Inflation, Rewards",
+        "Cyfrin audit checklist: vaults/rewards"
+      ],
+      "subcategories": [
+        {
+          "id": "share_inflation_first_depositor",
+          "name": "First-depositor share inflation",
+          "description": "Empty-vault share price can be inflated by donation so later depositors receive zero or few shares.",
+          "question": "The source file in `source` contains a share-inflation bug: share minting uses totalAssets from token balances with no virtual shares/offset, dead shares, or minimum deposit, so the first depositor can mint a tiny amount of shares, donate assets to inflate the share price, and cause later depositors' shares to round down to zero, stealing their deposits.",
+          "code_patterns": [
+            "shares = assets * totalSupply / totalAssets with totalAssets = balanceOf(this)",
+            "no _decimalsOffset / virtual shares",
+            "no minimum initial deposit or dead shares",
+            "no check that minted shares > 0"
+          ]
+        },
+        {
+          "id": "donation_or_balance_based_accounting",
+          "name": "Balance-based accounting",
+          "description": "Contract uses raw token/ETH balance instead of internal accounting, so donations distort logic.",
+          "question": "The source file in `source` contains a balance-based accounting bug: critical math (exchange rates, reward rates, collateral, invariant checks) reads `balanceOf(address(this))` or `address(this).balance` instead of internally tracked amounts, so a direct token or ETH donation or forced send breaks invariants, inflates rates, or lets an attacker claim others' funds.",
+          "code_patterns": [
+            "token.balanceOf(address(this)) in rate or payout formulas",
+            "address(this).balance == expected equality checks",
+            "sweep function not excluding user-owned tokens",
+            "invariant check assuming balance equals sum of deposits"
+          ]
+        },
+        {
+          "id": "reward_accounting_error",
+          "name": "Reward distribution accounting error",
+          "description": "Reward-per-token, checkpointing, or accrual updated in the wrong order or skipped.",
+          "question": "The source file in `source` contains a reward-accounting bug: reward-per-share or accrual is not updated before balances change, checkpoints are skipped on transfer/mint/burn, rewards are distributed over a supply of zero, or reward rate math loses remaining rewards, letting users claim rewards they did not earn or permanently losing others' rewards.",
+          "code_patterns": [
+            "updateReward modifier missing on stake/withdraw/transfer",
+            "rewardPerToken divides by totalSupply without zero handling",
+            "notifyRewardAmount overwriting rate without adding leftover",
+            "transfer of staked token without checkpointing both sides"
+          ]
+        },
+        {
+          "id": "debt_and_interest_accounting_error",
+          "name": "Debt and interest accounting error",
+          "description": "Interest index, borrow balance, or bad-debt handling updated incorrectly.",
+          "question": "The source file in `source` contains a debt-accounting bug: interest indexes are not accrued before borrow, repay, or liquidation; debt shares and debt amounts are converted inconsistently; or bad debt is not socialized, so borrowers can repay less than owed, avoid interest, or leave lenders unable to withdraw.",
+          "code_patterns": [
+            "accrueInterest not called at start of state-changing functions",
+            "debt shares rounded in borrower's favour",
+            "totalBorrows not decreased on liquidation/write-off",
+            "repay amount capped without reducing shares correctly"
+          ]
+        },
+        {
+          "id": "fee_accounting_error",
+          "name": "Fee accounting error",
+          "description": "Protocol, performance, or withdrawal fees computed on wrong base, charged twice, or bypassable.",
+          "question": "The source file in `source` contains a fee-accounting bug: protocol, performance, management, or withdrawal fees are computed on the wrong base, charged twice, not charged on some paths, or minted as shares in a way that dilutes users incorrectly, causing theft from depositors or letting users avoid fees owed to the protocol.",
+          "code_patterns": [
+            "fee shares minted after totalAssets update (double counting)",
+            "fee skipped in redeem vs withdraw path",
+            "performance fee on principal instead of profit",
+            "high-water mark not updated"
+          ]
+        },
+        {
+          "id": "state_update_omission_or_double_count",
+          "name": "Missing or duplicated state update",
+          "description": "A balance/total/mapping entry that must change together with others is missed or updated twice.",
+          "question": "The source file in `source` contains a missing or duplicated state update: a function changes one side of paired accounting (user balance vs total, collateral vs debt, deposit vs share supply, locked vs unlocked) without the other, or updates the same value twice, so totals diverge from user claims and funds can be stolen or become stuck.",
+          "code_patterns": [
+            "totalDeposits updated but user mapping not (or vice versa)",
+            "storage copy to memory, modified, never written back",
+            "delete of struct missing nested mapping cleanup",
+            "same amount added in both helper and caller"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arithmetic_precision",
+      "name": "Arithmetic and precision",
+      "description": "Math errors in rounding, scaling, casting, and overflow that users can exploit.",
+      "question": "The source file in `source` contains an arithmetic or precision vulnerability: integer math rounds in the user's favour, loses precision through division before multiplication, mixes token decimals, truncates in unsafe casts, or overflows/underflows (including in unchecked blocks or pre-0.8 code), and an attacker can repeat or size operations to extract funds or break solvency.",
+      "sources": [
+        "OWASP SC08:2025",
+        "OWASP SC07:2026",
+        "OWASP SC09:2026",
+        "SWC-101",
+        "DASP-3",
+        "Solodit: Rounding, Precision Loss, Decimals",
+        "Balancer V2 2025 rounding exploit"
+      ],
+      "subcategories": [
+        {
+          "id": "rounding_direction_error",
+          "name": "Rounding direction favours the user",
+          "description": "Divisions round toward the caller instead of the protocol on mint/redeem/borrow/repay.",
+          "question": "The source file in `source` contains a rounding-direction bug: a conversion between assets and shares, debt and debt shares, or amounts and fees rounds in the caller's favour (e.g. rounds down shares burned on withdraw, rounds up shares minted on deposit), so an attacker can repeat small operations to extract value or drain the pool.",
+          "code_patterns": [
+            "previewWithdraw/mulDiv without Rounding.Up where protocol should round up",
+            "burn shares computed with floor division",
+            "small amounts yielding zero cost but non-zero benefit",
+            "invariant math (e.g. StableSwap) rounding toward the trader"
+          ]
+        },
+        {
+          "id": "precision_loss_division_before_multiplication",
+          "name": "Precision loss",
+          "description": "Division before multiplication, or small values truncating to zero in critical math.",
+          "question": "The source file in `source` contains a precision-loss bug: the file divides before multiplying, uses insufficient scaling, or computes values that truncate to zero for realistic inputs (e.g. per-second reward rates, small fees, low-decimal tokens), so users lose owed funds, avoid fees, or rewards are permanently misallocated.",
+          "code_patterns": [
+            "(a / b) * c patterns",
+            "rate = reward / duration with low-decimal tokens",
+            "fee = amount * bps / 10000 where small amounts round to 0",
+            "percentage math without 1e18 scaling"
+          ]
+        },
+        {
+          "id": "decimal_mismatch",
+          "name": "Token decimal mismatch",
+          "description": "Amounts from tokens with different decimals combined without normalization.",
+          "question": "The source file in `source` contains a decimal-mismatch bug: amounts of tokens with different decimals (e.g. USDC 6, WETH 18) are added, compared, or priced without normalization, or 18 decimals is assumed for arbitrary tokens, producing values off by orders of magnitude that let users withdraw or borrow far more than they should.",
+          "code_patterns": [
+            "hardcoded 1e18 for token amounts",
+            "no IERC20Metadata(token).decimals() handling",
+            "sum of balances across different tokens",
+            "scaling applied twice or in the wrong direction"
+          ]
+        },
+        {
+          "id": "unsafe_cast_or_overflow",
+          "name": "Unsafe cast or overflow/underflow",
+          "description": "Downcasts, unchecked blocks, or pre-0.8 math that silently wraps.",
+          "question": "The source file in `source` contains an overflow, underflow, or truncating-cast bug: a value is downcast (uint256 to uint128/uint96/int) without SafeCast, arithmetic is inside an `unchecked` block or pre-0.8 code without SafeMath, or signed/unsigned conversion wraps, and attacker-influenced inputs can wrap balances, debt, or timestamps to steal funds or bypass checks.",
+          "code_patterns": [
+            "uint128(x) / int256(x) casts without bounds checks",
+            "unchecked { balance -= amount; } with unverified amount",
+            "pragma solidity <0.8 without SafeMath",
+            "negative int cast to uint"
+          ]
+        },
+        {
+          "id": "incorrect_formula",
+          "name": "Incorrect math formula",
+          "description": "Mathematical formula (interest, invariant, pricing, fee) implemented incorrectly.",
+          "question": "The source file in `source` contains an incorrect-formula bug: an interest, pricing, AMM invariant, collateral ratio, fee, or vesting formula is implemented wrongly (wrong operand, wrong exponent, wrong units such as seconds vs years or bps vs percent), producing values that let users extract funds or cause protocol losses.",
+          "code_patterns": [
+            "BPS denominators of 1000 vs 10000 mixed",
+            "annual rate applied per second without dividing by 365 days",
+            "compound interest approximated incorrectly for large dt",
+            "sign error in PnL/funding computation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "signature_replay",
+      "name": "Signatures and replay",
+      "description": "Off-chain signatures, permits, and meta-transactions that can be forged, replayed, or misused.",
+      "question": "The source file in `source` contains a signature vulnerability: signed messages (permits, meta-transactions, orders, vouchers, off-chain approvals) are verified without binding to nonce, chain ID, contract address, deadline, or all security-relevant fields, or signature recovery is malleable or accepts the zero address, so an attacker can replay, forge, or front-run a signature to steal funds or act for others.",
+      "sources": [
+        "SWC-117",
+        "SWC-121",
+        "SWC-122",
+        "EIP-712",
+        "Solodit: Signature, Replay",
+        "Consensys best practices: signatures"
+      ],
+      "subcategories": [
+        {
+          "id": "missing_nonce_or_replay_protection",
+          "name": "Missing nonce or replay protection",
+          "description": "Signed payload can be submitted repeatedly.",
+          "question": "The source file in `source` contains a signature-replay bug: a signed message is accepted without a per-signer nonce or used-hash record that is consumed on use, so the same signature can be submitted repeatedly to repeat withdrawals, mints, or approvals and drain funds.",
+          "code_patterns": [
+            "no nonces[signer]++ after verification",
+            "usedSignatures keyed by raw signature (malleable)",
+            "nonce checked but not incremented on all paths",
+            "order cancel/fill not marking hash used"
+          ]
+        },
+        {
+          "id": "missing_domain_binding",
+          "name": "Missing chain/contract domain binding",
+          "description": "Signature not bound to chain ID or verifying contract.",
+          "question": "The source file in `source` contains a cross-domain replay bug: the signed digest omits chain ID, the verifying contract address, or uses a cached domain separator that is not recomputed after a fork or on proxies, so a signature valid on one chain, deployment, or contract can be replayed on another to steal funds.",
+          "code_patterns": [
+            "keccak256(abi.encodePacked(to, amount, nonce)) without chainid/address(this)",
+            "DOMAIN_SEPARATOR computed once in constructor, never checked against block.chainid",
+            "same signer key used for multiple deployments with identical digests"
+          ]
+        },
+        {
+          "id": "incomplete_signed_payload",
+          "name": "Incomplete signed payload",
+          "description": "Security-relevant parameters (recipient, amount, token, deadline) not covered by the signature.",
+          "question": "The source file in `source` contains an incomplete-signature bug: parameters that determine who receives funds, which token, how much, fees, or the deadline are supplied by the submitter but not included in the signed digest, so anyone holding a valid signature can alter them to redirect or inflate payouts.",
+          "code_patterns": [
+            "recipient or amount passed separately from signed struct",
+            "deadline not included or not checked",
+            "EIP-712 typehash string not matching struct fields",
+            "abi.encodePacked with multiple dynamic types (hash collision)"
+          ]
+        },
+        {
+          "id": "ecrecover_misuse",
+          "name": "ecrecover misuse and malleability",
+          "description": "Unchecked zero-address recovery, malleable s values, or wrong signer comparison.",
+          "question": "The source file in `source` contains an ecrecover misuse bug: signatures are recovered with raw `ecrecover` without rejecting the zero address or high-s malleable values, or the recovered signer is compared to an unset (zero) or attacker-controlled address, letting an attacker forge valid-looking signatures or bypass uniqueness checks.",
+          "code_patterns": [
+            "ecrecover result not checked != address(0)",
+            "signer variable uninitialized (address(0)) compared to ecrecover output",
+            "no s <= secp256k1n/2 check when using raw ecrecover",
+            "isValidSignature (EIP-1271) return value not checked against magic value"
+          ]
+        },
+        {
+          "id": "permit_and_approval_signature_misuse",
+          "name": "Permit and approval signature misuse",
+          "description": "permit front-running DoS, unchecked permit, or signature granting unlimited authority.",
+          "question": "The source file in `source` contains a permit misuse bug: the file calls `permit` without handling front-run (already-used) signatures so the enclosing action reverts, trusts that permit succeeded for tokens without it (e.g. DAI-style or non-reverting fallbacks), or accepts signatures that grant unlimited or unintended authority, enabling fund theft or blocking user actions.",
+          "code_patterns": [
+            "token.permit(...) not wrapped in try/catch before transferFrom",
+            "permit on tokens without permit silently succeeding via fallback (e.g. WETH)",
+            "Permit2 signature with spender not bound to this contract"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cross_chain_messaging",
+      "name": "Cross-chain, bridge, and L2 messaging",
+      "description": "Message passing between chains or layers where sender, payload, or delivery is not validated.",
+      "question": "The source file in `source` contains a cross-chain messaging vulnerability: a bridge, messaging receiver, or L1/L2 integration accepts messages without verifying the source chain, source sender, endpoint caller, or proof, allows replay, or mishandles failed or reordered delivery, so an attacker can mint unbacked tokens, release escrowed funds, or permanently lock bridged assets.",
+      "sources": [
+        "Immunefi: bridge exploits",
+        "rekt.news leaderboard (Ronin, Wormhole, Nomad, Multichain)",
+        "Solodit: Bridge, LayerZero, CCIP",
+        "OWASP SC05:2026 (input validation)"
+      ],
+      "subcategories": [
+        {
+          "id": "unverified_message_source",
+          "name": "Unverified message sender or source chain",
+          "description": "Receiver does not check the calling endpoint, the origin chain, or the origin sender.",
+          "question": "The source file in `source` contains an unverified-message bug: a cross-chain receive handler (lzReceive, ccipReceive, receiveWormholeMessages, xReceive, onMessage, L2 bridge callbacks) does not verify that msg.sender is the trusted endpoint and that the source chain and source sender are trusted, so an attacker can send forged messages that mint or release funds.",
+          "code_patterns": [
+            "lzReceive without msg.sender == endpoint check",
+            "no trusted remote / peer mapping check",
+            "sourceChainSelector ignored",
+            "L2 xDomainMessageSender not verified"
+          ]
+        },
+        {
+          "id": "message_replay_or_ordering",
+          "name": "Message replay or ordering flaw",
+          "description": "Messages can be processed twice, or out of order in a way that breaks state.",
+          "question": "The source file in `source` contains a message replay or ordering bug: inbound cross-chain messages or withdrawal proofs are not marked as processed before execution, the processed key omits chain or nonce, or out-of-order delivery breaks accounting, so an attacker can execute the same transfer twice or corrupt bridged balances.",
+          "code_patterns": [
+            "processed[messageHash] set after external calls or not at all",
+            "message id omitting source chain",
+            "nonce ordering assumed on unordered channel",
+            "retry function re-executing successful messages"
+          ]
+        },
+        {
+          "id": "proof_or_root_validation_flaw",
+          "name": "Proof or root validation flaw",
+          "description": "Merkle proofs, state roots, or validator signatures validated insufficiently.",
+          "question": "The source file in `source` contains a proof-validation bug: bridge or messaging code accepts Merkle proofs, state roots, or validator/guardian signatures with a zero or default trusted root, insufficient threshold, duplicate signers, or unchecked leaf/node domain separation, letting an attacker forge withdrawals and steal escrowed funds.",
+          "code_patterns": [
+            "acceptableRoot[0] == true or default root trusted",
+            "duplicate signer not rejected in threshold check",
+            "leaf and internal node hashed identically (second preimage)",
+            "validator set update without quorum"
+          ]
+        },
+        {
+          "id": "failed_message_fund_lock",
+          "name": "Failed message handling locks funds",
+          "description": "Failed or reverted delivery leaves funds stuck with no retry or refund path.",
+          "question": "The source file in `source` contains a failed-message fund lock: when a cross-chain message fails on the destination (revert, insufficient gas, paused receiver, unsupported token), the source side has already burned or escrowed funds and there is no retry, refund, or recovery path, or an attacker can force the failure, permanently locking user funds.",
+          "code_patterns": [
+            "burn on source before destination success is confirmed",
+            "gas limit for destination execution user-set without minimum",
+            "blocking channel where one failed message halts all subsequent ones",
+            "no refund address or retry mechanism"
+          ]
+        },
+        {
+          "id": "l2_specific_assumptions",
+          "name": "L2 and chain-specific assumptions",
+          "description": "Assumptions about block.number, sequencer, address aliasing, PUSH0, or gas that break on L2s/alt-EVMs.",
+          "question": "The source file in `source` contains an L2 or chain-specific assumption bug: the file relies on block.number timing, msg.sender equality across L1/L2 without address aliasing, sequencer liveness, or opcodes/precompiles not available on its deployment chain, so on the target chain an attacker can bypass time locks, impersonate cross-domain senders, or cause funds to be locked.",
+          "code_patterns": [
+            "block.number used as time on Arbitrum/Optimism",
+            "L1 contract address compared on L2 without aliasing",
+            "no sequencer-down grace period for liquidations",
+            "hardcoded chain-specific addresses deployed multichain"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external_call_token_integration",
+      "name": "External calls and token integration",
+      "description": "Unsafe assumptions about external contracts and tokens: return values, fee-on-transfer, rebasing, approvals, arbitrary targets.",
+      "question": "The source file in `source` contains an external-call or token-integration vulnerability: the file makes external calls or token transfers without checking success, assumes standard ERC20 behaviour for tokens that deviate (fee-on-transfer, rebasing, no return value, blocklists, approval quirks), or lets callers choose arbitrary call targets or calldata, so an attacker can steal approved funds, credit themselves with tokens never received, or lock funds.",
+      "sources": [
+        "OWASP SC06:2025",
+        "OWASP SC06:2026",
+        "SWC-104",
+        "SWC-113",
+        "DASP-4",
+        "Trail of Bits: token integration checklist",
+        "Solodit: Weird ERC20, Fee-on-Transfer",
+        "d-xo/weird-erc20"
+      ],
+      "subcategories": [
+        {
+          "id": "unchecked_return_value",
+          "name": "Unchecked call or transfer return value",
+          "description": "Low-level call or ERC20 transfer/transferFrom/approve result ignored.",
+          "question": "The source file in `source` contains an unchecked-return-value bug: the file ignores the boolean result of a low-level call/send, or calls ERC20 transfer/transferFrom/approve directly instead of SafeERC20 on tokens that return false instead of reverting, so failed transfers are treated as successful and users are credited or paid without funds moving.",
+          "code_patterns": [
+            "token.transfer(to, amt); without require/SafeERC20",
+            "(bool ok, ) = to.call{value:v}(\"\"); ok unused",
+            "send() result ignored",
+            "approve on USDT-style tokens without return value decoding"
+          ]
+        },
+        {
+          "id": "fee_on_transfer_or_rebasing_token",
+          "name": "Fee-on-transfer or rebasing tokens",
+          "description": "Accounting assumes received amount equals requested amount and balances are static.",
+          "question": "The source file in `source` contains a non-standard token accounting bug: the file credits the requested amount rather than the balance delta received, or caches token balances, while supporting arbitrary tokens that may charge transfer fees or rebase, so users are over-credited, later withdrawals fail, or depositors steal from each other.",
+          "code_patterns": [
+            "deposit(amount) credits amount after transferFrom without balance-before/after",
+            "stETH/aTokens/AMPL-style balances cached in storage",
+            "whitelist absent for arbitrary ERC20 support"
+          ]
+        },
+        {
+          "id": "arbitrary_external_call",
+          "name": "Arbitrary call target or calldata",
+          "description": "User-supplied target/calldata executed from a contract holding approvals or funds.",
+          "question": "The source file in `source` contains an arbitrary-external-call bug: the file executes a low-level call with a caller-supplied target address and/or calldata from a contract that holds tokens or user approvals, so an attacker can make it call `token.transferFrom(victim, attacker, ...)` or `approve`, stealing funds.",
+          "code_patterns": [
+            "target.call(data) with target and data from params",
+            "swap aggregator router address not whitelisted",
+            "multicall/execute forwarding arbitrary calls",
+            "callback data decoded into an arbitrary call"
+          ]
+        },
+        {
+          "id": "approval_handling_flaw",
+          "name": "Approval handling flaw",
+          "description": "Leftover approvals, non-zero-to-non-zero approve reverts, or infinite approvals to untrusted spenders.",
+          "question": "The source file in `source` contains an approval-handling bug: the contract leaves unused allowances to external routers that can later be spent, calls approve from non-zero to non-zero on tokens that revert on it (USDT), or grants unlimited approvals to user-controlled or upgradeable spenders, enabling theft of the contract's tokens or permanently blocking operations.",
+          "code_patterns": [
+            "approve(router, amount) with no reset after partial use",
+            "approve(x, n) without first approving 0 for USDT",
+            "type(uint256).max approval to user-provided address",
+            "safeApprove from non-zero allowance"
+          ]
+        },
+        {
+          "id": "external_protocol_assumption",
+          "name": "Wrong assumption about integrated protocol",
+          "description": "Misusing an integrated protocol's API: return units, revert semantics, pausing, or state.",
+          "question": "The source file in `source` contains an integration-assumption bug: the file calls an external protocol (AMM, lending market, staking contract, vault, oracle) assuming return units, revert behaviour, withdrawal availability, slippage behaviour, or paused state that the protocol does not guarantee, so funds are mispriced, stuck, or stolen when the integration behaves differently.",
+          "code_patterns": [
+            "assuming ERC4626 withdraw returns shares when it returns assets (or vice versa)",
+            "ignoring external pause/withdraw limits",
+            "using returned value from a function that returns nothing meaningful",
+            "hardcoded pool fee tier or path"
+          ]
+        },
+        {
+          "id": "eth_transfer_and_receive_issues",
+          "name": "ETH transfer and receive issues",
+          "description": "transfer/send gas stipend, missing receive, stuck msg.value, or refunds to contracts.",
+          "question": "The source file in `source` contains an ETH-handling bug: the file sends ETH with `transfer`/`send` (2300 gas) to recipients that may be contracts, has payable functions that accept msg.value but never account for or refund it, or lacks a way to withdraw ETH it receives, so user ETH becomes permanently locked or payments fail.",
+          "code_patterns": [
+            "payable function with msg.value never used",
+            "payable(x).transfer to multisig/contract wallets",
+            "receive() present with no withdrawal path",
+            "msg.value reused inside a loop or multicall"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "business_logic_state_machine",
+      "name": "Business logic, input validation, and state machine",
+      "description": "Protocol rules implemented incorrectly: missing validation, broken state transitions, wrong ordering, or violated invariants.",
+      "question": "The source file in `source` contains a business-logic vulnerability: the protocol's intended rules are implemented incorrectly, such as missing validation of user-supplied parameters, state transitions allowed out of order or repeatedly, time/deadline checks that are wrong, or a core invariant (solvency, collateralization, supply caps) that can be violated, letting an attacker extract value, bypass restrictions, or corrupt protocol state. View or pure functions that change no state do not count, unless state-changing code in the file uses their result.",
+      "sources": [
+        "OWASP SC03:2025",
+        "OWASP SC04:2025",
+        "OWASP SC02:2026",
+        "OWASP SC05:2026",
+        "Immunefi: logic errors",
+        "Solodit: Business Logic, Validation",
+        "Cyfrin audit checklist"
+      ],
+      "subcategories": [
+        {
+          "id": "missing_input_validation",
+          "name": "Missing input validation",
+          "description": "User parameters (addresses, amounts, ids, arrays) accepted without bounds or sanity checks.",
+          "question": "The source file in `source` contains a missing-input-validation bug: a function accepts caller-supplied addresses, amounts, ids, pool/market identifiers, or arrays without checking they are valid (non-zero, whitelisted, in range, matching lengths, existing), and an attacker can pass a fake pool/token/market or out-of-range value to steal funds or corrupt state.",
+          "code_patterns": [
+            "market/pool/token address param not checked against registry",
+            "arrays of different lengths used in lockstep",
+            "amount == 0 or id not existing accepted",
+            "user-supplied path/route not validated"
+          ]
+        },
+        {
+          "id": "invalid_state_transition",
+          "name": "Invalid state transition",
+          "description": "Actions allowed in the wrong lifecycle state or repeated when they must be one-shot.",
+          "question": "The source file in `source` contains an invalid-state-transition bug: a lifecycle action (claim, finalize, settle, cancel, execute, redeem, close) can be performed in the wrong state, more than once, or after a conflicting action, because status flags are missing, checked incorrectly, or set in the wrong place, letting an attacker double-claim or withdraw funds they are not owed.",
+          "code_patterns": [
+            "claimed flag checked but never set",
+            "status enum not checked in execute/cancel",
+            "cancel after partial fill refunds full amount",
+            "auction settle callable before end or twice"
+          ]
+        },
+        {
+          "id": "timing_and_deadline_logic",
+          "name": "Timing, lock, and deadline logic",
+          "description": "Lockups, vesting, cooldowns, epochs, or deadlines computed or enforced incorrectly.",
+          "question": "The source file in `source` contains a timing-logic bug: lock periods, vesting schedules, cooldowns, epochs, auctions, or deadlines are computed or compared incorrectly (off-by-one, < vs <=, reset or bypassed by transfer or re-deposit, wrong unit), so users can withdraw early, claim unvested tokens, or skip required waiting periods to extract value.",
+          "code_patterns": [
+            "lock end not reset/extended on additional deposit",
+            "cooldown bypass via transfer to fresh address",
+            "epoch boundary off-by-one",
+            "vesting claimable computed from start not last claim"
+          ]
+        },
+        {
+          "id": "invariant_violation_solvency",
+          "name": "Solvency or core invariant violation",
+          "description": "Operations that can leave the protocol undercollateralized or break supply/backing invariants.",
+          "question": "The source file in `source` contains a solvency-invariant bug: some sequence of user actions (borrow, withdraw, transfer collateral, redeem, mint) is not checked against the protocol's core invariant (health factor, collateral ratio, backing, supply cap), so a user can leave a position undercollateralized or mint unbacked tokens, leaving the protocol insolvent.",
+          "code_patterns": [
+            "health check performed before rather than after state change",
+            "collateral transfer/withdraw path skipping health check",
+            "supply cap checked on deposit but not on mint",
+            "isolated vs cross-margin checks inconsistent"
+          ]
+        },
+        {
+          "id": "self_or_identical_parameter_edge_case",
+          "name": "Self-referential or identical-parameter edge case",
+          "description": "Same address/id passed twice (from == to, tokenA == tokenB, self-liquidation) breaks logic.",
+          "question": "The source file in `source` contains an identical-parameter edge-case bug: logic mis-handles cases where two parameters are equal (from == to, sender == receiver, tokenIn == tokenOut, same id twice in an array, borrower == liquidator), such as reading a balance before and writing both sides, so an attacker can duplicate balances, rewards, or collateral.",
+          "code_patterns": [
+            "transfer caching fromBalance and toBalance then writing both",
+            "duplicate ids in batch claim not rejected",
+            "swap allowing tokenIn == tokenOut",
+            "merge/split of same position id"
+          ]
+        },
+        {
+          "id": "liquidation_logic_error",
+          "name": "Liquidation logic error",
+          "description": "Liquidation eligibility, seize amounts, or collateral selection implemented incorrectly.",
+          "question": "The source file in `source` contains a liquidation-logic bug: liquidation eligibility, the amount of collateral seized, debt repaid, or the order of collateral/debt updates is implemented incorrectly, so healthy positions can be liquidated, unhealthy positions cannot be, or liquidators seize more collateral than allowed, causing user losses or bad debt.",
+          "code_patterns": [
+            "liquidatable check using stale or wrong price",
+            "seized collateral not capped at position collateral",
+            "liquidation blocked when paused but interest keeps accruing",
+            "debt repaid computed in wrong token decimals"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dos_griefing",
+      "name": "Denial of service and griefing",
+      "description": "Ways an attacker can block operations or permanently lock funds, even without profit.",
+      "question": "The source file in `source` contains a denial-of-service or griefing vulnerability: an attacker can make a critical function (withdraw, liquidate, claim, settle, upgrade) revert or become unusable, for example through unbounded loops, a reverting recipient, forced state changes, dust positions, or front-running a one-time action, temporarily or permanently freezing user or protocol funds.",
+      "sources": [
+        "OWASP SC10:2025",
+        "SWC-113",
+        "SWC-128",
+        "DASP-5",
+        "Immunefi: permanent/temporary freezing of funds, griefing",
+        "Consensys known attacks: DoS",
+        "Solodit: DOS, Griefing"
+      ],
+      "subcategories": [
+        {
+          "id": "unbounded_loop_gas_dos",
+          "name": "Unbounded loop gas exhaustion",
+          "description": "Loops over user-growable arrays or mappings that can exceed the block gas limit.",
+          "question": "The source file in `source` contains an unbounded-loop DoS bug: a critical function iterates over an array or list that any user can grow cheaply (deposits, positions, holders, queue entries, reward tokens) with no bound or pagination, so an attacker can make it exceed the block gas limit and permanently block withdrawals, liquidations, or distributions.",
+          "code_patterns": [
+            "for (i < users.length) where anyone can push",
+            "withdrawal queue processed fully in one call",
+            "reward tokens list extendable without cap",
+            "deleting from array by linear search"
+          ]
+        },
+        {
+          "id": "external_call_revert_dos",
+          "name": "Revert-based DoS from external calls",
+          "description": "A single failing external call (blocklisted token, reverting receiver) blocks a batch or a critical path.",
+          "question": "The source file in `source` contains a revert-based DoS bug: a critical path or batch loop performs push-style ETH or token transfers or calls to user-controlled addresses where one reverting recipient (contract without receive, blocklisted USDC/USDT address, malicious hook) makes the whole operation revert, blocking others' withdrawals, auctions, or liquidations.",
+          "code_patterns": [
+            "loop of transfers to users in one tx",
+            "refund to previous highest bidder in bid()",
+            "liquidation transferring collateral to a blocklistable borrower",
+            "callback to user contract without try/catch where failure must not block"
+          ]
+        },
+        {
+          "id": "frontrun_griefing_one_time_action",
+          "name": "Front-run griefing of one-time actions",
+          "description": "Attacker front-runs create/initialize/permit/deploy to make the victim's transaction revert.",
+          "question": "The source file in `source` contains a front-run griefing bug: a one-time or unique action (pool creation, CREATE2 deploy, initialization, permit use, name/id registration, setting a first value) can be front-run by anyone so that the legitimate transaction reverts or runs with attacker-chosen state, permanently blocking or hijacking the operation.",
+          "code_patterns": [
+            "createPool reverting if pool exists without handling",
+            "require(!exists[id]) on user-chosen ids",
+            "permit before transferFrom without try/catch",
+            "first-setter-wins parameter"
+          ]
+        },
+        {
+          "id": "state_forcing_dos",
+          "name": "Forced state or dust DoS",
+          "description": "Attacker donates, sends dust, or sets state that makes strict checks fail.",
+          "question": "The source file in `source` contains a forced-state DoS bug: strict equality or zero checks (balance == 0, totalSupply == x, no existing position) can be broken by an attacker sending dust tokens, forcing ETH via selfdestruct/coinbase, opening tiny positions, or transferring to a victim, making withdrawals, closures, or migrations revert indefinitely.",
+          "code_patterns": [
+            "require(balanceOf(this) == 0) before action",
+            "position close requires exact zero debt that dust prevents",
+            "min-amount requirements griefable by dust deposits for others",
+            "deposit-on-behalf resetting a victim's lock"
+          ]
+        },
+        {
+          "id": "locked_funds_no_exit",
+          "name": "Funds locked with no exit path",
+          "description": "Assets that can enter the contract but have no withdrawal, rescue, or claim path in some state.",
+          "question": "The source file in `source` contains a locked-funds bug: tokens or ETH can enter the contract (deposit, fee accrual, refund, residual dust, paused/shutdown state, expired epoch) but there is no reachable path for the owner of those funds to withdraw them, so user funds are permanently frozen.",
+          "code_patterns": [
+            "pause blocks withdraw as well as deposit with no emergency exit",
+            "leftover tokens after swaps never swept or credited",
+            "unclaimed rewards after epoch end unrecoverable",
+            "shutdown state reachable with deposits outstanding"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frontrunning_mev",
+      "name": "Front-running, MEV, and randomness",
+      "description": "Transaction-ordering dependence, missing slippage/deadline protection, and predictable randomness.",
+      "question": "The source file in `source` contains a transaction-ordering or MEV vulnerability: the outcome of a user or protocol transaction depends on mempool ordering and lacks slippage limits, deadlines, commit-reveal, or unpredictable randomness, so a searcher or validator can sandwich, front-run, or back-run it, or predict/steer random outcomes, to steal value from users or the protocol.",
+      "sources": [
+        "OWASP SC09:2025 (insecure randomness)",
+        "SWC-114",
+        "SWC-120",
+        "SWC-116",
+        "DASP-6",
+        "DASP-7",
+        "DASP-8",
+        "Consensys known attacks: front-running",
+        "Solodit: Front-running, Slippage, MEV"
+      ],
+      "subcategories": [
+        {
+          "id": "missing_slippage_protection",
+          "name": "Missing or ineffective slippage protection",
+          "description": "Swaps, deposits, or withdrawals executed with no min-out or a min-out derived on-chain.",
+          "question": "The source file in `source` contains a missing-slippage bug: swaps, liquidity adds/removes, vault deposits/withdrawals, or zaps execute with minAmountOut of zero, a slippage bound computed on-chain from the manipulable current price, or no user-provided bound at all, so sandwich attackers can extract most of the trade's value.",
+          "code_patterns": [
+            "amountOutMinimum: 0",
+            "minOut = getAmountsOut(...) * 99 / 100 computed in same tx",
+            "sqrtPriceLimitX96 = 0 with no other bound",
+            "harvest/compound swap with no min-out"
+          ]
+        },
+        {
+          "id": "missing_deadline",
+          "name": "Missing transaction deadline",
+          "description": "Swaps or price-sensitive actions can be held and executed later at a stale price.",
+          "question": "The source file in `source` contains a missing-deadline bug: a price-sensitive action (swap, liquidity operation, order) passes `block.timestamp` as the deadline or has no expiry, so a validator or searcher can hold the transaction and execute it later when the price has moved against the user.",
+          "code_patterns": [
+            "deadline: block.timestamp",
+            "no deadline param on user-facing swap",
+            "signed order without expiry"
+          ]
+        },
+        {
+          "id": "frontrunnable_state_change",
+          "name": "Front-runnable state change or claim",
+          "description": "A user's outcome depends on state another party can change or claim first, and the user cannot bound it.",
+          "question": "The source file in `source` contains a transaction-ordering bug in which a user cannot bound what another party does first. Either (a) a function executes a user's action (borrow, fill, buy, deposit) against a pool, order, offer, or listing owned by another user and applies that owner's current terms (interest rate, fee, price, loan ratio, or duration), which the owner can change at any time, without letting the user pass a limit or expected value for those terms, so the owner can change them just before the user's transaction lands; or (b) a transaction reveals information or claims a first-come benefit (a solution, bounty, reward notification, or arbitrage opportunity) without commit-reveal or sender binding, so an observer can copy or front-run it. Either way the other party takes value from the user. Parameter changes by a trusted admin do not count.",
+          "code_patterns": [
+            "borrow, deposit, or buy function that copies an interest rate, fee, price, or duration from a record its owner can change at any time, with no max-rate, max-fee, or expected-value parameter",
+            "pool or order owner can update its rate, fee, or duration in the same block that a user's borrow, fill, or buy against it executes",
+            "claim(solution) without commit-reveal",
+            "notifyRewardAmount front-runnable by deposit-then-withdraw"
+          ]
+        },
+        {
+          "id": "insecure_randomness",
+          "name": "Insecure on-chain randomness",
+          "description": "Randomness from block data or predictable inputs used for value-bearing outcomes.",
+          "question": "The source file in `source` contains an insecure-randomness bug: a value-bearing outcome (lottery winner, mint rarity, reward selection) uses block.timestamp, blockhash, block.prevrandao, msg.sender, or other predictable or validator-influenceable data, or a VRF result that can be re-requested, so an attacker can predict or steer the outcome and win the value.",
+          "code_patterns": [
+            "keccak256(block.timestamp, msg.sender) % n",
+            "blockhash(block.number - 1) as seed",
+            "prevrandao used for high-value selection",
+            "VRF request re-rollable or fulfillment revertible"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "legacy_low_level",
+      "name": "Legacy and low-level EVM pitfalls",
+      "description": "Classic EVM hazards: tx.origin auth, delegatecall to untrusted code, selfdestruct, storage/assembly misuse, hash collisions.",
+      "question": "The source file in `source` contains a low-level EVM vulnerability: the file uses tx.origin for authorization, delegatecalls to a caller-influenced address, exposes selfdestruct, writes storage or memory unsafely in assembly, or builds hashes with collidable encodings, and an attacker can exploit this to take control, destroy the contract, overwrite critical state, or steal funds.",
+      "sources": [
+        "SWC-115",
+        "SWC-112",
+        "SWC-106",
+        "SWC-124",
+        "SWC-133",
+        "SWC-109",
+        "SWC-127",
+        "DASP-10 (unknown unknowns)",
+        "Trail of Bits: not-so-smart-contracts"
+      ],
+      "subcategories": [
+        {
+          "id": "tx_origin_authentication",
+          "name": "tx.origin authentication",
+          "description": "Authorization based on tx.origin.",
+          "question": "The source file in `source` contains a tx.origin authentication bug: authorization for a privileged or fund-moving action compares tx.origin to an owner or user, so a malicious contract the victim interacts with can perform the action on the victim's behalf and steal funds.",
+          "code_patterns": [
+            "require(tx.origin == owner)",
+            "tx.origin used as the account being debited",
+            "msg.sender == tx.origin used as the only anti-contract protection for a value-bearing action"
+          ]
+        },
+        {
+          "id": "delegatecall_to_untrusted",
+          "name": "Delegatecall to untrusted target",
+          "description": "delegatecall with a target or calldata controllable by users.",
+          "question": "The source file in `source` contains an untrusted-delegatecall bug: the file performs delegatecall to an address or with calldata that a caller can influence (parameter, unvalidated registry entry, user-settable module), so an attacker can execute arbitrary code in the contract's context and take ownership or drain funds.",
+          "code_patterns": [
+            "target.delegatecall(data) with target from params",
+            "module/plugin address settable by non-admin",
+            "delegatecall to address read from user-writable storage"
+          ]
+        },
+        {
+          "id": "selfdestruct_exposure",
+          "name": "Exposed selfdestruct",
+          "description": "selfdestruct reachable by unauthorized callers or in implementation contracts.",
+          "question": "The source file in `source` contains an exposed-selfdestruct bug: selfdestruct is reachable by an unauthorized caller, through an implementation contract that proxies depend on, or through a delegatecall path, so an attacker can destroy the code (on chains or in contexts where it still clears code) and permanently freeze funds, or force-send ETH to break accounting.",
+          "code_patterns": [
+            "selfdestruct in function without access control",
+            "selfdestruct in logic contract used by proxies",
+            "contract assuming it cannot receive ETH without receive()"
+          ]
+        },
+        {
+          "id": "assembly_storage_memory_corruption",
+          "name": "Assembly storage or memory corruption",
+          "description": "Inline assembly that writes arbitrary slots, corrupts the free memory pointer, or mis-sizes data.",
+          "question": "The source file in `source` contains an assembly memory or storage bug: inline assembly writes to a storage slot or array index derived from user input, fails to update the free memory pointer, reads return data without size checks, or mis-computes offsets, allowing an attacker to overwrite critical state or cause incorrect values that lead to theft or locked funds.",
+          "code_patterns": [
+            "sstore(userControlledSlot, v)",
+            "mstore past allocated memory without updating 0x40",
+            "returndatacopy without returndatasize check",
+            "dynamic array length set directly (arbitrary storage write)"
+          ]
+        },
+        {
+          "id": "hash_collision_encoding",
+          "name": "Hash collision from packed encoding",
+          "description": "abi.encodePacked with multiple dynamic arguments used for ids, auth, or signatures.",
+          "question": "The source file in `source` contains a hash-collision bug: keccak256 over abi.encodePacked of two or more dynamic-length values (strings, bytes, arrays) is used as an identifier, authorization key, or signed digest, so an attacker can craft different inputs with the same hash to impersonate entries or reuse signatures.",
+          "code_patterns": [
+            "keccak256(abi.encodePacked(string a, string b))",
+            "encodePacked(address[] , uint[]) for signature digests",
+            "mapping key from packed dynamic values"
+          ]
+        },
+        {
+          "id": "uninitialized_or_shadowed_state",
+          "name": "Uninitialized pointer or shadowed state",
+          "description": "Uninitialized storage pointers, shadowed state variables, or incorrect inheritance order.",
+          "question": "The source file in `source` contains an uninitialized or shadowed state bug: a storage pointer, struct, or inherited state variable is uninitialized, shadowed by a same-named variable, or overridden through wrong inheritance/function override order, so writes go to the wrong slot or checks read the wrong value, allowing an attacker to bypass access control or corrupt balances.",
+          "code_patterns": [
+            "local storage struct declared without assignment (legacy compilers)",
+            "child contract redeclaring parent's owner variable",
+            "override that drops a parent modifier or super call",
+            "C3 linearization changing which hook runs"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_pu_9",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-PU-9",
+  "source_hash": "1b4717db48258803",
+  "description": "Upgradeable contract storage layout collision between proxy implementation versions",
+  "question": "The source file in `source` defines an upgradeable implementation contract (used behind a proxy, e.g. inheriting Initializable/UUPSUpgradeable or similar) whose new version changes, reorders, removes, or inserts state variables relative to the prior version, or omits storage gap slots in an inheritance chain, such that the new layout no longer aligns with previously deployed storage slots, risking data corruption on upgrade; this excludes non-upgradeable contracts and versions that strictly append new variables after existing ones while preserving gaps.",
+  "criteria": [
+    "A new implementation version inserts a new state variable before or between existing state variables instead of appending it at the end",
+    "A new implementation version changes the declared type or order of an existing state variable compared to the prior version",
+    "An upgradeable base contract used via inheritance omits a `__gap` array or reserved storage slots, so child contracts risk collision when the base adds variables later",
+    "A new implementation version removes or renames an existing state variable that shifts the slot positions of subsequent variables",
+    "The contract mixes multiple inherited upgradeable contracts without consistent storage gap reservations, allowing slot overlap when any parent is upgraded"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Proxy/Upgradable"
+    ]
+  ]
+}

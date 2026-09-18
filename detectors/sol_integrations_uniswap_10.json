@@ -1,0 +1,19 @@
+{
+  "name": "sol_integrations_uniswap_10",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Uniswap-10",
+  "source_hash": "72f6e6d418a61773",
+  "description": "Hard-coded Uniswap V3 fee tier parameter in swap function",
+  "question": "The source file in `source` contains a function that initiates a Uniswap V3 swap (e.g. via exactInput/exactOutput or a swap router call) where the pool fee tier parameter is hard-coded as a fixed constant instead of being passed in as a caller-supplied or configurable parameter, potentially routing swaps to a low-liquidity or wrong fee-tier pool and causing worse pricing or execution failure; this excludes functions that accept the fee tier as an input parameter or read it from configurable, admin-set storage.",
+  "criteria": [
+    "A swap function calls the Uniswap V3 router's exactInputSingle/exactOutputSingle with the fee field set to a literal constant like 3000 or 500",
+    "A function builds a Uniswap V3 path bytes via abi.encodePacked using a hard-coded fee constant instead of a parameter",
+    "An internal helper that performs a Uniswap V3 swap defines fee as a constant or immutable set once at deployment with no per-call override"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Uniswap"
+    ]
+  ]
+}

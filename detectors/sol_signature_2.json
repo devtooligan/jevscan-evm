@@ -1,0 +1,19 @@
+{
+  "name": "sol_signature_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Signature-2",
+  "source_hash": "fd23c69b8b8b97db",
+  "description": "ECDSA signature malleability from unsafe ecrecover use",
+  "question": "The source file in `source` verifies ECDSA signatures using ecrecover() directly (or an outdated/self-implemented ECDSA library) without restricting the s value to the lower half of the curve order or checking v is 27/28, allowing an attacker to derive a second valid (s', v') signature from an existing one and reuse it to bypass replay protection or forge validity, and this is not limited to signatures already using OpenZeppelin's current ECDSA library which rejects high-s malleable signatures.",
+  "criteria": [
+    "A verify or claim function recovers the signer via ecrecover(hash, v, r, s) without checking that s <= secp256k1n/2 before accepting the signature as valid",
+    "A custom ECDSA library reimplements recovery logic without validating v in {27,28} or s in the lower-half range, letting flipped (s, v) pairs both validate",
+    "A signature-based permit or meta-transaction function marks a signature hash as used only after successful recovery, allowing an attacker to compute an alternate valid (r, s', v') for the same message and replay it before the original hash is marked used",
+    "The contract imports or vendors an old OpenZeppelin ECDSA version predating the malleability fix and relies on it for signature verification"
+  ],
+  "tags": [
+    [
+      "Signature"
+    ]
+  ]
+}

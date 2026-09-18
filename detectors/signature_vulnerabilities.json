@@ -1,0 +1,17 @@
+{
+  "name": "signature_vulnerabilities",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/signature-vulnerabilities/SKILL.md",
+  "source_hash": "402d175c21918670",
+  "description": "Insecure signature verification enabling replay, malleability, or zero-address forgery attacks",
+  "question": "The source file in `source` contains a function that uses `ecrecover` or an ECDSA `recover` call to authenticate or authorize a user action (e.g. permit, meta-transaction, gasless approval), and it fails to prevent signature reuse or forgery because it omits at least one of: a per-user nonce that is checked and incremented before executing the action, a chain ID or verifying-contract-bound domain separator (EIP-712) protecting against cross-chain/cross-contract replay, or an explicit check that the recovered signer is not `address(0)`, thereby allowing an attacker to replay, reuse, or forge a valid-looking signature to execute unauthorized actions.",
+  "criteria": [
+    "ecrecover(...) or ECDSA.recover(...) result is used to authorize an action without checking `recovered != address(0)`",
+    "Signed message hash is built with keccak256(abi.encodePacked(...)) omitting chain ID and/or verifying contract address (no EIP-712 domain separator), enabling cross-chain or cross-contract replay",
+    "Signature-based function lacks a nonce mapping (or bitmap) that is checked and marked used, allowing the same signature to be submitted repeatedly (same-contract replay)",
+    "Domain separator is computed once at construction using block.chainid without being recomputed on fork/chain-change detection",
+    "Signature verification accepts arbitrary s values with no low-s / malleability check and does not use OpenZeppelin's ECDSA library",
+    "Recovered signer is compared to expected signer only via require(signer == expectedSigner) with no prior zero-address guard"
+  ],
+  "tags": []
+}

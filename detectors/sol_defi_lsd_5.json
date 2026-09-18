@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lsd_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-5",
+  "source_hash": "bee139690f2f6b89",
+  "description": "Missing pause check on a function that should be blocked when contract is paused",
+  "question": "The source file in `source` implements a pausing mechanism (e.g., a paused state flag or modifier such as whenNotPaused) applied to some sensitive or restricted functions, but at least one related function that performs an equivalent or complementary restricted action (e.g., withdraw/deposit, stake/unstake, mint/burn) omits the pause check, allowing that action to be executed while the protocol is paused, undermining the intended safety guarantee; this excludes functions that are intentionally meant to remain callable while paused (e.g., emergency withdrawals, admin unpause/recovery functions) or cases where every related state-changing function consistently enforces the same pause check.",
+  "criteria": [
+    "stake() requires whenNotPaused but the paired unstake() or withdraw() function lacks any paused-state check, letting users withdraw during a pause meant to halt all activity",
+    "deposit() checks require(!paused) while a related mint() or claim() function that moves the same funds has no such check",
+    "A modifier whenNotPaused is defined and used on some external functions but a sibling function performing the same category of asset transfer omits the modifier entirely",
+    "The contract pauses only the main entry function (e.g., transfer) while an alternate path (e.g., transferFrom or a batch variant) achieving the same effect has no pause check"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

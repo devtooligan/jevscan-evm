@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_vi_svi_22",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-22",
+  "source_hash": "392bebb83d6e7fa6",
+  "description": "Missing implicit constructor payable check lets ETH bypass base constructor validation (Solidity 0.4.5-0.6.7)",
+  "question": "The source file in `source` is a Solidity file targeting a compiler version between 0.4.5 and 0.6.7 (inclusive) that defines a derived contract with no explicit constructor while inheriting from a base contract that declares a constructor accepting or requiring non-zero msg.value, such that a creation-time call with non-zero value is not reverted despite the derived contract itself lacking a payable constructor, exposing the base constructor's value-dependent logic to bypass; this excludes contracts compiled with Solidity >=0.6.8, contracts where the derived contract explicitly defines its own constructor, and contracts whose base constructors do not depend on or restrict msg.value.",
+  "criteria": [
+    "A derived contract has no constructor defined and inherits from a base contract whose constructor uses require(msg.value > 0) or similar value-dependent logic, compiled with pragma solidity in range 0.4.5-0.6.7",
+    "The base contract's constructor sets state based on msg.value (e.g., balances[msg.sender] = msg.value) and the child contract omits its own constructor entirely",
+    "A factory or child contract creation flow relies on the implicit non-payable behavior of the derived contract's missing constructor to reject value transfers, while the base constructor accepts value unguarded"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

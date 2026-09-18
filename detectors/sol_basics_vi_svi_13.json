@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_13",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-13",
+  "source_hash": "393c3c13e8e335fa",
+  "description": "Signed immutable integer variables shorter than 256 bits corrupted by buggy Solidity compiler (0.6.5-0.8.8)",
+  "question": "The source file in `source` declares a pragma solidity version between 0.6.5 and 0.8.8 (inclusive) and defines at least one immutable state variable of a signed integer type narrower than int256 (e.g. int8, int16, int32, int64, int128), where this variable's value could be corrupted with invalid higher-order bits due to the compiler's signed-immutable packing bug, excluding cases where the pragma is outside this vulnerable range, the immutable variable is int256/uint256 or unsigned, or the file already restricts itself to a fixed non-vulnerable compiler version.",
+  "criteria": [
+    "pragma solidity ^0.8.4; contract C { int128 public immutable value; constructor(int128 v) { value = v; } }",
+    "pragma solidity 0.6.8; contract Vault { int64 immutable cap; constructor(int64 _cap) { cap = _cap; } }",
+    "pragma solidity >=0.6.5 <0.8.9; contract Config { int32 immutable threshold; constructor(int32 t) { threshold = t; } }",
+    "pragma solidity 0.8.7; contract Token { int16 immutable rate; constructor(int16 r) { rate = r; } function getRate() external view returns (int16) { return rate; } }"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

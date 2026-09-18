@@ -1,0 +1,16 @@
+{
+  "name": "erc7702_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/erc7702-patterns/SKILL.md",
+  "source_hash": "55daeb1f229818d2",
+  "description": "Unverified sponsor signature allowing unauthorized execution in EIP-7702 delegation contract",
+  "question": "The source file in `source` defines a smart-contract delegation/account function that executes a batch of arbitrary calls (e.g. via low-level `.call`) and accepts a sponsor or authorization signature parameter, but the function never verifies that signature (e.g. no ECDSA.recover or signature-check call), relying only on a mapping/flag check of the sponsor address, allowing any caller to invoke arbitrary calls on behalf of the account without a valid signed authorization.",
+  "criteria": [
+    "Function accepts a `bytes calldata sponsorSig` or similar signature parameter that is declared but never used in any signature verification logic",
+    "Authorization check is limited to `sponsors[sponsor] || msg.sender == address(this)` without validating that the caller actually possesses `sponsor`'s signature",
+    "Arbitrary external calls (`calls[i].target.call{value: ...}(calls[i].data)`) are executed after this incomplete check",
+    "No ECDSA.recover, signature hash comparison, or nonce/replay check tied to the sponsor signature is present",
+    "Function is externally callable without restricting msg.sender to the delegating EOA or a verified relayer"
+  ],
+  "tags": []
+}

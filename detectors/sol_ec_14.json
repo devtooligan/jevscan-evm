@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_14",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-14",
+  "source_hash": "7eb80e73b0e0dbc0",
+  "description": "Incorrect reliance on msg.sender after it changes across an external/cross-contract call",
+  "question": "The source file in `source` contains a function invoked indirectly through another contract, router, or cross-chain gateway (so the immediate caller differs from the original initiating account) that uses `msg.sender` directly for a security-critical decision such as token transfer source/destination, authorization, or origin validation, instead of using an explicitly passed and validated original-caller/origin parameter, allowing the intermediary's address to be mistaken for the true actor. This does not apply when `msg.sender` is intentionally checked as the direct, immediate caller (e.g., simple onlyOwner-style checks) or when the original caller is already properly passed and validated as a separate parameter.",
+  "criteria": [
+    "A swap/transfer function reads msg.sender to determine the token owner or recipient even though it is called by a router/periphery contract on behalf of a user",
+    "A cross-chain message handler checks msg.sender == expectedGateway to validate the original chain of origin, but the gateway forwards calls for all origins so this check cannot distinguish the true sender",
+    "An internal accounting function debits or credits balances[msg.sender] when the function is only ever reachable via delegatecall or via another contract acting as a proxy for end users",
+    "A permission or allowance check compares msg.sender to a stored owner address, but the call path always originates from an intermediary contract rather than the actual owner, making the check always pass or always fail incorrectly"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

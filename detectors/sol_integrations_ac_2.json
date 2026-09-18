@@ -1,0 +1,20 @@
+{
+  "name": "sol_integrations_ac_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-AC-2",
+  "source_hash": "0f37065982635fe0",
+  "description": "Unhandled withdrawal failure from lending pool when utilization rate is too high",
+  "question": "The source file in `source` withdraws or redeems collateral from an AAVE/Compound-style lending pool without handling the case where the pool's utilization rate is too high and liquidity is insufficient, so the withdrawal call can revert or fail silently, leaving users unable to retrieve funds or causing protocol accounting to desync, and no fallback, queuing, partial-withdrawal, or error-handling mechanism exists to deal with this situation; this excludes code that checks available liquidity before withdrawing, catches and gracefully handles withdrawal failures, or implements a withdrawal queue/retry mechanism.",
+  "criteria": [
+    "A function calls pool.withdraw()/redeem()/redeemUnderlying() directly and assumes it always succeeds, with no try/catch or return-value check for failure due to insufficient liquidity",
+    "Collateral is unlocked, debt is marked repaid, or balances are updated before confirming that the underlying withdrawal from the lending pool actually succeeded",
+    "A withdrawal function requests the full user balance from the pool without first querying the pool's available cash or liquidity, so the call can revert when the pool is fully utilized",
+    "User funds become permanently stuck because the withdrawal function has no partial-withdrawal, queue, or retry logic when the pool cannot fulfill the full requested amount"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "AAVE / Compound"
+    ]
+  ]
+}

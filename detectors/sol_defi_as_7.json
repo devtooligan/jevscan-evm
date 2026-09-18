@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_7",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-7",
+  "source_hash": "f12f5388a34cd09b",
+  "description": "Missing slippage protection in swap/trade functions allowing excessive price deviation losses",
+  "question": "The source file in `source` implements a swap, trade, or liquidity function that executes a token exchange or transfer based on a computed or pool-derived output amount without accepting and enforcing a caller-supplied minimum output (or maximum input) parameter, so a trade can execute at an arbitrarily worse price than expected due to price movement, front-running, or sandwich attacks, causing unexpected loss to the user; this excludes functions that accept and revert on violation of a minAmountOut/maxAmountIn or equivalent slippage/deadline bound, and excludes non-trading functions such as admin configuration or view/query functions.",
+  "criteria": [
+    "swap() computes amountOut from reserves and transfers it to the user without comparing it to any user-supplied minAmountOut",
+    "A liquidity removal function calculates token amounts from pool share and sends them without checking against a minimum amount parameter",
+    "A trade function accepts amountIn and executes the exchange at the current pool price with no minOut or maxSlippage argument at all",
+    "A router-style function forwards swap calls to a pool contract without passing through or validating any slippage bound provided by the caller"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

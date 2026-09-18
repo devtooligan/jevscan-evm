@@ -1,0 +1,19 @@
+{
+  "name": "sol_hmt_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-HMT-2",
+  "source_hash": "e180a8b80d899f05",
+  "description": "Merkle-tree claim function omits msg.sender validation against leaf address",
+  "question": "The source file in `source` implements a claim() function that verifies a Merkle proof against a leaf encoding an address and amount, but does not check that msg.sender equals (or is authorized by) that leaf address, allowing any caller who obtains a valid proof to claim funds or benefits intended for a different address, excluding cases where the leaf intentionally omits an address (e.g., bearer-style claims) or where the recipient address is separately validated via another mechanism such as a signature.",
+  "criteria": [
+    "claim(bytes32[] proof, address account, uint256 amount) verifies MerkleProof.verify(proof, root, leaf) and transfers tokens to account without requiring msg.sender == account",
+    "claimReward(uint256 index, address user, uint256 amount, bytes32[] proof) checks the Merkle proof matching (index, user, amount) but pays out to user regardless of who calls the function",
+    "distribute() computes leaf = keccak256(abi.encodePacked(recipient, amount)), validates it against the Merkle root, then sends funds to recipient without comparing recipient to msg.sender",
+    "airdropClaim(bytes32[] calldata merkleProof, address claimer, uint256 amount) marks claimer as claimed and transfers tokens to claimer with no check that msg.sender equals claimer"
+  ],
+  "tags": [
+    [
+      "Hash / Merkle Tree"
+    ]
+  ]
+}

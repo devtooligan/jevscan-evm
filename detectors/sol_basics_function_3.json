@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_function_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-Function-3",
+  "source_hash": "8b2272575f1e5df0",
+  "description": "Function vulnerable to front-running enabling DoS or value extraction by transaction ordering",
+  "question": "The source file in `source` defines a state-changing function whose outcome depends on order-sensitive parameters or state (e.g., price, debt amount, proposal id, threshold) that an attacker can observe in the mempool and preempt with their own transaction (e.g., partial repayment, proposal creation, or front-run action) to cause denial-of-service, block the legitimate caller, or extract value, and the function contains no protection such as commit-reveal, minimum-amount/slippage checks, deadline/nonce binding, or access restriction that neutralizes the front-running impact; this excludes functions where front-running has no meaningful economic or availability impact, or where only trusted/admin-only callers can trigger the function.",
+  "criteria": [
+    "A liquidation or repayment function allows any address to repay an arbitrary, attacker-chosen amount (even 1 wei) to block or grief a pending liquidation, with no minimum repay threshold",
+    "A governance proposal function lets anyone create a proposal with attacker-controlled parameters that can be front-run to occupy a slot/id and permanently block the legitimate proposer's transaction",
+    "A challenge/dispute function permits any party to observe a pending challenge and front-run it with a de-leveraging or state-mutating transaction that causes the original challenger to lose funds",
+    "A price- or amount-sensitive function executes based on a value read at call time without a user-supplied minimum/maximum bound, letting an attacker front-run with a transaction that manipulates the value to the caller's detriment"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Function"
+    ]
+  ]
+}

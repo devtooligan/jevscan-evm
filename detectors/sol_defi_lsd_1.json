@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_lsd_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-LSD-1",
+  "source_hash": "6f0f0f4ba13e29ce",
+  "description": "Front-runnable validator deposit allows withdrawal credential hijacking via missing deposit root check",
+  "question": "The source file in `source` calls the Ethereum DepositContract's deposit function to register a new validator for a liquid staking protocol without first fetching the current deposit root via get_deposit_root and verifying it matches the deposit_data_root parameter passed to deposit, allowing a malicious validator to front-run the protocol's deposit call with their own withdrawal credentials and steal control of the pooled 32 ETH; this does not apply to code that already validates the deposit root immediately before calling deposit, or to deposit flows that are not part of the initial validator registration (e.g., pure top-up deposits to an already-initialized validator).",
+  "criteria": [
+    "A staking/deposit function calls DepositContract.deposit(pubkey, withdrawal_credentials, signature, deposit_data_root) directly with a hardcoded or precomputed deposit_data_root without querying get_deposit_root beforehand",
+    "A validator registration function builds and submits the deposit call in a single transaction without any on-chain comparison of the current deposit root to a caller-supplied expected root",
+    "The code accepts a deposit_data_root parameter from off-chain computation and passes it straight to DepositContract.deposit without re-deriving or checking it against DepositContract.get_deposit_root() at call time",
+    "The deposit submission logic assumes the validator's withdrawal credentials will be set by this call, with no revert path if the deposit root has changed since the deposit_data_root was computed"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Liquid Staking Derivatives"
+    ]
+  ]
+}

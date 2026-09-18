@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-11",
+  "source_hash": "54ce1fb8021844dc",
+  "description": "Missing minimum output amount check before AMM token swap, enabling sandwich/slippage attacks",
+  "question": "The source file in `source` executes a token swap on an AMM (e.g. calling a router's swap/exchange function) without first computing or enforcing a minAmountOut (or equivalent slippage bound) derived from a trustworthy, manipulation-resistant price source, so an attacker can sandwich the transaction and force it to execute at an unfavorable rate; this excludes swaps that pass a nonzero minAmountOut/minOut parameter computed from a reliable off-chain quote or TWAP oracle with reasonable tolerance, and excludes trusted admin-only rebalancing functions explicitly documented as safe from front-running.",
+  "criteria": [
+    "Calls router.swapExactTokensForTokens or similar with amountOutMin hardcoded to 0",
+    "Computes minAmountOut using the pool's own spot price (e.g. getAmountsOut from the same pool) right before the swap call",
+    "Passes no slippage/minOut parameter at all to the swap function, allowing any output amount",
+    "Derives minAmountOut from a manipulable on-chain reserve ratio without a TWAP or external oracle safeguard"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

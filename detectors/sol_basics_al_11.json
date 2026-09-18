@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_al_11",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-11",
+  "source_hash": "56375bbb1885f4c8",
+  "description": "Reuse of msg.value inside a loop causing multi-call double-counting of ETH value",
+  "question": "The source file in `source` contains a loop (for/while) whose body references `msg.value` to credit, accumulate, or validate a per-iteration amount (e.g., adding msg.value to a balance, comparing msg.value against a per-item price, or passing msg.value to an external call each iteration), treating the constant transaction-wide msg.value as if it were a fresh amount per iteration, rather than using it once outside the loop or dividing/tracking a running remainder, so repeated iterations over-count or misattribute the same ETH value multiple times.",
+  "criteria": [
+    "A for-loop over an array of recipients does `balances[recipients[i]] += msg.value;` inside the loop body",
+    "A while-loop iterating purchase items checks `require(msg.value >= itemPrice[i])` per iteration without deducting a running total",
+    "A loop calling an external contract passes `msg.value` as the value/argument on each iteration, e.g. `target.call{value: msg.value}(...)` inside a for-loop",
+    "A loop accumulates `totalDeposited += msg.value` for each address processed in a batch function"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}

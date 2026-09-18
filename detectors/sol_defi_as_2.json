@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_as_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-AS-2",
+  "source_hash": "bba4066958f49828",
+  "description": "Missing swap deadline parameter enabling delayed transaction sandwich/MEV attacks",
+  "question": "The source file in `source` implements a swap or trade execution function that transfers or exchanges tokens without accepting or validating a caller-specified deadline (or block.timestamp bound) before executing the trade, allowing the transaction to be held and executed at an arbitrary later time under stale price conditions, and this applies only to functions that actually perform swaps/trades, excluding functions that already check block.timestamp against a deadline parameter or revert if the deadline has passed.",
+  "criteria": [
+    "swap() or swapExactTokensForTokens() executes a token exchange using current reserves/price with no deadline parameter and no block.timestamp check",
+    "A trade function accepts a deadline argument but never compares it to block.timestamp before executing the swap logic",
+    "A router-style function forwards user swap calls to an underlying AMM without requiring or forwarding any deadline constraint",
+    "A function computing swap output and transferring tokens omits any require(block.timestamp <= deadline) style guard, allowing the transaction to be executed after arbitrary delay"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "AMM/Swap"
+    ]
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "error_handling",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/error-handling/SKILL.md",
+  "source_hash": "4906be5e99bded7d",
+  "description": "Silent failure from try/catch blocks that swallow external call errors instead of reverting",
+  "question": "The source file in `source` contains a try/catch block wrapping an external call (such as an oracle or token call), and at least one catch clause (Error, Panic, or low-level bytes) swallows the failure by returning a default or fallback value (e.g., `return 0;`) or merely emitting an event, without reverting or otherwise propagating the error, so that the caller continues execution using invalid, stale, or zeroed data that could be exploited to bypass validation or corrupt downstream logic.",
+  "criteria": [
+    "try/catch wrapping an external call like feed.latestRoundData() or target.call()",
+    "catch Error(string memory reason) or catch (bytes memory) block that does not revert",
+    "catch block returns a hardcoded fallback value such as 0 instead of reverting",
+    "catch block only emits an event (e.g., emit PanicCaught) then returns normally",
+    "returned fallback value is later used in calculations or checks without re-validation",
+    "no re-throw or bubbling of revert reason from the caught failure"
+  ],
+  "tags": []
+}

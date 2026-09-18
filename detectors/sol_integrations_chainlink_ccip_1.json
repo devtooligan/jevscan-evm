@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_chainlink_ccip_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-1",
+  "source_hash": "ca51774cbff185ac",
+  "description": "CCIP receiver missing source chain/sender allowlist validation",
+  "question": "The source file in `source` defines a `_ccipReceive` (or equivalent CCIP receiver callback) function that processes an incoming `Any2EVMMessage` without validating its `sourceChainSelector` and decoded `sender` address against an administratively controlled allowlist, allowing messages from unauthorized chains or senders to be accepted and processed, excluding cases where such checks are performed elsewhere (e.g., in a base contract or modifier actually enforced on this function) or where the function is intentionally open to any sender/chain by documented design.",
+  "criteria": [
+    "_ccipReceive decodes any2EvmMessage.data and executes logic without checking any2EvmMessage.sourceChainSelector against a whitelist",
+    "_ccipReceive extracts sender via abi.decode(any2EvmMessage.sender) and uses it directly without comparing it to an allowed sender mapping or address",
+    "ccipReceive/_ccipReceive processes token or message payloads and triggers state changes or external calls with no allowlist check on sourceChainSelector or sender",
+    "Receiver callback trusts any2EvmMessage.sender as the message origin for authorization decisions without verifying it against a stored trusted sender list"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "CCIP"
+    ]
+  ]
+}

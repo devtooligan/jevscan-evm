@@ -1,0 +1,21 @@
+{
+  "name": "sol_integrations_chainlink_ccip_3",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Integrations-Chainlink-CCIP-3",
+  "source_hash": "fd7d83717ae20634",
+  "description": "Chainlink CCIP receiver decodes cross-chain message data with mismatched encoding/type structure",
+  "question": "The source file in `source` implements a Chainlink CCIP receiver (e.g. `_ccipReceive` or similar handling `any2EvmMessage.data`) that decodes the incoming `data` field using `abi.decode` with a type signature, struct layout, or parameter order that does not match the ABI encoding used when the message was constructed on the source chain, causing corrupted, misinterpreted, or reverted cross-chain data without validating the decoded structure against the expected sender-side encoding, excluding cases where encoding and decoding use identical, explicitly declared types and structure on both chains.",
+  "criteria": [
+    "_ccipReceive decodes any2EvmMessage.data with abi.decode(data, (uint256, address)) while the sender encodes abi.encode(address, uint256, bytes), causing field values to be swapped",
+    "Receiver assumes a fixed-size tuple decode of any2EvmMessage.data but the sender conditionally encodes variable-length arrays or structs depending on message type, leading to decode reverts or garbage values",
+    "_ccipReceive calls abi.decode(any2EvmMessage.data, (MyStruct)) without checking that the struct definition matches the version used by the sending contract, so upgraded sender payloads are misdecoded",
+    "Receiver blindly casts decoded bytes into an address without validating that the encoded value is a proper 20-byte address, allowing malformed cross-chain payloads to be misinterpreted as arbitrary addresses"
+  ],
+  "tags": [
+    [
+      "Integrations",
+      "Chainlink",
+      "CCIP"
+    ]
+  ]
+}

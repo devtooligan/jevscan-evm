@@ -1,0 +1,19 @@
+{
+  "name": "sol_ec_12",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-EC-12",
+  "source_hash": "38544dfa79558874",
+  "description": "Missing contract-existence check before low-level call/delegatecall, allowing silent success on non-existent targets",
+  "question": "The source file in `source` performs a low-level call, delegatecall, or staticcall (or uses these indirectly, e.g. via a token transfer) to an address derived from user input, configuration, or external data, without first verifying that the target address contains contract code (e.g. via extcodesize or an equivalent existence check), causing the call to silently return success even when the target contract does not exist or has been destructed, which can be exploited to bypass intended logic such as fund transfers, validation, or callbacks; this excludes calls to addresses that are hardcoded, immutable, validated elsewhere in the same file, or restricted to trusted admin-controlled inputs.",
+  "criteria": [
+    "A function performs target.call(data) or target.delegatecall(data) on a caller-supplied or externally-derived address with no prior extcodesize or code-existence check, treating the returned success as proof the call succeeded",
+    "A token transfer helper calls token.transfer or token.transferFrom via low-level call without checking that the token address has deployed code, allowing a fake/non-existent token to appear to succeed",
+    "A claim or withdrawal function invokes an externally-configured revenue/controller contract via call/staticcall without verifying its existence, letting an attacker register a non-existent address to redirect or drain funds",
+    "A vault or pool creation function accepts an arbitrary ERC20 address and never checks that it is a deployed contract before interacting with it via low-level calls"
+  ],
+  "tags": [
+    [
+      "External Call"
+    ]
+  ]
+}

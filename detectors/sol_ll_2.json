@@ -1,0 +1,18 @@
+{
+  "name": "sol_ll_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-LL-2",
+  "source_hash": "c08937bcfd4e82e2",
+  "description": "Custom low-level function dispatcher lacks revert on unmatched selector, allowing fallthrough into unintended bytecode",
+  "question": "The source file in `source` implements a custom low-level function dispatcher (e.g. inline assembly comparing calldata selectors against known function signatures) that, after comparing the calldata selector against all supported function signatures and fallback conditions without finding a match, allows execution to continue into subsequent code or bytecode instead of explicitly reverting or stopping, excluding dispatchers that end every non-matching branch with revert, stop, or return.",
+  "criteria": [
+    "Assembly dispatcher chain checks calldataload selector against multiple function signatures with switch/if-else, and the final else branch falls through to subsequent code instead of calling revert(0,0)",
+    "A fallback-style dispatcher in raw bytecode/assembly compares selectors sequentially but omits a terminating revert after the last comparison, letting execution proceed into whatever bytecode follows",
+    "Custom proxy or multiplexer contract written in assembly matches known selectors but has no default case that reverts, so unmatched calls execute unintended jump destinations"
+  ],
+  "tags": [
+    [
+      "Low Level"
+    ]
+  ]
+}

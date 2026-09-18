@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_oracle_5",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-Oracle-5",
+  "source_hash": "915887990e3cdb77",
+  "description": "TWAP oracle period set too short, enabling price manipulation via short-window time-weighted average price",
+  "question": "The source file in `source` computes or configures a TWAP oracle price using a time period/window that is too short (e.g., a few seconds, a single block, or zero) or that can be set/changed to such a short value without any minimum-bound validation, so an attacker can manipulate the price within that window (e.g., via flash loan or same-block trades) and have it accepted as the TWAP; this excludes code that hardcodes or validates a sufficiently long TWAP period (e.g., tens of minutes or more) or that uses the price for non-critical, manipulation-resistant purposes.",
+  "criteria": [
+    "Calls a TWAP consult/observe function with a hardcoded secondsAgo/period of 1 second or a single block",
+    "Passes a period value of 0 to the oracle, causing it to effectively return the current spot price instead of a time-weighted average",
+    "Stores twapPeriod as an owner-settable state variable used directly in oracle calls with no minimum value enforced in the setter",
+    "Computes TWAP as (currentTick - tickAtLastUpdate) over an interval that can be arbitrarily small because lastUpdate is not rate-limited"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "Oracle"
+    ]
+  ]
+}

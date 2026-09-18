@@ -1,0 +1,17 @@
+{
+  "name": "oracle_manipulation",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/oracle-manipulation/SKILL.md",
+  "source_hash": "0085f66bed10d751",
+  "description": "Manipulable spot-price oracle (DEX reserves) used for value-critical calculations without TWAP or safeguards",
+  "question": "The source file in `source` computes a token price directly from a DEX pool's instantaneous reserves or tick state (e.g., via getReserves(), slot0, or raw balance ratios) and feeds that spot price directly into a value-bearing calculation such as collateral valuation, liquidation threshold, minting, or borrow limit, without any time-weighted averaging (no TWAP/consult call), without cross-checking a secondary oracle, and without staleness or deviation checks, allowing an attacker to manipulate the price within a single transaction (e.g., via a flash loan) to under-collateralize positions, trigger unfair liquidations, or drain protocol funds.",
+  "criteria": [
+    "Calls getReserves(), slot0(), or reads raw pool token balances to derive a price",
+    "The derived price is used directly (same transaction, no averaging) in collateral valuation, liquidation, minting, or borrowing logic",
+    "No call to a TWAP/consult function or time-weighted price library",
+    "No fallback or cross-check against a second independent oracle (e.g., Chainlink)",
+    "No staleness, deviation, or sanity-bound checks applied before using the price",
+    "Comment or logic indicates the price can change within one block/transaction and is trusted anyway"
+  ],
+  "tags": []
+}

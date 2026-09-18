@@ -1,0 +1,21 @@
+{
+  "name": "sol_basics_vi_svi_19",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-VI-SVI-19",
+  "source_hash": "318c5a0599dfe972",
+  "description": "Solidity 0.6.9 bug: internal library calldata params via `using for` read invalid data",
+  "question": "The source file in `source` declares `pragma solidity 0.6.9;` (or another version affected by this bug) and defines or uses an internal library function that takes a `calldata` parameter, invoked on a type via a `using ... for` directive, such that invalid or corrupted data can be read at runtime due to the compiler bug, excluding cases where the library functions only take `memory`/`storage`/value-type parameters or the file targets a fixed, unaffected Solidity version.",
+  "criteria": [
+    "A library defines `function foo(bytes calldata data) internal` and the contract has `using MyLib for bytes;` then calls `data.foo()` on a calldata bytes variable",
+    "pragma solidity 0.6.9; combined with a library internal function signature like `function process(uint256[] calldata arr) internal pure returns (...)` attached via `using Lib for uint256[];`",
+    "An internal library function with a `calldata` struct parameter is bound with `using StructLib for MyStruct;` and invoked as `myStructVar.libFunc()` within a 0.6.9-pragma file",
+    "A library exposes multiple internal functions taking `calldata` arrays/structs, all attached via `using` directives and called throughout the contract under the 0.6.9 pragma"
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Version Issues",
+      "Solidity Version Issues"
+    ]
+  ]
+}

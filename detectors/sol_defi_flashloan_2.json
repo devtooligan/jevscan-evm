@@ -1,0 +1,20 @@
+{
+  "name": "sol_defi_flashloan_2",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Defi-FlashLoan-2",
+  "source_hash": "46918353a55f69d9",
+  "description": "ERC4626 vault share-price manipulation via flashloan-funded balance donation (inflation attack)",
+  "question": "The source file in `source` implements an ERC4626-style vault whose share/asset exchange rate (e.g. in convertToShares, convertToAssets, deposit, mint, withdraw, or redeem) is computed directly from the vault's live token balance or totalAssets() without virtual shares, minimum deposit/liquidity, or a manipulation-resistant snapshot/oracle, so an attacker can use a flashloan or a single large direct token transfer within one transaction to distort the exchange rate and profit from a subsequent deposit or redemption, excluding vaults that use virtual/dead shares, minimum deposit floors, TWAP/oracle pricing, or otherwise decouple accounting from spot balance.",
+  "criteria": [
+    "convertToShares or convertToAssets divides by token.balanceOf(address(this)) or totalAssets() directly with no virtual share offset added to numerator/denominator",
+    "deposit() or mint() computes minted shares as a raw ratio of deposited assets to current totalAssets, allowing first depositor's shares to be diluted by a prior donation transfer",
+    "withdraw() or redeem() computes returned assets from the current live balance ratio with no snapshot, delay, or oracle check protecting against same-block balance manipulation",
+    "totalAssets() simply returns the vault's current token balance with no internal accounting ledger decoupled from external transfers"
+  ],
+  "tags": [
+    [
+      "Defi",
+      "FlashLoan"
+    ]
+  ]
+}

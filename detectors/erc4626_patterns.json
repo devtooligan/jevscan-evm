@@ -1,0 +1,17 @@
+{
+  "name": "erc4626_patterns",
+  "source": "evm-cortex",
+  "origin": "ccashwell/evm-cortex@bee3bf651d1d skills/erc4626-patterns/SKILL.md",
+  "source_hash": "242ce890f4576cdc",
+  "description": "ERC-4626 vault first-depositor share-inflation attack due to missing virtual shares/dead-share protection",
+  "question": "The source file in `source` defines an ERC-4626 (or equivalent deposit/mint/withdraw/redeem share-based vault) contract whose share/asset conversion (e.g., convertToShares/convertToAssets or deposit/mint logic) computes shares as assets * totalSupply / totalAssets (or equivalent) without any virtual shares/assets offset, dead-share minting on first deposit, or other first-depositor-attack mitigation, allowing an attacker to mint an initial negligible share amount then donate assets directly to the vault to manipulate the share price and steal subsequent depositors' funds via rounding.",
+  "criteria": [
+    "Vault contract implements or inherits ERC-4626 deposit/mint/withdraw/redeem or convertToShares/convertToAssets logic",
+    "Share calculation uses raw totalSupply()/totalAssets() ratio without a decimals/virtual offset (e.g., no '+ 10 ** offset' or '+1' virtual shares/assets term)",
+    "No dead-shares minting to a burn address on the first deposit",
+    "totalAssets() can be inflated by direct asset transfers/donations to the vault (not just via deposit accounting)",
+    "No check preventing first deposit from being an arbitrarily small amount (e.g., 1 wei) that sets a manipulable initial share price",
+    "Absence of any comment/code indicating first-depositor mitigation (e.g., minimum initial deposit, decimalsOffset, or dead shares)"
+  ],
+  "tags": []
+}

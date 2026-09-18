@@ -1,0 +1,19 @@
+{
+  "name": "sol_signature_1",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Signature-1",
+  "source_hash": "e3e29fab2a19eea4",
+  "description": "Signature replay attack due to missing nonce or chain ID binding",
+  "question": "The source file in `source` verifies an off-chain-generated signature to authorize an action but the signed data or its validation does not incorporate both a nonce (or other used-signature tracking) and a chain identifier, or does not mark the signature/hash as consumed after use, so a captured valid signature can be replayed on the same chain, another chain, or multiple times to re-execute the authorized action.",
+  "criteria": [
+    "A function recovers a signer from a signature via ecrecover or similar and executes a privileged action without checking or incrementing a per-user or per-message nonce, allowing the same signature to be submitted multiple times",
+    "The signed message hash omits block.chainid or an equivalent chain/domain identifier, allowing a signature valid on one chain to be replayed on another chain the contract is deployed to",
+    "The contract records that a signature/message hash was used only after performing external calls or state changes, or never marks it as used, so the same signature can be reused before or after invalidation",
+    "The signing scheme does not follow EIP-712 domain separation and lacks any nonce or chainid field, making the signed payload replayable across contracts or protocol versions"
+  ],
+  "tags": [
+    [
+      "Signature"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "sol_basics_al_6",
+  "source": "solodit",
+  "origin": "Cyfrin/audit-checklist@008855fe1798 checklist.json id=SOL-Basics-AL-6",
+  "source_hash": "c8bd685d3c2095bf",
+  "description": "Precision mismatch between summed aggregate calculation and sum of individual per-item calculations",
+  "question": "The source file in `source` computes a financial or accounting value by performing an arithmetic operation (such as division or multiplication with truncation) on an aggregate/summed variable, while elsewhere computing the same type of value by looping over individual items and applying the operation to each one separately, such that integer rounding causes the aggregate result to diverge from the sum of the per-item results, leading to accounting mismatches, fund loss, or insolvency, excluding cases where the two calculations are mathematically guaranteed to be equal (no intermediate truncation) or where the discrepancy is bounded and explicitly handled as acceptable rounding dust.",
+  "criteria": [
+    "A function computes totalReward = totalStaked * rate / SCALE for global accounting, while reward[user] = staked[user] * rate / SCALE is computed per user in a loop, and the sum of reward[user] over all users can be less than or greater than totalReward due to per-user integer division truncation.",
+    "A contract calculates total interest as totalDeposits * rate / PRECISION but also accrues interest per deposit as deposit[i] * rate / PRECISION inside a loop, causing the sum of per-deposit interest to differ from the directly computed total interest.",
+    "A price/value function returns price * sum(amounts) as the total value, while another part of the code computes total value as the sum of price * amounts[i] computed individually, producing different totals because of rounding at each multiplication step.",
+    "A withdrawal function calculates a user's share as (userBalance * totalAssets) / totalShares directly, while a separate accounting path sums per-block or per-deposit shares computed with the same formula, and the two paths diverge due to accumulated rounding errors across iterations."
+  ],
+  "tags": [
+    [
+      "Basics",
+      "Array / Loop"
+    ]
+  ]
+}
