@@ -7,7 +7,7 @@
  ╚════╝ ╚══════╝  ╚═══╝  ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝      ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
 ```
 
-**Produce a heat map of likely bugs model — in seconds, for pennies - built with TypeSafe's [Jev](https://docs.typesafe.ai).**
+**Produce a heat map of likely bugs - in seconds, for pennies - built with TypeSafe's [Jev](https://docs.typesafe.ai).**
 
 ## Quick start
 
