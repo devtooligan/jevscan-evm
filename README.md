@@ -75,13 +75,13 @@ _Contest finding: the judged issue it matches._
 
 ## How it did in other benchmarks
 
-| Contest                        | Confirmed findings | Identified the file (bug type, ≥ 70% confidence) | Identified the function | False positives (≥ 70%, reviewed by hand) |
+| Contest                        | Confirmed findings | Identified the file (bug type, ≥ 70% confidence) | Identified the function (on the exploit path) | False positives (≥ 70%, reviewed by hand) |
 | ------------------------------ | ------------------ | ------------------------------------------------ | ----------------------- | ----------------------------------------- |
-| Monolith · Sherlock · Dec 2025 | 7                  | 6                                                | 3                       | 3 |
-| Beedle · CodeHawks · Jul 2023  | 42                 | 27                                               | 14                      | 1 |
-| USSD · Sherlock · May 2023     | 22                 | 20                                               | 14                      | 0 |
+| Monolith · Sherlock · Dec 2025 | 7                  | 6                                                | 5 | 3 |
+| Beedle · CodeHawks · Jul 2023  | 42                 | 27                                               | 18 | 1 |
+| USSD · Sherlock · May 2023     | 22                 | 20                                               | 16 | 0 |
 
-Identified the file: the file scored 70% or more on the finding's bug type. Identified the function: the function it ranked highest for that bug type was the one the judges named. False positives: things it reported at 70% or more that a human review found to be wrong ([Monolith](bench/monolith/notes.md), [Beedle](bench/beedle/unmatched_review.md), [USSD](bench/ussd/unmatched_review_a.md)).
+Identified the file: the file scored 70% or more on the finding's bug type. Identified the function: the function it ranked highest for that bug type was the one the judges named, or one on that bug's exploit path (a caller, a callee, or where the bad value is produced or used), checked by hand ([Monolith](bench/monolith/function_review.md), [Beedle](bench/beedle/function_review.md), [USSD](bench/ussd/function_review.md)). False positives: things it reported at 70% or more that a human review found to be wrong ([Monolith](bench/monolith/notes.md), [Beedle](bench/beedle/unmatched_review.md), [USSD](bench/ussd/unmatched_review_a.md)).
 
 Full results: [Monolith](bench/monolith/results.md) · [Beedle](bench/beedle/results.md) · [USSD](bench/ussd/results.md)
 
