@@ -65,9 +65,9 @@ Speed and cost: One file, 14 checks:
 
 | File                           | Function          | What it found                                                                       | Confidence | Line | Contest finding            |
 | ------------------------------ | ----------------- | ----------------------------------------------------------------------------------- | ---------- | ---- | -------------------------- |
-| `oracles/StableOracleDAI.sol`  | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 48   | H-1, H-4, M-1, M-7         |
-| `oracles/StableOracleWBTC.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | M-1, M-4, M-7              |
-| `oracles/StableOracleWETH.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | H-11, M-1, M-7             |
+| `oracles/StableOracleDAI.sol`  | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 48   | H-1 |
+| `oracles/StableOracleWBTC.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | M-7 |
+| `oracles/StableOracleWETH.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | H-11 |
 | `USSD.sol`                     | `approveToRouter` | Unsafe ERC20 transfer calls without return-value checks or SafeERC20 wrapper        | 96%        | 243  | none judged (real pattern) |
 | `USSD.sol`                     | `calculateMint`   | Missing sanity/range check on oracle price allows flash-crash price manipulation    | 95%        | 171  | M-7                        |
 
