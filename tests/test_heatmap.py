@@ -29,7 +29,7 @@ def test_grid_cells_are_colors_only():
     rows = [line for line in section("## Heat grid") if line.startswith("| `")]
     assert len(rows) == len(RUN["files"])
     for row in rows:
-        assert set(row.split(" | ")[1:-1]) <= {"⬜", "🟩", "🟨", "🟧", "🟥"}, row
+        assert set(row.split(" | ")[1:-1]) <= {"🟩", "🟨", "🟧", "🟥"}, row
 
 
 def test_one_hit_row_per_strongly_flagged_function_without_subcategories():

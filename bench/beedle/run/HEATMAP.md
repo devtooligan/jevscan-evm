@@ -18,19 +18,18 @@ Numbers are Jev's probability that the statement is true.
 
 | File | Crit | Any | Access | Proxy | Oracle | Econ | Reentry | Shares | Math | Sigs | Xchain | Tokens | Logic | DoS | MEV | LowLvl |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `src/Lender.sol` | 🟧 | 🟧 | 🟩 | ⬜ | ⬜ | 🟨 | 🟧 | 🟧 | 🟧 | ⬜ | ⬜ | 🟥 | 🟥 | 🟧 | 🟧 | ⬜ |
-| `src/Staking.sol` | 🟨 | 🟧 | 🟧 | ⬜ | ⬜ | 🟩 | 🟨 | 🟨 | 🟨 | ⬜ | ⬜ | 🟥 | 🟥 | 🟧 | 🟩 | ⬜ |
-| `src/Fees.sol` | 🟨 | 🟧 | 🟨 | ⬜ | ⬜ | 🟩 | 🟩 | ⬜ | ⬜ | ⬜ | ⬜ | 🟧 | 🟨 | 🟨 | 🟨 | ⬜ |
-| `src/Beedle.sol` | 🟩 | 🟨 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ |
-| `src/utils/Structs.sol` | 🟩 | 🟩 | ⬜ | ⬜ | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | 🟩 | 🟩 | ⬜ |
-| `src/utils/Ownable.sol` | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| `src/utils/Errors.sol` | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| `src/Lender.sol` | 🟥 | 🟥 | 🟨 | 🟩 | 🟩 | 🟧 | 🟥 | 🟥 | 🟥 | 🟩 | 🟩 | 🟥 | 🟥 | 🟥 | 🟥 | 🟩 |
+| `src/Staking.sol` | 🟧 | 🟥 | 🟥 | 🟩 | 🟩 | 🟨 | 🟧 | 🟧 | 🟧 | 🟩 | 🟩 | 🟥 | 🟥 | 🟥 | 🟨 | 🟩 |
+| `src/Fees.sol` | 🟧 | 🟥 | 🟧 | 🟩 | 🟩 | 🟨 | 🟨 | 🟩 | 🟩 | 🟩 | 🟩 | 🟥 | 🟧 | 🟧 | 🟧 | 🟩 |
+| `src/Beedle.sol` | 🟨 | 🟧 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 |
+| `src/utils/Structs.sol` | 🟨 | 🟨 | 🟩 | 🟩 | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟨 | 🟨 | 🟩 |
+| `src/utils/Ownable.sol` | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 |
+| `src/utils/Errors.sol` | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 |
 
-- 🟥 85% or more: very likely
-- 🟧 70% to 85%: likely
-- 🟨 50% to 70%: leaning yes
-- 🟩 30% to 50%: possible
-- ⬜ under 30%: not flagged
+- 🟥 70% or more
+- 🟧 50% to 70%
+- 🟨 30% to 50%
+- 🟩 under 30%
 
 <details><summary>What the columns mean</summary>
 
@@ -155,7 +154,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 ## File details
 
-<details><summary>src/Lender.sol · Crit 🟧 · Any 🟧 · Tokens 92%, Logic 89%, Math 80% · 16 functions flagged</summary>
+<details><summary>src/Lender.sol · Crit 🟥 · Any 🟥 · Tokens 92%, Logic 89%, Math 80% · 16 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -230,7 +229,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/Staking.sol · Crit 🟨 · Any 🟧 · Tokens 89%, Logic 85%, Access 72% · 6 functions flagged</summary>
+<details><summary>src/Staking.sol · Crit 🟧 · Any 🟥 · Tokens 89%, Logic 85%, Access 72% · 6 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -286,7 +285,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/Fees.sol · Crit 🟨 · Any 🟧 · Tokens 78%, MEV 66%, Access 65% · 1 function flagged</summary>
+<details><summary>src/Fees.sol · Crit 🟧 · Any 🟥 · Tokens 78%, MEV 66%, Access 65% · 1 function flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -325,7 +324,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/Beedle.sol · Crit 🟩 · Any 🟨 · no category hit · 0 functions flagged</summary>
+<details><summary>src/Beedle.sol · Crit 🟨 · Any 🟧 · no category hit · 0 functions flagged</summary>
 
 No function has a hit.
 
@@ -341,7 +340,7 @@ No function has a hit.
 
 </details>
 
-<details><summary>src/utils/Structs.sol · Crit 🟩 · Any 🟩 · no category hit · not located</summary>
+<details><summary>src/utils/Structs.sol · Crit 🟨 · Any 🟨 · no category hit · not located</summary>
 
 Not located: no function ranking for this file (Solidity only).
 
@@ -356,7 +355,7 @@ Not located: no function ranking for this file (Solidity only).
 
 </details>
 
-<details><summary>src/utils/Ownable.sol · Crit ⬜ · Any ⬜ · no category hit · 1 function flagged</summary>
+<details><summary>src/utils/Ownable.sol · Crit 🟩 · Any 🟩 · no category hit · 1 function flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|

@@ -7,7 +7,7 @@
  ╚════╝ ╚══════╝  ╚═══╝  ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝      ╚══════╝  ╚═══╝  ╚═╝     ╚═╝
 ```
 
-**Produce a heat map of likely bugs model — in seconds, for pennies - built with TypeSafe's [Jev](https://docs.typesafe.ai).**
+**Produce a heat map of likely bugs - in seconds, for pennies - built with TypeSafe's [Jev](https://docs.typesafe.ai).**
 
 ## Quick start
 
@@ -50,24 +50,24 @@ Speed and cost: One file, 14 checks:
 
 | File                                | Crit | Any | Access | Proxy | Oracle | Econ | Reentry | Shares | Math | Sigs | Xchain | Tokens | Logic | DoS | MEV | LowLvl |
 | ----------------------------------- | ---- | --- | ------ | ----- | ------ | ---- | ------- | ------ | ---- | ---- | ------ | ------ | ----- | --- | --- | ------ |
-| `oracles/StableOracleDAI.sol`       | 🟨   | 🟧  | ⬜     | ⬜    | 🟥     | 🟩   | ⬜      | ⬜     | 🟧   | ⬜   | ⬜     | ⬜     | 🟩    | 🟩  | ⬜  | ⬜     |
-| `USSDRebalancer.sol`                | 🟧   | 🟥  | 🟨     | 🟩    | 🟧     | 🟩   | 🟨      | 🟧     | 🟥   | ⬜   | ⬜     | 🟧     | 🟥    | 🟧  | 🟧  | ⬜     |
-| `USSD.sol`                          | 🟥   | 🟥  | 🟧     | 🟨    | 🟧     | 🟨   | 🟨      | 🟨     | 🟧   | ⬜   | ⬜     | 🟧     | 🟥    | 🟨  | 🟥  | ⬜     |
-| `oracles/StableOracleWBTC.sol`      | 🟨   | 🟧  | ⬜     | ⬜    | 🟥     | 🟩   | ⬜      | ⬜     | 🟨   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
-| `oracles/StableOracleWETH.sol`      | 🟨   | 🟨  | ⬜     | ⬜    | 🟥     | ⬜   | ⬜      | ⬜     | 🟨   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
-| `oracles/StableOracleWBGL.sol`      | 🟩   | 🟨  | ⬜     | ⬜    | 🟧     | ⬜   | ⬜      | ⬜     | 🟨   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
-| `oracles/UniswapV3StaticOracle.sol` | 🟩   | 🟩  | ⬜     | ⬜    | 🟩     | ⬜   | ⬜      | ⬜     | 🟩   | ⬜   | ⬜     | ⬜     | 🟩    | ⬜  | ⬜  | ⬜     |
-| `Migrations.sol`                    | ⬜   | 🟩  | ⬜     | ⬜    | ⬜     | ⬜   | ⬜      | ⬜     | ⬜   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
+| `oracles/StableOracleDAI.sol`       | 🟧   | 🟥  | 🟩     | 🟩    | 🟥     | 🟨   | 🟩      | 🟩     | 🟥   | 🟩   | 🟩     | 🟩     | 🟨    | 🟨  | 🟩  | 🟩     |
+| `USSDRebalancer.sol`                | 🟥   | 🟥  | 🟧     | 🟨    | 🟥     | 🟨   | 🟧      | 🟥     | 🟥   | 🟩   | 🟩     | 🟥     | 🟥    | 🟥  | 🟥  | 🟩     |
+| `USSD.sol`                          | 🟥   | 🟥  | 🟥     | 🟧    | 🟥     | 🟧   | 🟧      | 🟧     | 🟥   | 🟩   | 🟩     | 🟥     | 🟥    | 🟧  | 🟥  | 🟩     |
+| `oracles/StableOracleWBTC.sol`      | 🟧   | 🟥  | 🟩     | 🟩    | 🟥     | 🟨   | 🟩      | 🟩     | 🟧   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
+| `oracles/StableOracleWETH.sol`      | 🟧   | 🟧  | 🟩     | 🟩    | 🟥     | 🟩   | 🟩      | 🟩     | 🟧   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
+| `oracles/StableOracleWBGL.sol`      | 🟨   | 🟧  | 🟩     | 🟩    | 🟥     | 🟩   | 🟩      | 🟩     | 🟧   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
+| `oracles/UniswapV3StaticOracle.sol` | 🟨   | 🟨  | 🟩     | 🟩    | 🟨     | 🟩   | 🟩      | 🟩     | 🟨   | 🟩   | 🟩     | 🟩     | 🟨    | 🟩  | 🟩  | 🟩     |
+| `Migrations.sol`                    | 🟩   | 🟨  | 🟩     | 🟩    | 🟩     | 🟩   | 🟩      | 🟩     | 🟩   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
 
-🟥 85% or more · 🟧 70% to 85% · 🟨 50% to 70% · 🟩 30% to 50% · ⬜ under 30%
+🟥 70% or more · 🟧 50% to 70% · 🟨 30% to 50% · 🟩 under 30%
 
 ### Strongest hits
 
 | File                           | Function          | What it found                                                                       | Confidence | Line | Contest finding            |
 | ------------------------------ | ----------------- | ----------------------------------------------------------------------------------- | ---------- | ---- | -------------------------- |
-| `oracles/StableOracleDAI.sol`  | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 48   | H-1, H-4, M-1, M-7         |
-| `oracles/StableOracleWBTC.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | M-1, M-4, M-7              |
-| `oracles/StableOracleWETH.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | H-11, M-1, M-7             |
+| `oracles/StableOracleDAI.sol`  | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 48   | H-1 |
+| `oracles/StableOracleWBTC.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | M-7 |
+| `oracles/StableOracleWETH.sol` | `getPriceUSD`     | Unsafe Chainlink price feed consumption without staleness/validity/sequencer checks | 97%        | 23   | H-11 |
 | `USSD.sol`                     | `approveToRouter` | Unsafe ERC20 transfer calls without return-value checks or SafeERC20 wrapper        | 96%        | 243  | none judged (real pattern) |
 | `USSD.sol`                     | `calculateMint`   | Missing sanity/range check on oracle price allows flash-crash price manipulation    | 95%        | 171  | M-7                        |
 
@@ -75,13 +75,13 @@ _Contest finding: the judged issue it matches._
 
 ## How it did in other benchmarks
 
-| Contest                        | Confirmed findings | Identified the file (bug type, ≥ 70% confidence) | Identified the function |
-| ------------------------------ | ------------------ | ------------------------------------------------ | ----------------------- |
-| Monolith · Sherlock · Dec 2025 | 7                  | 6                                                | 3                       |
-| Beedle · CodeHawks · Jul 2023  | 42                 | 27                                               | 14                      |
-| USSD · Sherlock · May 2023     | 22                 | 20                                               | 14                      |
+| Contest                        | Confirmed findings | Identified the file (bug type, ≥ 70% confidence) | Identified the function | False positives (≥ 70%, reviewed by hand) |
+| ------------------------------ | ------------------ | ------------------------------------------------ | ----------------------- | ----------------------------------------- |
+| Monolith · Sherlock · Dec 2025 | 7                  | 6                                                | 3                       | 3 of 9 flags                              |
+| Beedle · CodeHawks · Jul 2023  | 42                 | 27                                               | 14                      | 1 of 12 flags                             |
+| USSD · Sherlock · May 2023     | 22                 | 20                                               | 14                      | 0 of 18 flags                             |
 
-Identified the file: the file scored 70% or more on the finding's bug type. Identified the function: the function it ranked highest for that bug type was the one the judges named.
+Identified the file: the file scored 70% or more on the finding's bug type. Identified the function: the function it ranked highest for that bug type was the one the judges named. False positives: file-level flags at 70% that a human review found to be wrong; flags that were real but out of scope, or judged findings under another label, are not counted ([Monolith](bench/monolith/notes.md), [Beedle](bench/beedle/unmatched_review.md), [USSD](bench/ussd/unmatched_review_a.md)).
 
 Full results: [Monolith](bench/monolith/results.md) · [Beedle](bench/beedle/results.md) · [USSD](bench/ussd/results.md)
 

@@ -18,20 +18,19 @@ Numbers are Jev's probability that the statement is true.
 
 | File | Crit | Any | Access | Proxy | Oracle | Econ | Reentry | Shares | Math | Sigs | Xchain | Tokens | Logic | DoS | MEV | LowLvl |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `oracles/StableOracleDAI.sol` | 🟨 | 🟧 | ⬜ | ⬜ | 🟥 | 🟩 | ⬜ | ⬜ | 🟧 | ⬜ | ⬜ | ⬜ | 🟩 | 🟩 | ⬜ | ⬜ |
-| `USSDRebalancer.sol` | 🟧 | 🟥 | 🟨 | 🟩 | 🟧 | 🟩 | 🟨 | 🟧 | 🟥 | ⬜ | ⬜ | 🟧 | 🟥 | 🟧 | 🟧 | ⬜ |
-| `USSD.sol` | 🟥 | 🟥 | 🟧 | 🟨 | 🟧 | 🟨 | 🟨 | 🟨 | 🟧 | ⬜ | ⬜ | 🟧 | 🟥 | 🟨 | 🟥 | ⬜ |
-| `oracles/StableOracleWBTC.sol` | 🟨 | 🟧 | ⬜ | ⬜ | 🟥 | 🟩 | ⬜ | ⬜ | 🟨 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| `oracles/StableOracleWETH.sol` | 🟨 | 🟨 | ⬜ | ⬜ | 🟥 | ⬜ | ⬜ | ⬜ | 🟨 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| `oracles/StableOracleWBGL.sol` | 🟩 | 🟨 | ⬜ | ⬜ | 🟧 | ⬜ | ⬜ | ⬜ | 🟨 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| `oracles/UniswapV3StaticOracle.sol` | 🟩 | 🟩 | ⬜ | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ |
-| `Migrations.sol` | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| `oracles/StableOracleDAI.sol` | 🟧 | 🟥 | 🟩 | 🟩 | 🟥 | 🟨 | 🟩 | 🟩 | 🟥 | 🟩 | 🟩 | 🟩 | 🟨 | 🟨 | 🟩 | 🟩 |
+| `USSDRebalancer.sol` | 🟥 | 🟥 | 🟧 | 🟨 | 🟥 | 🟨 | 🟧 | 🟥 | 🟥 | 🟩 | 🟩 | 🟥 | 🟥 | 🟥 | 🟥 | 🟩 |
+| `USSD.sol` | 🟥 | 🟥 | 🟥 | 🟧 | 🟥 | 🟧 | 🟧 | 🟧 | 🟥 | 🟩 | 🟩 | 🟥 | 🟥 | 🟧 | 🟥 | 🟩 |
+| `oracles/StableOracleWBTC.sol` | 🟧 | 🟥 | 🟩 | 🟩 | 🟥 | 🟨 | 🟩 | 🟩 | 🟧 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 |
+| `oracles/StableOracleWETH.sol` | 🟧 | 🟧 | 🟩 | 🟩 | 🟥 | 🟩 | 🟩 | 🟩 | 🟧 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 |
+| `oracles/StableOracleWBGL.sol` | 🟨 | 🟧 | 🟩 | 🟩 | 🟥 | 🟩 | 🟩 | 🟩 | 🟧 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 |
+| `oracles/UniswapV3StaticOracle.sol` | 🟨 | 🟨 | 🟩 | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 |
+| `Migrations.sol` | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 |
 
-- 🟥 85% or more: very likely
-- 🟧 70% to 85%: likely
-- 🟨 50% to 70%: leaning yes
-- 🟩 30% to 50%: possible
-- ⬜ under 30%: not flagged
+- 🟥 70% or more
+- 🟧 50% to 70%
+- 🟨 30% to 50%
+- 🟩 under 30%
 
 <details><summary>What the columns mean</summary>
 
@@ -160,7 +159,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 ## File details
 
-<details><summary>oracles/StableOracleDAI.sol · Crit 🟨 · Any 🟧 · Oracle 91%, Math 83% · 2 functions flagged</summary>
+<details><summary>oracles/StableOracleDAI.sol · Crit 🟧 · Any 🟥 · Oracle 91%, Math 83% · 2 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -193,7 +192,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>USSDRebalancer.sol · Crit 🟧 · Any 🟥 · Math 90%, Logic 89%, Oracle 84% · 10 functions flagged</summary>
+<details><summary>USSDRebalancer.sol · Crit 🟥 · Any 🟥 · Math 90%, Logic 89%, Oracle 84% · 10 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -359,7 +358,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>oracles/StableOracleWBTC.sol · Crit 🟨 · Any 🟧 · Oracle 89%, Math 69% · 2 functions flagged</summary>
+<details><summary>oracles/StableOracleWBTC.sol · Crit 🟧 · Any 🟥 · Oracle 89%, Math 69% · 2 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -389,7 +388,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>oracles/StableOracleWETH.sol · Crit 🟨 · Any 🟨 · Oracle 86%, Math 55% · 2 functions flagged</summary>
+<details><summary>oracles/StableOracleWETH.sol · Crit 🟧 · Any 🟧 · Oracle 86%, Math 55% · 2 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -416,7 +415,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>oracles/StableOracleWBGL.sol · Crit 🟩 · Any 🟨 · Oracle 79%, Math 61% · 2 functions flagged</summary>
+<details><summary>oracles/StableOracleWBGL.sol · Crit 🟨 · Any 🟧 · Oracle 79%, Math 61% · 2 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -447,7 +446,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>oracles/UniswapV3StaticOracle.sol · Crit 🟩 · Any 🟩 · no category hit · 12 functions flagged</summary>
+<details><summary>oracles/UniswapV3StaticOracle.sol · Crit 🟨 · Any 🟨 · no category hit · 12 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|

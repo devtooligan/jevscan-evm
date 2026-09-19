@@ -19,18 +19,17 @@ Settings changed from `jevscan.toml`: `files.paths = ["src/Coin.sol", "src/Facto
 
 | File | Crit | Any | Access | Proxy | Oracle | Econ | Reentry | Shares | Math | Sigs | Xchain | Tokens | Logic | DoS | MEV | LowLvl |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `src/Lender.sol` | 🟧 | 🟧 | 🟨 | ⬜ | 🟩 | 🟨 | 🟨 | 🟧 | 🟧 | ⬜ | ⬜ | 🟧 | 🟥 | 🟧 | 🟨 | ⬜ |
-| `src/Vault.sol` | 🟧 | 🟧 | 🟩 | ⬜ | ⬜ | 🟩 | 🟩 | 🟧 | 🟨 | ⬜ | ⬜ | 🟨 | 🟧 | 🟨 | 🟨 | ⬜ |
-| `src/Factory.sol` | 🟨 | 🟧 | 🟩 | ⬜ | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | 🟨 | 🟧 | 🟨 | 🟩 | ⬜ |
-| `src/Lens.sol` | 🟨 | 🟨 | ⬜ | ⬜ | ⬜ | 🟩 | ⬜ | 🟨 | 🟧 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| `src/InterestModel.sol` | 🟩 | 🟩 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | 🟨 | ⬜ | ⬜ | ⬜ | 🟩 | ⬜ | ⬜ | ⬜ |
-| `src/Coin.sol` | 🟩 | 🟩 | 🟩 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | 🟨 | 🟩 | ⬜ | ⬜ |
+| `src/Lender.sol` | 🟥 | 🟥 | 🟧 | 🟩 | 🟨 | 🟧 | 🟧 | 🟥 | 🟥 | 🟩 | 🟩 | 🟥 | 🟥 | 🟥 | 🟧 | 🟩 |
+| `src/Vault.sol` | 🟥 | 🟥 | 🟨 | 🟩 | 🟩 | 🟨 | 🟨 | 🟥 | 🟧 | 🟩 | 🟩 | 🟧 | 🟥 | 🟧 | 🟧 | 🟩 |
+| `src/Factory.sol` | 🟧 | 🟥 | 🟨 | 🟩 | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟧 | 🟥 | 🟧 | 🟨 | 🟩 |
+| `src/Lens.sol` | 🟧 | 🟧 | 🟩 | 🟩 | 🟩 | 🟨 | 🟩 | 🟧 | 🟥 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 |
+| `src/InterestModel.sol` | 🟨 | 🟨 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟧 | 🟩 | 🟩 | 🟩 | 🟨 | 🟩 | 🟩 | 🟩 |
+| `src/Coin.sol` | 🟨 | 🟨 | 🟨 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟩 | 🟧 | 🟨 | 🟩 | 🟩 |
 
-- 🟥 85% or more: very likely
-- 🟧 70% to 85%: likely
-- 🟨 50% to 70%: leaning yes
-- 🟩 30% to 50%: possible
-- ⬜ under 30%: not flagged
+- 🟥 70% or more
+- 🟧 50% to 70%
+- 🟨 30% to 50%
+- 🟩 under 30%
 
 <details><summary>What the columns mean</summary>
 
@@ -145,7 +144,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 ## File details
 
-<details><summary>src/Lender.sol · Crit 🟧 · Any 🟧 · Logic 86%, Tokens 84%, Math 80% · 32 functions flagged</summary>
+<details><summary>src/Lender.sol · Crit 🟥 · Any 🟥 · Logic 86%, Tokens 84%, Math 80% · 32 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -243,7 +242,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/Vault.sol · Crit 🟧 · Any 🟧 · Logic 81%, Shares 77%, Math 68% · 8 functions flagged</summary>
+<details><summary>src/Vault.sol · Crit 🟥 · Any 🟥 · Logic 81%, Shares 77%, Math 68% · 8 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -287,7 +286,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/Factory.sol · Crit 🟨 · Any 🟧 · Logic 79%, Tokens 56%, DoS 56% · 5 functions flagged</summary>
+<details><summary>src/Factory.sol · Crit 🟧 · Any 🟥 · Logic 79%, Tokens 56%, DoS 56% · 5 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -312,7 +311,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/Lens.sol · Crit 🟨 · Any 🟨 · Math 75%, Shares 68% · 3 functions flagged</summary>
+<details><summary>src/Lens.sol · Crit 🟧 · Any 🟧 · Math 75%, Shares 68% · 3 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -337,7 +336,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/InterestModel.sol · Crit 🟩 · Any 🟩 · Math 60% · 1 function flagged</summary>
+<details><summary>src/InterestModel.sol · Crit 🟨 · Any 🟨 · Math 60% · 1 function flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
@@ -357,7 +356,7 @@ A flag is a file whose chance for a category is at or over the threshold. These 
 
 </details>
 
-<details><summary>src/Coin.sol · Crit 🟩 · Any 🟩 · Logic 51% · 2 functions flagged</summary>
+<details><summary>src/Coin.sol · Crit 🟨 · Any 🟨 · Logic 51% · 2 functions flagged</summary>
 
 | Function | Lines | Strongest hit | Question | Chance | Line | More |
 |---|---|---|---|---|---|---|
