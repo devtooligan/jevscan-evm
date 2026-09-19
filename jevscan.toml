@@ -45,7 +45,7 @@ strong_hits = 0.7                    # HEATMAP.md lists a function among its str
 [run]
 locate = true                        # re-ask located questions per function, then pick a line (Solidity only)
 repo_level = true                    # ask broad and category questions about the whole scope, when it fits one request
-concurrency = 8                      # Jev requests in flight at once
+concurrency = 64                     # Jev requests in flight at once; the API served 200 at once without throttling
 
 [paths]
 detectors_dir = "detectors"          # detector JSON files
