@@ -50,16 +50,16 @@ Speed and cost: One file, 14 checks:
 
 | File                                | Crit | Any | Access | Proxy | Oracle | Econ | Reentry | Shares | Math | Sigs | Xchain | Tokens | Logic | DoS | MEV | LowLvl |
 | ----------------------------------- | ---- | --- | ------ | ----- | ------ | ---- | ------- | ------ | ---- | ---- | ------ | ------ | ----- | --- | --- | ------ |
-| `oracles/StableOracleDAI.sol`       | 🟨   | 🟧  | ⬜     | ⬜    | 🟥     | 🟩   | ⬜      | ⬜     | 🟧   | ⬜   | ⬜     | ⬜     | 🟩    | 🟩  | ⬜  | ⬜     |
-| `USSDRebalancer.sol`                | 🟧   | 🟥  | 🟨     | 🟩    | 🟧     | 🟩   | 🟨      | 🟧     | 🟥   | ⬜   | ⬜     | 🟧     | 🟥    | 🟧  | 🟧  | ⬜     |
-| `USSD.sol`                          | 🟥   | 🟥  | 🟧     | 🟨    | 🟧     | 🟨   | 🟨      | 🟨     | 🟧   | ⬜   | ⬜     | 🟧     | 🟥    | 🟨  | 🟥  | ⬜     |
-| `oracles/StableOracleWBTC.sol`      | 🟨   | 🟧  | ⬜     | ⬜    | 🟥     | 🟩   | ⬜      | ⬜     | 🟨   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
-| `oracles/StableOracleWETH.sol`      | 🟨   | 🟨  | ⬜     | ⬜    | 🟥     | ⬜   | ⬜      | ⬜     | 🟨   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
-| `oracles/StableOracleWBGL.sol`      | 🟩   | 🟨  | ⬜     | ⬜    | 🟧     | ⬜   | ⬜      | ⬜     | 🟨   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
-| `oracles/UniswapV3StaticOracle.sol` | 🟩   | 🟩  | ⬜     | ⬜    | 🟩     | ⬜   | ⬜      | ⬜     | 🟩   | ⬜   | ⬜     | ⬜     | 🟩    | ⬜  | ⬜  | ⬜     |
-| `Migrations.sol`                    | ⬜   | 🟩  | ⬜     | ⬜    | ⬜     | ⬜   | ⬜      | ⬜     | ⬜   | ⬜   | ⬜     | ⬜     | ⬜    | ⬜  | ⬜  | ⬜     |
+| `oracles/StableOracleDAI.sol`       | 🟧   | 🟥  | 🟩     | 🟩    | 🟥     | 🟨   | 🟩      | 🟩     | 🟥   | 🟩   | 🟩     | 🟩     | 🟨    | 🟨  | 🟩  | 🟩     |
+| `USSDRebalancer.sol`                | 🟥   | 🟥  | 🟧     | 🟨    | 🟥     | 🟨   | 🟧      | 🟥     | 🟥   | 🟩   | 🟩     | 🟥     | 🟥    | 🟥  | 🟥  | 🟩     |
+| `USSD.sol`                          | 🟥   | 🟥  | 🟥     | 🟧    | 🟥     | 🟧   | 🟧      | 🟧     | 🟥   | 🟩   | 🟩     | 🟥     | 🟥    | 🟧  | 🟥  | 🟩     |
+| `oracles/StableOracleWBTC.sol`      | 🟧   | 🟥  | 🟩     | 🟩    | 🟥     | 🟨   | 🟩      | 🟩     | 🟧   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
+| `oracles/StableOracleWETH.sol`      | 🟧   | 🟧  | 🟩     | 🟩    | 🟥     | 🟩   | 🟩      | 🟩     | 🟧   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
+| `oracles/StableOracleWBGL.sol`      | 🟨   | 🟧  | 🟩     | 🟩    | 🟥     | 🟩   | 🟩      | 🟩     | 🟧   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
+| `oracles/UniswapV3StaticOracle.sol` | 🟨   | 🟨  | 🟩     | 🟩    | 🟨     | 🟩   | 🟩      | 🟩     | 🟨   | 🟩   | 🟩     | 🟩     | 🟨    | 🟩  | 🟩  | 🟩     |
+| `Migrations.sol`                    | 🟩   | 🟨  | 🟩     | 🟩    | 🟩     | 🟩   | 🟩      | 🟩     | 🟩   | 🟩   | 🟩     | 🟩     | 🟩    | 🟩  | 🟩  | 🟩     |
 
-🟥 85% or more · 🟧 70% to 85% · 🟨 50% to 70% · 🟩 30% to 50% · ⬜ under 30%
+🟥 70% or more · 🟧 50% to 70% · 🟨 30% to 50% · 🟩 under 30%
 
 ### Strongest hits
 

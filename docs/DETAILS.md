@@ -29,7 +29,7 @@ Outputs go to `out/<repo name>/`, or `--out <dir>`. Field-level detail is in [CO
 
 1. **Verdict.** Chance of a critical bug, chance of any exploitable bug, and the hottest file, from the repo-level answers (the per-file maximum when the scope does not fit one request).
 2. **Codebase card.** Name, files found, non-blank lines of the scanned files, files scanned, files ignored by class, files over the size cap. Then requests, cost, and wall time, and any setting that differs from `jevscan.toml`.
-3. **Heat grid.** One row per scanned file, sorted by its highest cell; columns Crit, Any, and the 14 categories. Cells are colors only: 🟥 85% or more (very likely), 🟧 70% to 85% (likely), 🟨 hit threshold to 70% (leaning yes), 🟩 30% to the hit threshold (possible), ⬜ under 30%. A legend explains each color; what each column means is in a collapsed block.
+3. **Heat grid.** One row per scanned file, sorted by its highest cell; columns Crit, Any, and the 14 categories. Cells are colors only, traffic-light style with fixed bands independent of the hit threshold: 🟥 70% or more, 🟧 50% to 70%, 🟨 30% to 50%, 🟩 under 30%. A legend explains each color; what each column means is in a collapsed block.
 4. **Strongest function hits.** Every located function whose strongest category or detector hit reaches `thresholds.strong_hits` (70%), one row per function.
 5. **File details.** One collapsed block per flagged file: each function with a hit (at or over the hit threshold) with its strongest hit and the rest under "More", then the file-level hits. Files with no hit are listed once as low risk.
 6. **Ignored files.** The files not scanned, with their class or "over the size cap", in a collapsed block.

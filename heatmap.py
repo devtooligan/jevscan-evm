@@ -22,7 +22,7 @@ CATEGORIES = {
 }
 BROAD = {"critical": ("Crit", "an attacker can gain value: steal or lock funds, or exploit mispricing"),
          "any_bug": ("Any", "at least one exploitable vulnerability of any kind")}
-RED, ORANGE, GREEN = 0.85, 0.7, 0.3  # grid color floors; yellow starts at the hit threshold
+RED, ORANGE, YELLOW = 0.7, 0.5, 0.3  # grid color floors, independent of the hit threshold; green below YELLOW
 SEVERITY_ORDER = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3}
 FLAG_THRESHOLDS = (0.7, 0.5)  # file-level category chances at which unmatched flags are counted (benchmarks only)
 
@@ -39,11 +39,9 @@ def threshold_for(question: str, thresholds: dict) -> float:
     return thresholds["detectors" if question.startswith("detector:") else "taxonomy"]
 
 
-def square(p: float, threshold: float) -> str:
-    """A grid color: red and orange for likely, yellow from the hit threshold, green for possible, white below."""
-    if p >= threshold:
-        return "🟥" if p >= RED else "🟧" if p >= ORANGE else "🟨"
-    return "🟩" if p >= GREEN else "⬜"
+def square(p: float) -> str:
+    """A grid color, traffic-light style: red is hot, green is clear."""
+    return "🟥" if p >= RED else "🟧" if p >= ORANGE else "🟨" if p >= YELLOW else "🟩"
 
 
 def md_cell(text: str) -> str:
@@ -152,17 +150,15 @@ def header(heatmap: dict, name: str) -> list[str]:
 
 
 def grid(heatmap: dict) -> list[str]:
-    t = heatmap["thresholds"]["taxonomy"]
     files = grid_files(heatmap)
     labels = list(grid_cells(files[0], heatmap))
     if not labels:
         return []
     lines = ["## Heat grid", "", "| File | " + " | ".join(labels) + " |", "|---|" + "---|" * len(labels)]
-    lines += [f"| `{f['path']}` | " + " | ".join(square(p, t) for p in grid_cells(f, heatmap).values()) + " |"
+    lines += [f"| `{f['path']}` | " + " | ".join(square(p) for p in grid_cells(f, heatmap).values()) + " |"
               for f in files]
-    lines += ["", f"- 🟥 {pct(RED)} or more: very likely", f"- 🟧 {pct(ORANGE)} to {pct(RED)}: likely",
-              f"- 🟨 {pct(t)} to {pct(ORANGE)}: leaning yes", f"- 🟩 {pct(GREEN)} to {pct(t)}: possible",
-              f"- ⬜ under {pct(GREEN)}: not flagged", ""]
+    lines += ["", f"- 🟥 {pct(RED)} or more", f"- 🟧 {pct(ORANGE)} to {pct(RED)}",
+              f"- 🟨 {pct(YELLOW)} to {pct(ORANGE)}", f"- 🟩 under {pct(YELLOW)}", ""]
     blurbs = {label: blurb for label, blurb in [*BROAD.values(), *CATEGORIES.values()]}
     return lines + details("What the columns mean", [f"- **{label}**: {blurbs[label]}" for label in labels])
 
@@ -236,7 +232,7 @@ def file_block(f: dict, heatmap: dict) -> list[str]:
     t, desc = heatmap["thresholds"], heatmap["descriptions"]
     top = sorted(((c, p) for c, p in f["categories"].items() if p >= t["taxonomy"]), key=lambda kv: -kv[1])[:3]
     flagged = [fn for fn in f["functions"] if fn["questions"]]
-    broad = [f"{BROAD[k][0]} {square(f[k], t['taxonomy'])}" for k in BROAD if f[k] is not None]
+    broad = [f"{BROAD[k][0]} {square(f[k])}" for k in BROAD if f[k] is not None]
     categories = ", ".join(f"{CATEGORIES[c][0]} {pct(p)}" for c, p in top) or "no category hit"
     flagged_note = f"{len(flagged)} function{'s' if len(flagged) != 1 else ''} flagged" if f["located"] else "not located"
     summary = " · ".join([f["path"], *broad, categories, flagged_note])
