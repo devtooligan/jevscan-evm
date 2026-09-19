@@ -9,6 +9,8 @@
 
 **Produce a heat map of likely bugs - in seconds, for pennies - built with TypeSafe's [Jev](https://docs.typesafe.ai).**
 
+> **Warning:** this is a 100% vibe-coded proof of concept. I did not read one line of the code. Use at your own risk.
+
 ## Quick start
 
 Python 3.11+ and a TypeSafe API key ([console.typesafe.ai](https://console.typesafe.ai)).
