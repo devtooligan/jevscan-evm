@@ -75,13 +75,13 @@ _Contest finding: the judged issue it matches._
 
 ## How it did in other benchmarks
 
-| Contest                        | Confirmed findings | Identified the file (bug type, ≥ 70% confidence) | Identified the function |
-| ------------------------------ | ------------------ | ------------------------------------------------ | ----------------------- |
-| Monolith · Sherlock · Dec 2025 | 7                  | 6                                                | 3                       |
-| Beedle · CodeHawks · Jul 2023  | 42                 | 27                                               | 14                      |
-| USSD · Sherlock · May 2023     | 22                 | 20                                               | 14                      |
+| Contest                        | Confirmed findings | Identified the file (bug type, ≥ 70% confidence) | Identified the function | False positives (≥ 70%, reviewed by hand) |
+| ------------------------------ | ------------------ | ------------------------------------------------ | ----------------------- | ----------------------------------------- |
+| Monolith · Sherlock · Dec 2025 | 7                  | 6                                                | 3                       | 3 of 9 flags                              |
+| Beedle · CodeHawks · Jul 2023  | 42                 | 27                                               | 14                      | 1 of 12 flags                             |
+| USSD · Sherlock · May 2023     | 22                 | 20                                               | 14                      | 0 of 18 flags                             |
 
-Identified the file: the file scored 70% or more on the finding's bug type. Identified the function: the function it ranked highest for that bug type was the one the judges named.
+Identified the file: the file scored 70% or more on the finding's bug type. Identified the function: the function it ranked highest for that bug type was the one the judges named. False positives: file-level flags at 70% that a human review found to be wrong; flags that were real but out of scope, or judged findings under another label, are not counted ([Monolith](bench/monolith/notes.md), [Beedle](bench/beedle/unmatched_review.md), [USSD](bench/ussd/unmatched_review_a.md)).
 
 Full results: [Monolith](bench/monolith/results.md) · [Beedle](bench/beedle/results.md) · [USSD](bench/ussd/results.md)
 
