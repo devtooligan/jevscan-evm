@@ -127,9 +127,11 @@ About 1¢ per scanned file, including locating functions and lines.
 | Repo | Files (scanned) | Cost | Time |
 |---|---|---|---|
 | Monolith | 6 (6) | 7¢ | 6 s |
-| USSD | 12 (8) | 7¢ | 7 s |
+| USSD | 12 (8) | 7¢ | 3.7 s |
 | Beedle | 12 (7) | 6¢ | n/a |
 | 40-file lending protocol (private) | 40 (21) | 18¢ | 23 s |
+
+Times for Monolith and the 40-file repo were measured with 8 requests in flight; USSD with 64 (the current default), which the API served without throttling. Expect the others to run about twice as fast at the default.
 
 Costs are for the 343-detector library. Times are from cold runs of the earlier 387-detector library, and so is the whole private-repo row; dropping 44 detectors cut cost by about 7%.
 
