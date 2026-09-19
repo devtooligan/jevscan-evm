@@ -18,4 +18,4 @@ Run: `bench/run_bench.py ussd`, regenerated from the answer cache (same numbers 
 
 Strict: 14 of 21. Counting on-chain functions: 16 of 21.
 
-In every miss, the judged function is at #2 or #3, except H-9. There, `rebalance` is at #4 (0.65) and `getSupplyProportion` is lower.
+In every miss, the judged function is at #2 or #3, except H-9. There, `rebalance` is at #4 (0.65) and `getSupplyProportion` at #5 (0.52).
