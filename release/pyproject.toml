@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jevscan-monitor"
+version = "0.1.0"
+description = "Research tool for classifying historical blockchain transaction behavior"
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+license = "MIT"
+dependencies = ["aiohttp==3.14.3"]
+classifiers = ["Development Status :: 3 - Alpha", "Operating System :: POSIX"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+jevscan-monitor = "jevscan_monitor.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jevscan_monitor"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/", "tests/", "docs/", "evidence/", "README.md", "LICENSE", "NOTICE.md", "SECURITY.md", "pyproject.toml", "requirements*.lock", "requirements-build.in", ".env.example", ".gitignore"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short"

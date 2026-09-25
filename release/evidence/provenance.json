@@ -1,0 +1,12 @@
+{
+  "control_limit": "Zero alerts does not establish that every transaction was benign.",
+  "historical_cohort": "calibration-exposed",
+  "historical_row_provenance_limit": "Original rows lack per-row model and complete model-input digest; model is recorded at configuration level.",
+  "original_artifact_sha256": {
+    "monitor/ensemble_v15_active.json": "3866d40d1278b23fa46e0b734290713e5b046f3764fed401b87adf58e5fe5777",
+    "monitor/hacks.json": "4d95ef3526362ead752615f0bdec08848766ffe8feebd95d2ef630ee3d4de593",
+    "monitor/out/calibration/facts_v10/screen_v10_lending_accounting_full_r2.jsonl": "373f978c425bd069e066133ca2c1212a4142f4acdfe43ab30781284bc9ac52b4",
+    "monitor/out/recent_blocks/score_v15.json": "e393486eab523d0aeeadaeea0e198151f58d01ffb4482526339b750972aa0832"
+  },
+  "purpose": "Arithmetic reproduction of frozen research scores, not a new model run"
+}

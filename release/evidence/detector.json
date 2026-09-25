@@ -1,0 +1,55 @@
+{
+  "historical_facts_version": 10,
+  "human_review": "pending",
+  "model": "jev-1.13.0",
+  "question_sha256": {
+    "c23_guided_lending_accounting_context": "0f0abd880284714756646d57285d5a8b0c94a2a021bda2a6214241bd3e2507cc",
+    "p10_multi_pool_depletion": "60b489739ca1701dc54401044bd25d757f69e31c0ba21ceb7b9f441509901f87"
+  },
+  "questions": {
+    "c23_guided_lending_accounting_context": {
+      "criteria": {
+        "false": "Ordinary protocol use, including trading, lending, liquidation, arbitrage and other MEV, bridging, claims, deployments, and administrative actions by established operators, even when large or complex. Also a failed transaction, which takes nothing. When the facts directly link an established lender's Borrow event to a token issuance by that lender to the borrower in the same transaction, treat that issuance as part of the recorded lending operation rather than an independent payment. This alone does not establish authorization or adequate collateral; alert only when the facts show a concrete authorization, collateral, debt-accounting, or extraction mismatch.",
+        "true": "The sender or the sender's contracts end up with substantial value that a protocol or its users did not intend to give, obtained by abusing a flaw in contract logic, pricing, or access control."
+      },
+      "instructions": {
+        "guidance": {
+          "definition": "An exploit takes value from a protocol or its users in a way the protocol did not intend.",
+          "not_suspicious_alone": [
+            "size",
+            "complexity",
+            "a flash loan"
+          ],
+          "signs_that_a_complex_transaction_is_normal": [
+            "arbitrage and sandwich bots swap in a cycle, every pool is paid about what it gives out, profit is small next to the amounts swapped, the bot contract is old and reused, and the builder is tipped",
+            "liquidations go through the protocol's own liquidation function and earn a modest bonus",
+            "keepers, harvesters, oracle updaters, and bridge relayers are established operators doing repeated jobs"
+          ],
+          "signs_that_raise_suspicion": [
+            "the sender's wallet is new, has few prior transactions, or was funded through a mixer",
+            "the sender acts through its own unverified contract, created minutes or hours earlier",
+            "the capital comes from a flash loan, and the sender side ends with a large gain while risking none of its own funds",
+            "an established contract loses a large share of an asset it holds and receives little in return",
+            "a protocol is entered again through the sender's contract before its first call has finished",
+            "a price or pool balance is pushed sharply, used for a borrow, mint, redeem, or liquidation, and then pushed back",
+            "an administrative function is called by an address with no visible role in that protocol",
+            "tokens are pulled from many unrelated wallets through allowances",
+            "assets are minted or released with no matching deposit, lock, or burn"
+          ]
+        },
+        "question": "The transaction described in the state is an attack that exploits a flaw in a smart contract protocol to take funds from the protocol or its users."
+      },
+      "type": "noul"
+    },
+    "p10_multi_pool_depletion": {
+      "criteria": {
+        "false": "The available facts are adequately explained by ordinary authorized activity, such as an exchange for independently supported value, repayment, backed borrowing, a valid claim, an ordinary deployment, or an authorized control change. Size, complexity, new contracts, missing prices, a mixer, or a flash loan alone do not establish exploitation. A completely reverted transaction has no completed exploit effect.",
+        "true": "The transaction extracts value through a concrete multi-pool depletion mechanism. Require a sender-controlled fresh contract to use flash liquidity or similarly transient capital while multiple established pools lose meaningful pre-existing balances without recorded compensation, and the sender's side or a recipient it controls receives the resulting proceeds. Repeated swaps, burns, callbacks, or an ordinary arbitrage route do not suffice on their own: identify the uncompensated loss from more than one established pool and the linked beneficiary."
+      },
+      "instructions": "The transaction described in the state carries out a smart-contract exploit, including an exploit-enabling change or an unauthorized economic benefit.",
+      "type": "noul"
+    }
+  },
+  "threshold": 0.7,
+  "view": "R2"
+}

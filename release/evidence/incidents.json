@@ -1,0 +1,702 @@
+[
+  {
+    "attack_txs": [
+      "0xffbbd492e0605a8bb6d490c3cd879e87ff60862b0684160d08fd5711e7a872d3"
+    ],
+    "chain_id": 1,
+    "date": "2025-06-26",
+    "id": "resupply-2025-06",
+    "name": "Resupply",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-06/ResupplyFi_exp.sol",
+      "https://rekt.news/resupplyfi-rekt",
+      "https://www.quillaudits.com/blog/hack-analysis/resupply-hack-analysis"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x8b74995d1d61d3d7547575649136b8765acb22882960f0636941c44ec7bbe146"
+    ],
+    "chain_id": 1,
+    "date": "2023-07-21",
+    "id": "conic-2023-07",
+    "name": "Conic ETH omnipool",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2023-07/Conic_exp.sol",
+      "https://rekt.news/conic-finance-rekt/",
+      "https://www.certik.com/resources/blog/5FZAakbsUVg1EyHLNw9Qnm-conic-finance-incident-analysis"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xe2912b8bf34d561983f2ae95f34e33ecc7792a2905a3e317fcc98052bce66431"
+    ],
+    "chain_id": 1,
+    "date": "2024-04-30",
+    "id": "pike-2024-04",
+    "name": "Pike Finance (mainnet)",
+    "sources": [
+      "https://blog.solidityscan.com/pike-finance-hack-analysis-30bcca9f072b",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-04/PikeFinance_exp.sol",
+      "https://www.certik.com/resources/blog/pike-finance-incident-analysis"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xc6c3331fa8c2d30e1ef208424c08c039a89e510df2fb6ae31e5aa40722e28fd6"
+    ],
+    "chain_id": 1,
+    "date": "2024-01-16",
+    "id": "socket-2024-01",
+    "name": "Socket gateway (Bungee)",
+    "sources": [
+      "https://blog.solidityscan.com/socket-gateway-hack-analysis-b0e9567f7d3e",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-01/SocketGateway_exp.sol",
+      "https://rekt.news/socket-rekt/"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xa17fdb804728f226fcd10e78eae5247abd984e0f03301312315b89cae25aa517",
+      "0x2606d459a50ca4920722a111745c2eeced1d8a01ff25ee762e22d5d4b1595739"
+    ],
+    "chain_id": 1,
+    "date": "2024-04-19",
+    "id": "hedgey-2024-04",
+    "name": "Hedgey Finance (mainnet)",
+    "sources": [
+      "https://blog.verichains.io/p/approval-error-vulnerability-analyzing",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-04/HedgeyFinance_exp.sol",
+      "https://www.certik.com/resources/blog/hedgey-finance-incident-analysis"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x0db528c44f23fc7fa4544684a2fab81096450a14aae8bc89f42cd0592d43da12"
+    ],
+    "chain_id": 1,
+    "date": "2026-07-06",
+    "id": "summerfi-2026-07",
+    "name": "Summer.fi Lazy Summer vaults",
+    "sources": [
+      "https://blog.summer.fi/lazy-summer-usdc-vault-exploit-post-mortem-what-happened-and-what-comes-next/",
+      "https://gist.github.com/halaprix/52bd5e32b35be100dc40ba30539e4169",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-07/SummerFi_exp.sol"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x5ff8150482f5473bff16b4a142a98a7f72b159df5e9dd38afd90470551640d37"
+    ],
+    "chain_id": 1,
+    "date": "2026-09-16",
+    "id": "flamincome-2026-09",
+    "name": "Flamincome VaultYUSDT (FlamingoFinance legacy contracts)",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-09/Flamincome_exp.sol",
+      "https://t.me/defimon_alerts/3307"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x0e7680b06cb8a6f86c149d9ba90d98e3d334e7b072dde03909d43fcfd98a8705"
+    ],
+    "chain_id": 1,
+    "date": "2026-09-15",
+    "id": "rseth-safe-module-2026-09",
+    "name": "rsETH whale Safe drained through a keeper router and Safe module",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-09/RsETHSafeModule_exp.sol",
+      "https://t.me/defimon_alerts/3303"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xe1589a19fe742f0d553889214abade69551fe944acffac014c28cc07b325d60a",
+      "0xc3f3e318f7ab2d0daaba59e6ec901d25d1fe8a89aafe2b2b62e3b9aee1a24efa"
+    ],
+    "chain_id": 1,
+    "date": "2026-09-03",
+    "id": "notional-v1-2026-09",
+    "name": "Notional Finance V1 escrow",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-09/NotionalFinance_exp.sol",
+      "https://www.quillaudits.com/blog/hack-analysis/notional-finance-integer-overflow-exploit"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x12dfde527ef62882bfabb64362c9ae0e6bfb628363bd298d0d0956c9a114e4f5"
+    ],
+    "chain_id": 1,
+    "date": "2026-08-28",
+    "id": "ajna-2026-08",
+    "name": "Ajna v2 ERC20 pools",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-08/AjnaFinance_exp.sol",
+      "https://t.me/defimon_alerts/3271",
+      "https://www.cryptotimes.io/2026/08/29/ajna-v2-loses-775k-on-ethereum-after-attacker-exploits-liquidation-math/"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xc5c61b3ac39d854773b9dc34bd0cdbc8b5bbf75f18551802a0b5881fcb990513"
+    ],
+    "chain_id": 1,
+    "date": "2026-05-07",
+    "id": "trustedvolumes-2026-05",
+    "name": "TrustedVolumes RFQ settlement proxy",
+    "sources": [
+      "https://blog.verichains.io/p/trustedvolumes-exploit-analysis",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-05/TrustedVolumes_exp.sol",
+      "https://rekt.news/trustedvolumes-rekt",
+      "https://www.darknavy.org/web3/exploits/trustedvolumes-rfq-proxy-drain/",
+      "https://www.quillaudits.com/blog/hack-analysis/trustedvolumes-rfq-hack"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x770bc9a1f7c32cb63a5002b9ceb5c7994cd3af0fc6b2309cb32d3c46f629daa0"
+    ],
+    "chain_id": 1,
+    "date": "2026-05-05",
+    "id": "ekubo-2026-05",
+    "name": "Ekubo (EVM) v2 extension, WBTC approval drain",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-05/Ekubo_exp.sol",
+      "https://t.me/defimon_alerts/2978",
+      "https://www.darknavy.org/web3/exploits/wbtc-approval-drain-via-ekubo-flash-accounting/",
+      "https://x.com/evilcos/status/2051833417365631281"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xab306cd2184d23b6ba3e151b10b3b9a0b81f211cc16f4f3b0c79f0b17a59c2b5",
+      "0x5c196c37a109d74c9797254287a0331f30e0daa637af241bd28fdc43774705c3",
+      "0x9e1d6ab7c20ae235409d7dd3a9cd47c04f07293585b3498b8beed82d6f6b03ca"
+    ],
+    "chain_id": 1,
+    "date": "2026-06-17",
+    "id": "aztec-v1-escape-hatch-2026-06",
+    "name": "Aztec 2.0 (V1) rollup escape hatch",
+    "sources": [
+      "https://aztec-labs.com/blog/aztec-2-incident.html",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-06/AztecEscapeHatch_exp.sol",
+      "https://rekt.news/aztec-bridge-rekt",
+      "https://www.darknavy.org/web3/exploits/aztec-private-rollup-bridge-escape-hatch-claim-proof-drain/"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x967aa34c69b7775c718545c7f94d92e965eb5fc553c0f27f6f1a9c65c93ac156"
+    ],
+    "chain_id": 1,
+    "date": "2026-06-09",
+    "id": "token-of-power-2026-06",
+    "name": "Token of Power (TOP) Aragon DAO and its Balancer V1 pool",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2026-06/TOPBPool_exp.sol",
+      "https://t.me/defimon_alerts/3085",
+      "https://x.com/blockaid_/status/2064333242673561728"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x53fe7ef190c34d810c50fb66f0fc65a1ceedc10309cf4b4013d64042a0331156"
+    ],
+    "chain_id": 1,
+    "date": "2025-11-30",
+    "id": "yearn-yeth-2025-11",
+    "name": "Yearn yETH weighted stableswap pool",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-12/yETH_exp.sol",
+      "https://rekt.news/yearn-rekt3",
+      "https://www.quillaudits.com/blog/hack-analysis/yearn-9m-exploit"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x6ed07db1a9fe5c0794d44cd36081d6a6df103fab868cdd75d581e3bd23bc9742",
+      "0xd155207261712c35fa3d472ed1e51bfcd816e616dd4f517fa5959836f5b48569"
+    ],
+    "chain_id": 1,
+    "date": "2025-11-03",
+    "id": "balancer-v2-2025-11",
+    "name": "Balancer V2 composable stable pools",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-11/BalancerV2_exp.sol",
+      "https://rekt.news/balancer-rekt2",
+      "https://www.quillaudits.com/blog/hack-analysis/the-balancer-hack"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x842aae91c89a9e5043e64af34f53dc66daf0f033ad8afbf35ef0c93f99a9e5e6"
+    ],
+    "chain_id": 1,
+    "date": "2025-10-04",
+    "id": "abracadabra-2025-10",
+    "name": "Abracadabra CauldronV4 (MIM)",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-10/MIMSpell3_exp.sol",
+      "https://rekt.news/abracadabra-rekt3",
+      "https://www.quillaudits.com/blog/hack-analysis/abracadabra-hack-explained"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xd813751bfb98a51912b8394b5856ae4515be6a9c6e5583e06b41d9255ba6e3c1"
+    ],
+    "chain_id": 1,
+    "date": "2025-07-28",
+    "id": "superrare-2025-07",
+    "name": "SuperRare RARE staking",
+    "sources": [
+      "https://blog.solidityscan.com/superrare-hack-analysis-488d544d89e0",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-07/SuperRare_exp.sol"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x1f15a193db3f44713d56c4be6679b194f78c2bcdd2ced5b0c7495b7406f5e87a"
+    ],
+    "chain_id": 1,
+    "date": "2025-06-25",
+    "id": "silo-leverage-2025-06",
+    "name": "Silo Finance leverage contract (pre-release)",
+    "sources": [
+      "https://agentlisa.ai/blog/post/silo-finance-attack",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-06/SiloFinance_exp.sol",
+      "https://t.me/defimon_alerts/1356"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xfd89cdd0be468a564dd525b222b728386d7c6780cf7b2f90d2b54493be09f64d"
+    ],
+    "chain_id": 1,
+    "date": "2025-05-28",
+    "id": "cork-protocol-2025-05",
+    "name": "Cork Protocol wstETH:weETH market",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-05/Corkprotocol_exp.sol",
+      "https://rekt.news/cork-protocol-rekt",
+      "https://www.quillaudits.com/blog/hack-analysis/cork-protocol-hack-explained"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x46deef0f52e3a983b67abf4714448a41dd7ffd6d32d32da69d62081c68ad7882",
+      "0xb61413c495fdad6114a7aa863a00b2e3c28945979a10885b12b30316ea9f072c",
+      "0xbcf316f5835362b7f1586215173cc8b294f5499c60c029a3de6318bf25ca7b20",
+      "0xa284a1bc4c7e0379c924c73fcea1067068635507254b03ebbbd3f4e222c1fae0",
+      "0x847b8403e8a4816a4de1e63db321705cdb6f998fb01ab58f653b863fda988647"
+    ],
+    "chain_id": 1,
+    "date": "2025-02-21",
+    "id": "bybit-2025-02",
+    "name": "Bybit ETH cold wallet (Safe multisig)",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2025-02/Bybit_exp.sol",
+      "https://rekt.news/bybit-rekt",
+      "https://www.certik.com/resources/blog/bybit-incident-technical-analysis"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x900891b4540cac8443d6802a08a7a0562b5320444aa6d8eed19705ea6fb9710b",
+      "0x1ae40f26819da4f10bc7c894a2cc507cdb31c29635d31fa90c8f3f240f0327c0",
+      "0x90db330d9e46609c9d3712b60e64e32e3a4a2f31075674a58dd81181122352f8"
+    ],
+    "chain_id": 1,
+    "date": "2024-11-14",
+    "id": "veth-2024-11",
+    "name": "vETH (Vista) token and its Uniswap V2 pairs",
+    "sources": [
+      "https://blog.verichains.io/p/veth-incident-with-unknown-mechanism",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-11/vETH_exp.sol",
+      "https://www.quillaudits.com/blog/hack-analysis/veth-token-450k-exploit-analysis"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x46567c731c4f4f7e27c4ce591f0aebdeb2d9ae1038237a0134de7b13e63d8729"
+    ],
+    "chain_id": 1,
+    "date": "2024-09-26",
+    "id": "onyx-dao-2024-09",
+    "name": "Onyx DAO (second exploit): NFTLiquidation and the VUSD market",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-09/OnyxDAO_exp.sol",
+      "https://rekt.news/onyx-protocol-rekt2",
+      "https://www.quillaudits.com/blog/hack-analysis/onyx-dao-hack"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x39328ea4377a8887d3f6ce91b2f4c6b19a851e2fc5163e2f83bbc2fc136d0c71"
+    ],
+    "chain_id": 1,
+    "date": "2024-09-20",
+    "id": "shezmu-2024-09",
+    "name": "Shezmu ShezUSD vault collateral token",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-09/Shezmu_exp.sol",
+      "https://rekt.news/shezmu-rekt",
+      "https://www.quillaudits.com/blog/hack-analysis/shezmu-exploit"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x56e09abb35ff12271fdb38ff8a23e4d4a7396844426a94c4d3af2e8b7a0a2813",
+      "0x7e7f9548f301d3dd863eac94e6190cb742ab6aa9d7730549ff743bf84cbd21d1",
+      "0x42b2ec27c732100dd9037c76da415e10329ea41598de453bb0c0c9ea7ce0d8e5"
+    ],
+    "chain_id": 1,
+    "date": "2024-09-03",
+    "id": "penpie-2024-09",
+    "name": "Penpie (Pendle yield booster)",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-09/Penpiexyzio_exp.sol",
+      "https://rekt.news/penpie-rekt",
+      "https://www.quillaudits.com/blog/hack-analysis/penpie-protocol-exploit"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xd82fe84e63b1aa52e1ce540582ee0895ba4a71ec5e7a632a3faa1aff3e763873"
+    ],
+    "chain_id": 1,
+    "date": "2024-07-16",
+    "id": "lifi-2024-07",
+    "name": "LI.FI diamond (GasZipFacet)",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2024-07/Lifiprotocol_exp.sol",
+      "https://www.quillaudits.com/blog/hack-analysis/lifi-protocol-exploit"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xa329b27fbe0f7b7f92060a9e5370fdf03d60e5c4835f09d7234e5bbecf417ccf",
+      "0xec8f6d8e114caf8425736e0a3d5be2f93bbea6c01a50a7eeb3d61d2634927b40",
+      "0xfb9942a119c45adab3980639cd829e57b41449e3b82d610892da4bb921e81d9c"
+    ],
+    "chain_id": 1,
+    "date": "2023-12-17",
+    "id": "floor-protocol-2023-12",
+    "name": "Floor Protocol (Flooring) periphery multicall",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2023-12/FloorProtocol_exp.sol",
+      "https://web.archive.org/web/20240222042854/https://defimon.xyz/exploit/mainnet/0x7e5433f02f4bf07c4f2a2d341c450e07d7531428"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x726459a46839c915ee2fb3d8de7f986e3c7391c605b7a622112161a84c7384d0"
+    ],
+    "chain_id": 1,
+    "date": "2023-12-16",
+    "id": "gooddollar-2023-12",
+    "name": "GoodDollar GoodFundManager",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2023-12/GoodDollar_exp.sol",
+      "https://raw.githubusercontent.com/pcaversaccio/reentrancy-attacks/main/README.md",
+      "https://x.com/Web3SecResearch/status/1736428284756607386"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x485e08dc2b6a4b3aeadcb89c3d18a37666dc7d9424961a2091d6b3696792f0f3"
+    ],
+    "chain_id": 1,
+    "date": "2023-11-22",
+    "id": "kyberswap-elastic-2023-11",
+    "name": "KyberSwap Elastic pools",
+    "sources": [
+      "https://blocksec.com/blog/yet-another-tragedy-of-precision-loss-an-in-depth-analysis-of-the-kyber-swap-incident-1",
+      "https://blog.solidityscan.com/kyberswap-hack-analysis-25e25f2e4a7b",
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2023-11/KyberSwap_exp.eth.1.sol",
+      "https://rekt.news/kyberswap-rekt"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xfeedbf51b4e2338e38171f6e19501327294ab1907ab44cfd2d7e7336c975ace7"
+    ],
+    "chain_id": 1,
+    "date": "2023-11-10",
+    "id": "raft-2023-11",
+    "name": "Raft (R stablecoin) position manager",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2023-11/Raft_exp.sol",
+      "https://rekt.news/raft-rekt"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xbc08860cd0a08289c41033bdc84b2bb2b0c54a51ceae59620ed9904384287a38"
+    ],
+    "chain_id": 1,
+    "date": "2023-11-07",
+    "id": "mev-bot-0x05f0-2023-11",
+    "name": "MEV bot 0x05f016...924a5",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2023-11/bot_exp.sol",
+      "https://rekt.news/ripmevbot2",
+      "https://www.web3isgoinggreat.com/?id=mev-bot-0x05f01-exploit"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xe0bada18fdc56dec125c31b1636490f85ba66016318060a066ed7050ff7271f9",
+      "0x639d27e564214411ad8eb06cf00d85cd90f83503a53ab5bf35dd5c6e1148ae0a",
+      "0x64a6f486c20671e1389b3c7948d46733325c407245a86bf510cb69ef401a3f0e"
+    ],
+    "chain_id": 1,
+    "date": "2023-12-31",
+    "id": "orbit-chain-2023-12",
+    "name": "Orbit Chain Ethereum vault (bridge)",
+    "sources": [
+      "https://blog.solidityscan.com/orbit-chain-hack-analysis-b71c36a54a69",
+      "https://rekt.news/orbit-bridge-rekt"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x9a97d85642f956ad7a6b852cf7bed6f9669e2c2815f3279855acf7f1328e7d46",
+      "0x6551b933b984342fd353d4b522aee7db500900e208dc1337b0c1f17647e36e56"
+    ],
+    "chain_id": 1,
+    "date": "2022-12-25",
+    "id": "rubic-2022-12",
+    "name": "Rubic exchange proxy (RubicProxy)",
+    "sources": [
+      "https://blog.solidityscan.com/rubic-exchange-hack-analysis/",
+      "https://www.dcentralab.com/blog/dcentralab-diligence-analysis-rubic-dex-aggregator-hack"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xb36486f032a450782d5d2fac118ea90a6d3b08cac3409d949c59b43bcd6dbb8f"
+    ],
+    "chain_id": 1,
+    "date": "2022-12-13",
+    "id": "elasticswap-2022-12",
+    "name": "ElasticSwap AMPL/USDC pool (Ethereum leg)",
+    "sources": [
+      "https://allthingsfuzzy.substack.com/p/elasticswap-invariant-case-study",
+      "https://blog.solidityscan.com/elasticswap-hack-analysis-erroneous-calculations-bug-8dac10fb1b98/"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x390def749b71f516d8bf4329a4cb07bb3568a3627c25e607556621182a17f1f9",
+      "0x6bfd9e286e37061ed279e4f139fbc03c8bd707a2cdd15f7260549052cbba79b7"
+    ],
+    "chain_id": 1,
+    "date": "2022-11-10",
+    "id": "dfx-finance-2022-11",
+    "name": "DFX Finance curve pools (XIDR/USDC and others)",
+    "sources": [
+      "https://web.archive.org/web/20231203000356/https://blog.audit.haechi.io/dfx_finance_attack_overview",
+      "https://web.archive.org/web/20240910201455/https://metatrust.io/blogs/post/from-the-source-analysis-of-dfx-finance-attack",
+      "https://web.archive.org/web/20241210212823/https://www.immunebytes.com/blog/dfx-finance-hack-nov-10-2022-detailed-analysis/"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xb2e3ea72d353da43a2ac9a8f1670fd16463ab370e563b9b5b26119b2601277ce"
+    ],
+    "chain_id": 1,
+    "date": "2022-10-27",
+    "id": "team-finance-2022-10",
+    "name": "Team Finance liquidity locker (V2 to V3 migration)",
+    "sources": [
+      "https://raw.githubusercontent.com/SunWeb3Sec/DeFiHackLabs/main/src/test/2022-10/TeamFinance_exp.sol",
+      "https://rekt.news/teamfinance-rekt"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x8c3f442fc6d640a6ff3ea0b12be64f1d4609ea94edd2966f42c01cd9bdcf04b5"
+    ],
+    "chain_id": 1,
+    "date": "2022-10-11",
+    "id": "templedao-stax-2022-10",
+    "name": "TempleDAO STAX staking vault",
+    "sources": [
+      "https://www.chaincatcher.com/en/article/2080926",
+      "https://www.panewslab.com/zh/articles/6173r0ft1125"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xcd314668aaa9bbfebaf1a0bd2b6553d01dd58899c508d4729fa7311dc5d33ad7"
+    ],
+    "chain_id": 1,
+    "date": "2022-04-17",
+    "id": "beanstalk-2022-04",
+    "name": "Beanstalk governance attack",
+    "sources": [
+      "https://immunefi.com/blog/bug-fix-reviews/hack-analysis-beanstalk-governance-attack-april-2022/",
+      "https://vaas.beosin.com/resources/beosins-analysis-of-the-beanstalk-exploit"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x46a03488247425f845e444b9c10b52ba3c14927c687d38287c0faddc7471150a"
+    ],
+    "chain_id": 1,
+    "date": "2020-11-14",
+    "id": "value-defi-multistables-2020-11",
+    "name": "Value DeFi MultiStables vault",
+    "sources": [
+      "https://aftermath.digital/exploit/2021/06/23/Value-Defi-AMM-Oracle/",
+      "https://valuedefi.medium.com/multistables-vault-exploit-post-mortem-d11b0635788"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x8bb8dc5c7c830bac85fa48acad2505e9300a91c3ff239c9517d0cae33b595090"
+    ],
+    "chain_id": 1,
+    "date": "2020-12-17",
+    "id": "warp-finance-2020-12",
+    "name": "Warp Finance lending protocol",
+    "sources": [
+      "https://slowmist.medium.com/analysis-of-warp-finance-hacked-incident-cb12a1af74cc",
+      "https://www.mdpi.com/2227-9709/10/1/3"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x600a869aa3a259158310a233b815ff67ca41eab8961a49918c2031297a02f1cc"
+    ],
+    "chain_id": 1,
+    "date": "2020-11-06",
+    "id": "cheese-bank-2020-11",
+    "name": "Cheese Bank lending protocol",
+    "sources": [
+      "https://smartcontractshacking.com/hacks/cheese-bank-hack-2020",
+      "https://www.researchgate.net/publication/348958840_Flashot_A_Snapshot_of_Flash_Loan_Attack_on_DeFi_Ecosystem"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xe0b0c2672b760bef4e2851e91c69c8c0ad135c6987bbf1f43f5846d89e691428"
+    ],
+    "chain_id": 1,
+    "date": "2022-03-27",
+    "id": "revest-finance-2022-03",
+    "name": "Revest Finance FNFT protocol",
+    "sources": [
+      "https://sharkteam.org/report/analysis/20220328001A_en.pdf",
+      "https://slowmist.medium.com/revest-finance-incident-analysis-6fcd9b6be207"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x958236266991bc3fe3b77feaacea120f172c0708ad01c7a715b255f218f9313c"
+    ],
+    "chain_id": 1,
+    "date": "2022-06-16",
+    "id": "inverse-finance-frontier-2022-06",
+    "name": "Inverse Finance Frontier lending market",
+    "sources": [
+      "https://blocksec.com/blog/our-take-on-the-inverse-finance-security-incident-price-manipulation-attack",
+      "https://www.certik.com/blog/inverse-finance-incident-analysis"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xb5c8bd9430b6cc87a0e2fe110ece6bf527fa4f170a4bc8cd032f768fc5219838"
+    ],
+    "chain_id": 1,
+    "date": "2020-02-15",
+    "id": "bzx-fulcrum-2020-02-15",
+    "name": "bZx Fulcrum lending market",
+    "sources": [
+      "https://peckshield.medium.com/bzx-hack-full-disclosure-with-detailed-profit-analysis-e6b1fa9b18fc",
+      "https://quantstamp.com/blog/10-quick-and-dirty-facts-about-the-bzx-hacks"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x762881b07feb63c436dee38edd4ff1f7a74c33091e534af56c9f7d49b5ecac15"
+    ],
+    "chain_id": 1,
+    "date": "2020-02-18",
+    "id": "bzx-oracle-2020-02-18",
+    "name": "bZx oracle manipulation",
+    "sources": [
+      "https://quantstamp.com/blog/10-quick-and-dirty-facts-about-the-bzx-hacks",
+      "https://www.doc.ic.ac.uk/~livshits/papers/tr/flashloans_tr.pdf"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x013be97768b702fe8eccef1a40544d5ecb3c1961ad5f87fee4d16fdc08c78106",
+      "0xeb008786a7d230180dbd890c76d6a7735430e836d55729a3ff6e22e254121192"
+    ],
+    "chain_id": 1,
+    "date": "2020-06-28",
+    "id": "balancer-v1-sta-stonk-2020-06",
+    "name": "Balancer V1 STA and STONK pools",
+    "sources": [
+      "https://www.eecg.utoronto.ca/~veneris/23dapps.pdf",
+      "https://www.theblock.co/amp/linked/69785/balancer-pools-drained-of-more-than-450000-due-to-an-exploit-connected-to-deflationary-tokens"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0xe72d4e7ba9b5af0cf2a8cfb1e30fd9f388df0ab3da79790be842bfbed11087b0"
+    ],
+    "chain_id": 1,
+    "date": "2020-11-21",
+    "id": "pickle-pdai-2020-11",
+    "name": "Pickle Finance pDAI jar",
+    "sources": [
+      "https://crypto.training/hacks/2020-11-pickle/",
+      "https://picklefinance.medium.com/pickle-was-hacked-and-there-has-been-a-loss-of-funds-414b99969c29"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x0fe2542079644e107cbf13690eb9c2c65963ccb79089ff96bfaf8dced2331c92"
+    ],
+    "chain_id": 1,
+    "date": "2021-10-27",
+    "id": "cream-finance-yusd-2021-10",
+    "name": "Cream Finance yUSD market",
+    "sources": [
+      "https://immunefi.com/blog/bug-fix-reviews/hack-analysis-cream-finance-oct-2021/",
+      "https://medium.com/cream-finance/post-mortem-exploit-oct-27-507b12bb6f8e"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x7cc7d935d895980cdd905b2a134597fb91004b5d551d6db0fb265e3d9840da22"
+    ],
+    "chain_id": 1,
+    "date": "2021-05-12",
+    "id": "xtoken-xbnta-xsnxa-2021-05",
+    "name": "xToken xBNTa and xSNXa products",
+    "sources": [
+      "https://medium.com/xtoken/initial-report-on-xbnta-xsnxa-exploit-d6e784387f8e",
+      "https://rekt.news/xtoken-rekt/"
+    ]
+  },
+  {
+    "attack_txs": [
+      "0x924e6a6288587b497f73ddcf6ae3c184f15ab35dfcb85f3074b55266974029ef"
+    ],
+    "chain_id": 1,
+    "date": "2021-08-29",
+    "id": "xtoken-xsnx-2021-08",
+    "name": "xToken xSNX product",
+    "sources": [
+      "https://medium.com/xtoken/xsnx-post-mortem-666d35071f38",
+      "https://rekt.news/xtoken-rekt-x2"
+    ]
+  }
+]
